@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <h2>Especimen</h2>
+    <hr>
+    <div class="x_content">
+        <form method="post" class="form-horizontal form-label-left" >
+                {% csrf_token %}
+                
+                 <!-- numero registro -->
+                <div class="item form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for={{formEspecimen.num_registro.name}}>{{formEspecimen.num_registro.label}} <span class="required">*</span>
+                  </label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{formEspecimen.num_registro}}
+                  </div>
+                </div>
+                
+                <!-- determinador-->
+                
+                <div class="item form-group">
+                  <label for={{formDeterminador.nombre_completo.name}} class="control-label col-md-3 col-sm-3 col-xs-12">nombre Determinador</label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{formDeterminador.nombre_completo}}
+                  </div>
+                </div>
+                
+                <div class="item form-group">
+                  <label for={{formDeterminador.nombre_abreviado.name}} class="control-label col-md-3 col-sm-3 col-xs-12">abreviatura determinador</label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{formDeterminador.nombre_abreviado}}
+                  </div>
+                </div>
+                
+                <!-- lugar duplicado -->
+                <div class="item form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for={{formEspecimen.lugar_duplicado.name}}>{{formEspecimen.lugar_duplicado.label}} <span class="required">*</span>
+                  </label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{formEspecimen.lugar_duplicado}}
+                  </div>
+                </div>
+                
+                <!--imagen -->
+                <div class="item form-group">
+                  <label for={{formEspecimen.imagen.name}} class="control-label col-md-3 col-sm-3 col-xs-12">{{formEspecimen.imagen.label}}<span class="required">*</span>
+                  </label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{formEspecimen.imagen}}
+                  </div>
+                </div>
+                
+                <!-- familia-taxonomia -->
+                <div class="item form-group">
+                  <label for={{formCateTaxonomica.familia.name}} class="control-label col-md-3 col-sm-3 col-xs-12">{{formCateTaxonomica.familia.label}}</label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{formCateTaxonomica.familia}}
+                  </div>
+                </div>
+                
+                
+                <!-- genero-taxonomia -->
+                <div class="item form-group">
+                  <label for={{formCateTaxonomica.genero.name}} class="control-label col-md-3 col-sm-3 col-xs-12">{{formCateTaxonomica.genero.label}}</label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{formCateTaxonomica.genero}}
+                  </div>
+                </div>
+                
+                <!-- epiteto_especifico-taxonomia -->
+                <div class="item form-group">
+                  <label for={{formCateTaxonomica.epiteto_especifico.name}} class="control-label col-md-3 col-sm-3 col-xs-12">{{formCateTaxonomica.epiteto_especifico.label}}</label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{formCateTaxonomica.epiteto_especifico}}
+                  </div>
+                </div>
+                
+                <!-- fecha_det-taxonomia -->
+                <div class="item form-group">
+                  <label for={{formCateTaxonomica.fecha_det.name}} class="control-label col-md-3 col-sm-3 col-xs-12">{{formCateTaxonomica.fecha_det.label}}</label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{formCateTaxonomica.fecha_det}}
+                  </div>
+                </div>
+                
+                <!-- categoria_infraespecifica-taxonomia -->
+                <div class="item form-group">
+                  <label for={{formCateTaxonomica.categoria_infraespecifica.name}} class="control-label col-md-3 col-sm-3 col-xs-12">{{formCateTaxonomica.categoria_infraespecifica.label}}</label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{formCateTaxonomica.categoria_infraespecifica}}
+                  </div>
+                </div>
+                
+                <!-- epiteto_infraespecifico-taxonomia -->
+                <div class="item form-group">
+                  <label for={{formCateTaxonomica.epiteto_infraespecifico.name}} class="control-label col-md-3 col-sm-3 col-xs-12">{{formCateTaxonomica.epiteto_infraespecifico.label}}</label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{formCateTaxonomica.epiteto_infraespecifico}}
+                  </div>
+                </div>
+                
+                <!-- autor1-taxonomia -->
+                <div class="item form-group">
+                  <label for={{formAutor1.nombre_completo.name}} class="control-label col-md-3 col-sm-3 col-xs-12">nombre autor 1</label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{formAutor1.nombre_completo}}
+                  </div>
+                </div>
+                
+                <div class="item form-group">
+                  <label for={{formAutor1.nombre_abreviado.name}} class="control-label col-md-3 col-sm-3 col-xs-12">abreviatura autor 1</label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{formAutor1.nombre_abreviado}}
+                  </div>
+                </div>
+                
+                <!-- autor2-taxonomia -->
+                <div class="item form-group">
+                  <label for={{formAutor2.nombre_completo.name}} class="control-label col-md-3 col-sm-3 col-xs-12">nombre autor 2</label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{formAutor2.nombre_completo}}
+                  </div>
+                </div>
+                
+                <div class="item form-group">
+                  <label for={{formAutor2.nombre_abreviado.name}} class="control-label col-md-3 col-sm-3 col-xs-12">abreviatura autor 2</label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{formAutor2.nombre_abreviado}}
+                  </div>
+                </div>
+                
+                
+
+                <!-- colector ppal-coleccion -->
+                <div class="item form-group">
+                  <label for={{formColector.nombre_completo.name}} class="control-label col-md-3 col-sm-3 col-xs-12">nombre colector principal</label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{formColector.nombre_completo}}
+                  </div>
+                </div>
+                
+                <div class="item form-group">
+                  <label for={{formColector.nombre_abreviado.name}} class="control-label col-md-3 col-sm-3 col-xs-12">abreviatura colector principal</label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{formColector.nombre_abreviado}}
+                  </div>
+                </div>
+                
+                 <!-- fecha-coleccion -->
+                <div class="item form-group">
+                  <label for={{formColeccion.fecha.name}} class="control-label col-md-3 col-sm-3 col-xs-12">{{formColeccion.fecha.label}}</label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{formColeccion.fecha}}
+                  </div>
+                </div>
+                
+                
+                 <!-- descripcion-coleccion -->
+                <div class="item form-group">
+                  <label for={{formColeccion.descripcion.name}} class="control-label col-md-3 col-sm-3 col-xs-12">{{formColeccion.descripcion.label}}</label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                    {{formColeccion.descripcion}}
+                  </div>
+                </div>
+                
+                <!--colectores-->
+                <div class="item form-group">
+               
+                {{ colectoresFormset.management_form }}
+
+                {% for form in colectoresFormset %}
+                  <div class="colector_formset">
+                  {{form.nombre}}
+                  {{form.abreviatura}}
+                  </div>
+                {% endfor %}
+                 
+                   
+            
+            
+            <input type="submit" value="Save"/> 
+        </form>
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="{% static 'formset/jquery.formset.js' %}"></script>
+    <script>
+        $('.colector_formset').formset({
+            addText: 'nuevo colector',
+            deleteText: 'remover',
+            prefix: 'colectoresFormset'
+        });
+    </script>
+{% endblock %}
