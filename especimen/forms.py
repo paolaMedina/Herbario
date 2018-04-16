@@ -31,7 +31,7 @@ class EspecimenForm(forms.ModelForm):
                 #'duplicado': forms.TextInput(attrs={'required':'required', 'class':'form-control col-md-7 col-xs-12', 'placeholder':'duplicado'}),
                 'lugar_duplicado': forms.TextInput(attrs={'required':'required', 'class':'form-control col-md-7 col-xs-12', 'placeholder':'lugar de duplicado'}),
                 'peligro' : forms.Select(attrs={'class': 'form-control col-sm-2'}),
-               # 'imagen':forms.ImageField(),
+                'imagen' : forms.FileInput(),
                
         } 
 

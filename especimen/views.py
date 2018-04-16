@@ -8,7 +8,7 @@ from .models import  Especimen
 from cientifico.models import Cientifico
 from cientifico.forms import CientificoForm
 from coleccion.models import Coleccion,Colectores
-from coleccion.forms import ColeccionForm,ColectoresForm,BaseLinkFormSet
+from coleccion.forms import ColeccionForm,ColectoresForm
 from categoriaTaxonomica.models import CategoriaTaxonomica
 from categoriaTaxonomica.forms import TaxonomiaForm
 from .forms import EspecimenForm
@@ -19,7 +19,7 @@ from django.forms.formsets import formset_factory
 
 def RegistrarEspecimen(request):
     
-    ColectoresFormSet = formset_factory(ColectoresForm, formset=BaseLinkFormSet )
+    ColectoresFormSet = formset_factory(ColectoresForm)
 
     if request.method == 'POST':
         print ("solicitud post")
@@ -36,7 +36,7 @@ def RegistrarEspecimen(request):
         colectoresFormset = ColectoresFormSet(request.POST)
         #especimen
         formDeterminador= CientificoForm (request.POST,prefix="determinador")
-        formEspecimen = EspecimenForm(request.POST)
+        formEspecimen = EspecimenForm(request.POST, request.FILES)
         
         
 
@@ -86,19 +86,19 @@ def RegistrarEspecimen(request):
             #print (colectoresFormset.as_table())
 
             for colector_form in colectoresFormset:
-               
-                try :
-                    objeColector = Cientifico(nombre_completo=colector_form['nombre'].value(), nombre_abreviado=colector_form['abreviatura'].value())
-                    objeColector.save()
-                    
-                except Cientifico.DoesNotExist:
-                    objeColector.save()
-                    
-                colectores= Colectores(coleccion=fColeccion, colector=objeColector, orden=i)
-                colectores.save()
-                
-                
-                i+=1
+                if not(colector_form['nombre'].value()==""):
+                    try :
+                       objeColector = Cientifico.objects.get(nombre_completo=colector_form['nombre'].value(), nombre_abreviado=colector_form['abreviatura'].value())
+                       print("existe")
+                       
+                    except Cientifico.DoesNotExist:
+                        objeColector=Cientifico(nombre_completo=colector_form['nombre'].value(), nombre_abreviado=colector_form['abreviatura'].value())
+                        print("se crea")
+                        
+                     
+                    colectores= Colectores(coleccion=fColeccion, colector=objeColector, orden=i)
+                    colectores.save()
+                    i+=1 
             
             
             

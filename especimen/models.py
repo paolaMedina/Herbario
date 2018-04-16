@@ -21,5 +21,5 @@ class Especimen (models.Model):
     determinador = models.ForeignKey(Cientifico, null=False, blank=False, on_delete=models.CASCADE)
     lugar_duplicado = models.CharField(max_length=200)
     peligro = models.CharField(max_length=2, choices=DANGER_CHOICES, default='FP')
-    imagen = models.ImageField(upload_to='imagen_especimen', null=True, blank=True)
+    imagen = models.ImageField(upload_to='fotografias/', null=True, blank=True)
    #id usuario-id geografico
