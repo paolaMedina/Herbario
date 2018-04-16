@@ -21,8 +21,9 @@ class ColeccionForm(ModelForm):
                 
         }
         widgets = {
-                'fecha': forms.TextInput(attrs={'required':'required', 'class':'form-control col-md-7 col-xs-12' }),
-                'descripcion': forms.Textarea(attrs={'required':'required', 'class':'form-control col-md-7 col-xs-12' }),
+          
+                'fecha': forms.TextInput(attrs={'type':'text', 'id':'data_3', 'name':'datepicker', 'class':'form-control' }),
+                'descripcion': forms.Textarea(attrs={'required':'required' , 'class':'form-control'}),
 
         }
 
@@ -31,25 +32,14 @@ class ColectoresForm(forms.Form):
     
     nombre = forms.CharField(
                     max_length=100,
-                    widget=forms.TextInput(attrs={
-                        'placeholder': 'nombre ',
-                    }),
-                    required=True)
+                    widget=forms.TextInput(attrs={'class':'form-control nombre-complete','placeholder': 'nombre completo '}),
+                    required=False)
                 
     abreviatura = forms.CharField(
                     max_length=100,
-                    widget=forms.TextInput(attrs={
-                        'placeholder': 'abreviatura ',
-                    }),
-                    required=True)
-                    
-    orden =  forms.CharField(
-                    max_length=100,
-                    widget=forms.TextInput(attrs={
-                        'placeholder': 'orden ',
-                    }),
-                    required=True)
-    
+                    widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'abreviatura '}),
+                    )
+
         
 
 

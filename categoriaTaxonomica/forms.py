@@ -15,9 +15,9 @@ class TaxonomiaForm(forms.ModelForm):
                 'fecha_det',
                 'categoria_infraespecifica',
                 'epiteto_infraespecifico',
-
-                
+               
             ]
+            
         labels = {
                 'familia' : 'Familia',
                 'genero' : 'Genero',
@@ -28,12 +28,14 @@ class TaxonomiaForm(forms.ModelForm):
                 
         }
         widgets = {
-                'familia': forms.TextInput(attrs={'required':'required', 'class':'form-control col-md-7 col-xs-12', 'placeholder':'familia'}),
-                'genero': forms.TextInput(attrs={'required':'required', 'class':'form-control col-md-7 col-xs-12', 'placeholder':'genero'}),
-                'epiteto_especifico': forms.TextInput(attrs={'required':'required', 'class':'form-control col-md-7 col-xs-12', 'placeholder':'epiteto especifico'}),
-                'fecha_det': forms.TextInput(attrs={'required':'required', 'class':'form-control col-md-7 col-xs-12', 'placeholder':'fecha de determinacion'}),
-                'categoria_infraespecifica': forms.TextInput(attrs={'required':'required', 'class':'form-control col-md-7 col-xs-12', 'placeholder':'categoria infraespecifica'}),
-                'epiteto_infraespecifico' : forms.TextInput(attrs={'required':'required', 'class':'form-control col-md-7 col-xs-12', 'placeholder':'epiteto infraespecifico'}),
+                'familia': forms.TextInput(attrs={'required':'required', 'class':'form-control col-md-7 col-xs-12'}),
+                'genero': forms.TextInput(attrs={'required':'required', 'class':'form-control col-md-7 col-xs-12'}),
+                'epiteto_especifico': forms.TextInput(attrs={'required':'required', 'class':'form-control col-md-7 col-xs-12'}),
+                'fecha_det': forms.TextInput(attrs={'type':'text', 'id':'data_3', 'name':'datepicker', 'class':'form-control col-md-7 col-xs-12' }),
+                'categoria_infraespecifica': forms.TextInput(attrs={ 'class':'form-control col-md-7 col-xs-12'}),
+                'epiteto_infraespecifico' : forms.TextInput(attrs={ 'class':'form-control col-md-7 col-xs-12'}),
+                
+                
 
         }
         

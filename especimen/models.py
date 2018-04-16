@@ -7,7 +7,6 @@ from cientifico.models import Cientifico
 
 
 # Create your models here.
-BOOL_CHOICES = ((True, 'Si'), (False, 'No'))
 extinta='EX'
 peligro ='EP'
 vulnerable = 'VU'
@@ -20,8 +19,7 @@ class Especimen (models.Model):
     categoria = models.ForeignKey(CategoriaTaxonomica, null=False, blank=False, on_delete=models.CASCADE)
     coleccion = models.ForeignKey(Coleccion, null=False, blank=False, on_delete=models.CASCADE)
     determinador = models.ForeignKey(Cientifico, null=False, blank=False, on_delete=models.CASCADE)
-    #duplicado =  models.BooleanField(choices=BOOL_CHOICES)
     lugar_duplicado = models.CharField(max_length=200)
-    #peligro = models.CharField(max_length=2, choices=DANGER_CHOICES)
+    peligro = models.CharField(max_length=2, choices=DANGER_CHOICES, default='FP')
     imagen = models.ImageField(upload_to='imagen_especimen', null=True, blank=True)
    #id usuario-id geografico

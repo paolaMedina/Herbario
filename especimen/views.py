@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.core.urlresolvers import reverse_lazy
-from django.db import transaction
-from django.views.generic import CreateView, UpdateView, DeleteView, ListView
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.shortcuts import render, HttpResponseRedirect
+from django.http import JsonResponse
 from .models import  Especimen
 from cientifico.models import Cientifico
 from cientifico.forms import CientificoForm
@@ -12,6 +14,8 @@ from categoriaTaxonomica.forms import TaxonomiaForm
 from .forms import EspecimenForm
 from django.forms import ModelForm, inlineformset_factory
 from django.forms.formsets import formset_factory
+
+
 
 def RegistrarEspecimen(request):
     
@@ -33,6 +37,8 @@ def RegistrarEspecimen(request):
         #especimen
         formDeterminador= CientificoForm (request.POST,prefix="determinador")
         formEspecimen = EspecimenForm(request.POST)
+        
+        
 
         if formAutor1.is_valid() and  formAutor2.is_valid() and formCateTaxonomica.is_valid() and formColector.is_valid() and formColeccion.is_valid() and formEspecimen.is_valid(): 
             print("valido")
@@ -57,6 +63,8 @@ def RegistrarEspecimen(request):
                 determinador = Cientifico.objects.get(nombre_completo=formDeterminador['nombre_completo'].value(),nombre_abreviado=formDeterminador['nombre_abreviado'].value())
             except Cientifico.DoesNotExist:
                 determinador = formDeterminador.save()
+            
+            
           
                
                 
@@ -70,11 +78,12 @@ def RegistrarEspecimen(request):
             fColeccion = formColeccion.save(commit = False)
             fColeccion.colector_ppal=colectorPpal
             fColeccion.save()
+           
             
             #guardar formset
             
             i=0
-            print (colectoresFormset.as_table())
+            #print (colectoresFormset.as_table())
 
             for colector_form in colectoresFormset:
                
@@ -88,6 +97,7 @@ def RegistrarEspecimen(request):
                 colectores= Colectores(coleccion=fColeccion, colector=objeColector, orden=i)
                 colectores.save()
                 
+                
                 i+=1
             
             
@@ -97,10 +107,12 @@ def RegistrarEspecimen(request):
             especimen.determinador=determinador
             especimen.coleccion=fColeccion
             especimen.save()
+            print ("se envio")
             
+            messages.success(request, 'Se ha guardado exitosamente')
+            #return HttpResponseRedirect(reverse_lazy('especimen:crear_especimen'))
             
-            
-            #return redirect('lista')
+        
     else:
         print ("solicitud get")
         formAutor1 = CientificoForm (prefix="autor1")
@@ -115,9 +127,23 @@ def RegistrarEspecimen(request):
    
         
         
-    return render(request,'especimen.html',{'formAutor1':formAutor1, 'formAutor2': formAutor2,'formCateTaxonomica': formCateTaxonomica, 
+    return render(request,'form_wizard.html',{'formAutor1':formAutor1, 'formAutor2': formAutor2,'formCateTaxonomica': formCateTaxonomica, 
                                                     'formColector' :formColector,'formColeccion':formColeccion, 'colectoresFormset':colectoresFormset,
                                                     'formDeterminador': formDeterminador, 'formEspecimen':formEspecimen})
    
     
     
+    
+    
+def autocomplete(request):
+    if request.is_ajax():
+        queryset = Cientifico.objects.filter(nombre_completo__istartswith=request.GET.get('search', None))
+       
+        list = []        
+        for i in queryset:
+            list.append(i.nombre_completo)
+        data = {
+            'list': list,
+        }
+        return JsonResponse(data) 
+        

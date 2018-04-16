@@ -1,0 +1,392 @@
+{% extends "base1.html" %}
+{% load static %}
+
+
+
+{% block titulo %}
+Especimen
+{% endblock %}
+
+{% block extrahead %}
+<link href="{% static 'plantilla-backend/css/plugins/iCheck/custom.css' %}" rel="stylesheet">
+<link href="{% static 'plantilla-backend/css/plugins/steps/jquery.steps.css' %}" rel="stylesheet">
+<link href="{% static 'plantilla-backend/css/plugins/datapicker/datepicker3.css' %}" rel="stylesheet">
+<link href="{% static 'style.css' %}" rel="stylesheet">
+<!-- Toastr style -->
+<link href="{% static 'plantilla-backend/css/plugins/toastr/toastr.min.css' %}" rel="stylesheet">
+<!-- query-ui style -->
+<link href="{% static 'plantilla-backend/js/plugins/jquery-ui/jquery-ui.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block content %} 
+ <div class="row">
+    <div class="col-lg-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Ingresar Especimen</h5>
+            </div>
+            <div class="ibox-content">
+                <h2>
+                    Formulario Especimen
+                </h2>
+
+                <form id="form"  class="wizard-big  form-big" method="post">
+                    {% csrf_token %}
+                    <h1>Colección</h1>
+                    <fieldset >
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <!-- fecha-coleccion -->
+                                <div class="form-group">
+                                    <label  for={{formColeccion.fecha.name}}>{{formColeccion.fecha.label}}</label>
+                                    <div class="form-group" id="data_3">
+                                        <div class="input-group date">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>{{formColeccion.fecha}}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- descripcion-coleccion -->
+                                <div class="form-group">
+                                    <label for={{formColeccion.descripcion.name}}>{{formColeccion.descripcion.label}}</label>
+                                    {{formColeccion.descripcion}}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- colector ppal-coleccion -->
+                        <div class="ibox-title">
+                            <h5>Colector Principal</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label  for={{formColector.nombre_completo.name}}>Nombre </label>
+                                        {{formColector.nombre_completo}}
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for={{formColector.nombre_abreviado.name}}>Abreviatura</label>
+                                        {{formColector.nombre_abreviado}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p>
+                            
+                        </p>
+                        <!--colectores secundarios-->
+                        <div class="ibox-title">
+                            <h5>Colectores Secundarios</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="form-group">
+                                    <table class="table">
+                                        {{ colectoresFormset.management_form }}
+                                        {% for form in colectoresFormset.forms %}
+                                            {% if forloop.first %}
+                                            <thead>
+                                              <tr>
+                                                {% for field in form.visible_fields %}
+                                                  <th>{{ field.label|capfirst }}</th>
+                                                {% endfor %}
+                                              </tr>
+                                            </thead>
+                                            {% endif %}
+                                            <tr class="formset_row">
+                                                {% for field in form.visible_fields %}
+                                                  <td>
+                                                    {% if forloop.first %}
+                                                      {% for hidden in form.hidden_fields %}
+                                                        {{ hidden }}
+                                                      {% endfor %}
+                                                      {% endif %}
+                                                      {{ field.errors.as_ul }}
+                                                      {{ field }}
+                                                  </td>
+                                                {% endfor %}
+                                            </tr>
+                                        {% endfor %}
+                                    </table>  
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset >
+                    
+                   <h1>Especimen</h1>
+                   <fieldset>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <!-- numero registro -->
+                                <div class="form-group">
+                                    <label for={{formEspecimen.num_registro.name}}>{{formEspecimen.num_registro.label}} *</label>
+                                    {{formEspecimen.num_registro}}
+                                </div>
+                                <!-- lugar duplicado -->
+                                <div class="form-group">
+                                    <label for={{formEspecimen.lugar_duplicado.name}}>{{formEspecimen.lugar_duplicado.label}} *</label>
+                                    {{formEspecimen.lugar_duplicado}}
+                                </div>
+                                <!-- categoria de amenaza -->
+                                <div class="form-group">
+                                    <label for={{formEspecimen.peligro.name}}>{{formEspecimen.peligro.label}} </label>
+                                    {{formEspecimen.peligro}}
+                                </div>
+                                <!--imagen -->
+                                <div class="form-group">
+                                    <label for={{formEspecimen.imagen.name}} class="control-label col-md-3 col-sm-3 col-xs-12">{{formEspecimen.imagen.label}}</label>
+                                    {{formEspecimen.imagen}}
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                    <h1>Taxonomía</h1>
+                    <fieldset>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <!-- familia-taxonomia -->
+                                <div class="form-group">
+                                    <label for={{formCateTaxonomica.familia.name}}>{{formCateTaxonomica.familia.label}}</label>
+                                    {{formCateTaxonomica.familia}}
+                                </div>
+                                <!-- genero-taxonomia -->
+                                <div class="form-group">
+                                    <label for={{formCateTaxonomica.genero.name}}>{{formCateTaxonomica.genero.label}}</label>
+                                    {{formCateTaxonomica.genero}}
+                                </div>
+                                <!-- fecha_det-taxonomia -->
+                                <div class="form-group">
+                                    <label for={{formCateTaxonomica.fecha_det.name}}>{{formCateTaxonomica.fecha_det.label}}</label>
+                                    
+                                    <div class="form-group" id="data_3">
+                                        <div class="input-group date">
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>{{formCateTaxonomica.fecha_det}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- epiteto_especifico-taxonomia -->
+                                <div class="form-group">
+                                    <label for={{formCateTaxonomica.epiteto_especifico.name}}>{{formCateTaxonomica.epiteto_especifico.label}}</label>
+                                    {{formCateTaxonomica.epiteto_especifico}}
+                                </div>
+                            </div>
+                        </div>
+                        <p>
+                            
+                        </p>
+                        
+                        <!-- determinador-->
+                        <div class="ibox-title">
+                            <h5>Determinador</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for={{formDeterminador.nombre_completo.name}}>Nombre </label>
+                                        {{formDeterminador.nombre_completo}}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for={{formDeterminador.nombre_abreviado.name}}>Abreviatura</label>
+                                        {{formDeterminador.nombre_abreviado}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- categoria_infraespecifica-taxonomia -->
+                        <div class="row">
+                            <div class="  col-lg-8 form-group ">
+                                <label for={{formCateTaxonomica.categoria_infraespecifica.name}}>{{formCateTaxonomica.categoria_infraespecifica.label}}</label>
+                                {{formCateTaxonomica.categoria_infraespecifica}}
+                            </div>
+                        </div>
+                        
+                        <!-- Autor 1-->
+                        <div class="ibox-title">
+                            <h5>Autor 1</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for={{formAutor1.nombre_completo.name}}>Nombre</label>
+                                        {{formAutor1.nombre_completo}}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for={{formAutor1.nombre_abreviado.name}}>Abreviatura</label>
+                                        {{formAutor1.nombre_abreviado}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- epiteto_infraespecifico-taxonomia -->
+                        <div class="row">
+                            <div class="col-lg-8 form-group  ">
+                                <label for={{formCateTaxonomica.epiteto_infraespecifico.name}}>{{formCateTaxonomica.epiteto_infraespecifico.label}}</label>
+                                {{formCateTaxonomica.epiteto_infraespecifico}}
+                            </div>  
+                        </div>
+                        
+                        <!-- Autor 2-->
+                        <div class="ibox-title">
+                            <h5>Autor 2</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for={{formAutor2.nombre_completo.name}}>Nombre</label>
+                                        {{formAutor2.nombre_completo}}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for={{formAutor2.nombre_abreviado.name}}>Abreviatura</label>
+                                        {{formAutor2.nombre_abreviado}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                </form>
+            </div>
+        </div>
+     </div>
+</div>
+{% endblock %}
+       
+
+{% block plugins %}
+
+<!-- Image cropper -->
+<script src="{% static 'plantilla-backend/js/plugins/cropper/cropper.min.js' %}"></script>
+<!-- Tags Input -->
+<script src="{% static 'plantilla-backend/js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js' %}"></script>
+<!-- formset -->
+<script src="{% static 'formset/jquery.formset.js' %}"></script>
+<!-- Steps -->
+<script src="{% static 'plantilla-backend/js/plugins/steps/jquery.steps.min.js' %}"></script>
+<!-- Jquery Validate -->
+<script src="{% static 'plantilla-backend/js/plugins/validate/jquery.validate.min.js' %}"></script>
+<!-- Toastr -->
+<script src="{% static 'plantilla-backend/js/plugins/toastr/toastr.min.js' %}"></script>
+<!-- jquery-ui -->
+<script src="{% static 'plantilla-backend/js/plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+<!-- Data picker -->
+<script src="{% static 'plantilla-backend/js/plugins/datapicker/bootstrap-datepicker.js'%}"></script>
+
+
+<!-- validar solo numeros en el campo de numero de registro -->
+<script language=Javascript>
+      function isNumberKey(evt)
+      {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+ 
+         return true;
+      }
+</script>
+
+
+<script>
+    $(document).ready(function(){
+       
+        $("#wizard").steps();
+        $("#form").steps({
+            bodyTag: "fieldset",
+            onStepChanging: function (event, currentIndex, newIndex)
+            {
+                // Siempre permita retroceder incluso si el paso actual contiene campos no válidos.
+                if (currentIndex > newIndex)
+                {
+                    return true;
+                }
+
+                var form = $(this);
+
+                // Limpiar si el usuario retrocedió antes
+                if (currentIndex < newIndex)
+                {
+                    // To remove error styles
+                    $(".body:eq(" + newIndex + ") label.error", form).remove();
+                    $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+                }
+
+                // no valida los campos que están deshabilitados u ocultos.
+                form.validate().settings.ignore = ":disabled,:hidden";
+
+                // valida cada pestaña, no permite avanzar si no es valido
+                return form.valid();
+            },
+            onFinishing: function (event, currentIndex)
+            {
+                var form = $(this);
+
+                //  no valida los campos que están deshabilitados.
+                form.validate().settings.ignore = ":disabled";
+
+                // hace la validación; Evitar el envío de formularios si es falso no permite avanzar
+                return form.valid();
+            },
+            onFinished: function (event, currentIndex)
+            {
+                var form = $(this);
+                
+
+                // Submit form input
+                form.submit();
+
+            }
+        });
+          $('.formset_row').formset({
+            addText: 'add colector secundario',
+            deleteText: 'remove'
+        });
+        
+        $('#data_3 .input-group.date').datepicker({
+                startView: 2,
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true
+            });
+            
+        
+        $('.nombre-complete').on('keyup', function(){
+        var value = $(this).val();
+        $.ajax({
+            url: "{% url 'especimen:ajax_autocomplete' %}",
+            data: {
+              'search': value 
+            },
+            dataType: 'json',
+            success: function (data) {
+                list = data.list;
+                $('.nombre-complete').autocomplete({
+                source: list,
+                minLength: 2
+                });       
+            }});  
+        });
+        
+        
+        
+
+   });
+</script>
+
+{% endblock %}
+
+
+

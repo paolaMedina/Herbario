@@ -9,7 +9,7 @@ class CategoriaTaxonomica (models.Model):
         familia = models.CharField(max_length=200)
         genero = models.CharField(max_length=200)
         epiteto_especifico = models.CharField(max_length=200)
-        fecha_det = models.DateField()
+        fecha_det = models.CharField(max_length=10)
         categoria_infraespecifica = models.CharField(max_length=200)
         epiteto_infraespecifico = models.CharField(max_length=200)
         autor1 = models.ForeignKey(Cientifico, null=False, blank=False, on_delete=models.CASCADE, related_name='+',)
