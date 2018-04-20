@@ -36,7 +36,7 @@ def RegistrarEspecimen(request, pk=None):
             x={'nombre_completo':cientifico.nombre_completo,'nombre_abreviado':cientifico.nombre_abreviado}
             arreglo.append(x)
         
-        print arreglo
+        #print arreglo
             
     else: 
         especimen = Especimen()
@@ -98,30 +98,29 @@ def RegistrarEspecimen(request, pk=None):
             fColeccion.colector_ppal=colectorPpal
             fColeccion.save()
            
-            #guardar formset
+            #guardar colectores secundarios
             
-            i=0
-            #print (colectoresFormset.as_table())
+            i=0# contador que maneja el orden en que se ingresen los colectores
+            
+            coleccionObje.colectores_secu.clear()
+            #print (colectoresFormset.as_table()) 
 
             for colector_form in colectoresFormset:
                 if not(colector_form['nombre_completo'].value()==""):
+                    
                     try :
                        objeColector = Cientifico.objects.get(nombre_completo=colector_form['nombre_completo'].value(), nombre_abreviado=colector_form['nombre_abreviado'].value())
-                       print("existe")
+                       #print("existe")
                       
                     except Cientifico.DoesNotExist:
                         objeColector=Cientifico(nombre_completo=colector_form['nombre_completo'].value(), nombre_abreviado=colector_form['nombre_abreviado'].value())
                         objeColector.save()
-                        print("se crea")
-                        
-                    #validar que no exista colecor sec
-                    
-                    print objeColector.pk
-                    print fColeccion
+                        #print("se crea")
                 
-                    colectores= Colectores(coleccion=fColeccion, colector=objeColector, orden=i)
-                    colectores.save()
-                    i+=1 
+                    colectores= Colectores.objects.create(coleccion=fColeccion, colector=objeColector, orden=i)
+                    #colectores.save()
+                    i+=1
+                    
             
             especimen = formEspecimen.save(commit = False)
             especimen.categoria=cateTaxonomica
