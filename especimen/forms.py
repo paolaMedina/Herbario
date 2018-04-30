@@ -1,7 +1,10 @@
 from django import forms
 from .models import Especimen
 
+from floppyforms import ClearableFileInput
 
+class ImageThumbnailFileInput(ClearableFileInput):
+    template_name = 'image_thumbnail.html'
 
 class EspecimenForm(forms.ModelForm):
 
@@ -31,7 +34,9 @@ class EspecimenForm(forms.ModelForm):
                 #'duplicado': forms.TextInput(attrs={'required':'required', 'class':'form-control col-md-7 col-xs-12', 'placeholder':'duplicado'}),
                 'lugar_duplicado': forms.TextInput(attrs={'required':'required', 'class':'form-control col-md-7 col-xs-12', 'placeholder':'lugar de duplicado'}),
                 'peligro' : forms.Select(attrs={'class': 'form-control col-sm-2'}),
-                'imagen' : forms.FileInput(),
+                'imagen' : ImageThumbnailFileInput,
+               
                
         } 
 
+ 

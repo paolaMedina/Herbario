@@ -19,7 +19,10 @@ from django.forms.formsets import formset_factory
 import psycopg2, psycopg2.extras
 
 def RegistrarEspecimen(request, pk=None):
-    arreglo=[]
+    
+    ColectoresFormSet = formset_factory(CientificoForm)
+    dicColectoresSecu=[]
+    
     #cargar datos en caso de ser edicion
     if pk:
         especimen = Especimen.objects.get(pk=pk)
@@ -30,13 +33,14 @@ def RegistrarEspecimen(request, pk=None):
         colectorppal=Cientifico.objects.get(pk=especimen.coleccion.colector_ppal.pk)
         determinadorObje=Cientifico.objects.get(pk=especimen.determinador.pk)
         cientificos= coleccionObje.colectores_secu.all()
+        mensaje_exito="Se edito exitosamente"
         
-        
+        #rrecorre cientificos, que es la query con los colectores secundarios y crea un diccionario con estos para pasarlo por initial al formset
         for cientifico in cientificos:
             x={'nombre_completo':cientifico.nombre_completo,'nombre_abreviado':cientifico.nombre_abreviado}
-            arreglo.append(x)
+            dicColectoresSecu.append(x)
         
-        #print arreglo
+        #print dicColectoresSecu
             
     else: 
         especimen = Especimen()
@@ -48,9 +52,10 @@ def RegistrarEspecimen(request, pk=None):
         colectoresObje=Colectores()
         determinadorObje= Cientifico()
         cientificos=Cientifico()
+        mensaje_exito='Se ha guardado exitosamente'
         
     
-    ColectoresFormSet = formset_factory(CientificoForm)
+    print especimen.imagen
 
     if request.method == 'POST':
         print ("solicitud post")
@@ -65,7 +70,7 @@ def RegistrarEspecimen(request, pk=None):
         #coleccion
         formColector= CientificoForm (request.POST,prefix="colector", instance= colectorppal)
         formColeccion = ColeccionForm(request.POST,instance=coleccionObje)
-        colectoresFormset = ColectoresFormSet(request.POST,initial=arreglo)
+        colectoresFormset = ColectoresFormSet(request.POST,initial=dicColectoresSecu)
         #especimen
         formDeterminador= CientificoForm (request.POST,prefix="determinador",instance=determinadorObje)
         formEspecimen = EspecimenForm(request.POST, request.FILES,instance=especimen)
@@ -102,7 +107,7 @@ def RegistrarEspecimen(request, pk=None):
             
             i=0# contador que maneja el orden en que se ingresen los colectores
             
-            coleccionObje.colectores_secu.clear()
+            coleccionObje.colectores_secu.clear()#limpia las instancias de colectores
             #print (colectoresFormset.as_table()) 
 
             for colector_form in colectoresFormset:
@@ -111,14 +116,12 @@ def RegistrarEspecimen(request, pk=None):
                     try :
                        objeColector = Cientifico.objects.get(nombre_completo=colector_form['nombre_completo'].value(), nombre_abreviado=colector_form['nombre_abreviado'].value())
                        #print("existe")
-                      
                     except Cientifico.DoesNotExist:
                         objeColector=Cientifico(nombre_completo=colector_form['nombre_completo'].value(), nombre_abreviado=colector_form['nombre_abreviado'].value())
                         objeColector.save()
                         #print("se crea")
                 
                     colectores= Colectores.objects.create(coleccion=fColeccion, colector=objeColector, orden=i)
-                    #colectores.save()
                     i+=1
                     
             
@@ -129,7 +132,7 @@ def RegistrarEspecimen(request, pk=None):
             especimen.save()
             print ("se envio")
             
-            messages.success(request, 'Se ha guardado exitosamente')
+            messages.success(request, mensaje_exito)
             #return HttpResponseRedirect(reverse_lazy('especimen:crear_especimen'))
             
         
@@ -140,7 +143,7 @@ def RegistrarEspecimen(request, pk=None):
         formCateTaxonomica= TaxonomiaForm(instance=categoriaTaxo)
         formColector= CientificoForm (prefix="colector", instance= colectorppal)
         formColeccion = ColeccionForm(instance=coleccionObje)
-        colectoresFormset = ColectoresFormSet(initial=arreglo)
+        colectoresFormset = ColectoresFormSet(initial=dicColectoresSecu)
         formEspecimen = EspecimenForm(instance=especimen)
         formDeterminador = CientificoForm (prefix="determinador",instance=determinadorObje)
         
@@ -168,7 +171,14 @@ def autocomplete(request):
         
 
 def ListarEspecimen(request):
-    especimen= Especimen.objects.all()
+    especimen= Especimen.objects.filter(visible=True)
     contexto = {'especimenes':especimen}
     return render(request,'especimen_listar.html', contexto )
         
+def EliminarEspecimen(request, pk):
+    especimen= Especimen.objects.get(pk=pk)
+    especimen.visible_set=False
+    #especimen.save()
+    response = {}
+    return HttpResponseRedirect(reverse_lazy('especimen:listar_especimen'))
+    return JsonResponse(response) 

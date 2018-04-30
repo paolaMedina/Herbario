@@ -65,6 +65,8 @@ Listar Especimen
                             
                             <td>
                               <a class="btn btn-primary" href="{% url 'especimen:editar_especimen' pk=especimen.pk %}">Editar</a>
+                              <a class="btn btn-primary" href="{% url 'especimen:eliminar_especimen' pk=especimen.pk %}">Eliminar</a>
+                              
                             </td>
                             
                         </tr>
@@ -108,7 +110,7 @@ Listar Especimen
                 responsive: true,
                 dom: '<"html5buttons"B>lTfgitp',
                 buttons: [
-                    { extend: 'copy'},
+                    {extend: 'copy'},
                     {extend: 'csv'},
                     {extend: 'excel', title: 'ExampleFile'},
                     {extend: 'pdf', title: 'ExampleFile'},

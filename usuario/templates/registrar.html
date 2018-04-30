@@ -1,0 +1,57 @@
+
+{% extends "base1.html" %}
+{% load static %}
+
+
+
+{% block titulo %}
+Registrar Usuario
+{% endblock %}
+
+{% block content %} 
+
+
+    
+    <div class="wrapper wrapper-content  animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5>Registro</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h2>
+                            Registar Usuario
+                        </h2>
+                            <form role="form" id="form" method="post">
+                                {% csrf_token %}
+                                {{form.as_p}}
+                                <div>
+                                    <button class="btn btn-sm btn-primary m-t-n-xs" type="submit"><strong>Guardar</strong></button>
+                                </div>
+                            </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+
+
+{% endblock %}
+
+{% block plugins %}
+<script src="{% static 'plantilla-backend/js/plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+<!-- Jquery Validate -->
+<script src="{% static 'plantilla-backend/js/plugins/validate/jquery.validate.min.js' %}"></script>
+
+<script>
+ $(document).ready(function(){
+
+     $("#form").validate({});
+});
+</script>
+
+
+{% endblock %}

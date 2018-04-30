@@ -137,12 +137,20 @@ Crear Especimen
                                     <label for={{formEspecimen.peligro.name}}>{{formEspecimen.peligro.label}} </label>
                                     {{formEspecimen.peligro}}
                                 </div>
-                                <!--imagen -->
                                 <div class="form-group">
-                                    <label for={{formEspecimen.imagen.name}} class="control-label col-md-3 col-sm-3 col-xs-12">{{formEspecimen.imagen.label}}</label>
+                                    <label for={{formEspecimen.imagen.name}} >{{formEspecimen.imagen.label}}</label>
                                     {{formEspecimen.imagen}}
                                 </div>
                             </div>
+                        
+                        <!--imagen -->
+                        
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                
+                                <img id="imgSalida" width="50%" height="40%" src="" />
+                            </div>
+                        </div>
                         </div>
                     </fieldset>
                     
@@ -294,7 +302,6 @@ Crear Especimen
          var charCode = (evt.which) ? evt.which : event.keyCode
          if (charCode > 31 && (charCode < 48 || charCode > 57))
             return false;
- 
          return true;
       }
 </script>
@@ -350,11 +357,12 @@ Crear Especimen
 
             }
         });
+        //dinamico tabla colectores secundarios
           $('.formset_row').formset({
             addText: 'add colector secundario',
             deleteText: 'remove'
         });
-        
+        //calenddario en los campos date
         $('#data_3 .input-group.date').datepicker({
                 startView: 2,
                 todayBtn: "linked",
@@ -363,7 +371,7 @@ Crear Especimen
                 autoclose: true
             });
             
-        
+        //autocompletado en los nombre de ceintificos
         $('.nombre-complete').on('keyup', function(){
         var value = $(this).val();
         $.ajax({
@@ -380,6 +388,29 @@ Crear Especimen
                 });       
             }});  
         });
+        
+        $(function() {
+          $('#id_imagen').change(function(e) {
+              addImage(e); 
+             });
+        
+             function addImage(e){
+              var file = e.target.files[0],
+              imageType = /image.*/;
+            
+              if (!file.type.match(imageType))
+               return;
+          
+              var reader = new FileReader();
+              reader.onload = fileOnload;
+              reader.readAsDataURL(file);
+             }
+          
+             function fileOnload(e) {
+              var result=e.target.result;
+              $('#imgSalida').attr("src",result);
+             }
+            });
         
         
         

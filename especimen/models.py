@@ -22,4 +22,5 @@ class Especimen (models.Model):
     lugar_duplicado = models.CharField(max_length=200)
     peligro = models.CharField(max_length=2, choices=DANGER_CHOICES, default='FP')
     imagen = models.ImageField(upload_to='fotografias/', null=True, blank=True)
+    visible= models.BooleanField(default=True)
    #id usuario-id geografico
