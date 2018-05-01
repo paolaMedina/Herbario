@@ -133,7 +133,7 @@ def RegistrarEspecimen(request, pk=None):
             print ("se envio")
             
             messages.success(request, mensaje_exito)
-            #return HttpResponseRedirect(reverse_lazy('especimen:crear_especimen'))
+            return HttpResponseRedirect(reverse_lazy('especimen:listar_especimen'))
             
         
     else:
