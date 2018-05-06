@@ -18,14 +18,15 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf import settings
 from .views import Dashboard
-
+from .views import Home
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', Dashboard, name = 'index'),
-    url(r'^especimen/', include('especimen.urls', namespace = 'especimen')),
+    url(r'^$', Home, name='inicio'),  
+    url(r'^dashboard', Dashboard, name = 'dashboard'),
+    url(r'^especimen/', include('especimen.urls', namespace = 'especimen')), 
     url(r'^usuario/', include('usuario.urls', namespace = 'usuario')),
-    #url para poder acceder a las imagenes de la carpeta media
+    #url permite acceder a las imagenes de la carpeta media
     url(r'^media/(?P<path>.*)$','django.views.static.serve',{'document_root':settings.MEDIA_ROOT,}),
 ]

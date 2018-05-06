@@ -8,6 +8,12 @@
 Registrar Usuario
 {% endblock %}
 
+
+{% block extrahead %}
+<!-- Text spinners style -->
+<link href="{% static 'plantilla-backend/css/plugins/textSpinners/spinners.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 <div class="row">
     <div class="col-lg-10">
@@ -17,7 +23,7 @@ Registrar Usuario
             </div>
             
             <div class="ibox-content">
-                <form method="post" class="form-horizontal">
+                <form id="form" method="post" class="form-horizontal">
                     {% csrf_token %}
                     
                     <div class="form-group">
@@ -35,19 +41,28 @@ Registrar Usuario
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for={{form.email.name}}>{{form.email.label}}</label>
                         <div class="col-sm-6">{{form.email}}</div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" for={{form.password1.name}}>{{form.password1.label}}</label>
-                        <div class="col-sm-6">{{form.password1}}</div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" for={{form.password2.name}}>{{form.password2.label}}</label>
-                        <div class="col-sm-6">{{form.password2}}</div>
-                    </div>
+                    </div >
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for={{form.rol.name}}>{{form.rol.label}}</label>
                         <div class="col-sm-6">{{form.rol}}</div>
                     </div>
+                    
+                    <div id="pwd-container1">
+                        <div class="form-group"  >
+                            <label class="col-sm-2 control-label" for={{form.password1.name}}>{{form.password1.label}}</label>
+                            <div class="col-sm-6">{{form.password1}}</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"></label>
+                            <div class="pwstrength_viewport_progress col-sm-6"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for={{form.password2.name}}>{{form.password2.label}}</label>
+                        <div class="col-sm-6">{{form.password2}}</div>
+                    </div>
+                    
                     <div class="form-group">
                         <div class="col-sm-6 col-sm-offset-7">
                             <button class="btn btn-white" type="submit">Cancel</button>
@@ -67,10 +82,42 @@ Registrar Usuario
 <script src="{% static 'plantilla-backend/js/plugins/jquery-ui/jquery-ui.min.js' %}"></script>
 <!-- Jquery Validate -->
 <script src="{% static 'plantilla-backend/js/plugins/validate/jquery.validate.min.js' %}"></script>
+<!-- Password meter -->
+<script src="{% static 'plantilla-backend/js/plugins/pwstrength/pwstrength-bootstrap.min.js' %}"></script>
+<script src="{% static 'plantilla-backend/js/plugins/pwstrength/zxcvbn.js' %}"></script>
 
 <script>
  $(document).ready(function(){
-     form.validate();
+     
+     var options1 = {};
+            options1.ui = {
+                container: "#pwd-container1",
+                showVerdictsInsideProgressBar: true,
+                viewports: {
+                    progress: ".pwstrength_viewport_progress"
+                }
+            };
+            options1.common = {
+                debug: false,
+            };
+            $('.example1').pwstrength(options1);
+     
+     //regex para validar correo
+     $.validator.addMethod('betterEmail', function (value, element) {
+            return this.optional(element) || /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value);
+        }, "Please enter a valid email address.");
+        
+     $("#form").validate({
+         rules: {
+             email:{
+                 betterEmail: true
+             },
+             password2:{
+                equalTo: "#password"
+                 
+             },
+         }
+     });
 
 });
 </script>

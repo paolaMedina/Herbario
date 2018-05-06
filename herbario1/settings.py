@@ -137,7 +137,19 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'staticbase'),]
-
+#para el manejo de las imagenes
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
+#permite enviar mensajes de alerta al usuario
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+#redirecciona a la pantalla de principal en caso que un usuario queira acceder a una url portegida sin estar logueado
+LOGIN_URL = '/'
+
+#para el envio de mensajes
+EMAIL_USE_TLS="true"
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT=25
+EMAIL_HOST_USER='angiepmc93@gmail.com'
+EMAIL_HOST_PASSWORD='paola2905'
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'

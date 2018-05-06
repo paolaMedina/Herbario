@@ -18,24 +18,8 @@ Listar Especimen
                 <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>Basic Data Tables example with responsive plugin</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="fa fa-wrench"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-user">
-                                <li><a href="#">Config option 1</a>
-                                </li>
-                                <li><a href="#">Config option 2</a>
-                                </li>
-                            </ul>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
+                        <h5>Lista de especimenes creados</h5>
+                        
                     </div>
                     <div class="ibox-content">
 
@@ -64,8 +48,9 @@ Listar Especimen
                             <td>{{especimen.coleccion.colector_ppal.nombre_completo}}</td>
                             
                             <td>
-                              <a class="btn btn-primary" href="{% url 'especimen:editar_especimen' pk=especimen.pk %}">Editar</a>
-                              <a class="btn btn-primary" href="{% url 'especimen:eliminar_especimen' pk=especimen.pk %}">Eliminar</a>
+                              <a class="btn btn-primary" href="{% url 'especimen:editar_especimen' pk=especimen.pk %}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></a>
+                              <a class="btn btn-danger" href="{% url 'especimen:eliminar_especimen' pk=especimen.pk %}"onclick="return confirm('Desea eliminar el registro {{especimen.num_registro}}?')"
+                              ><span class="glyphicon glyphicon-trash" aria-hidden="true"></a>
                               
                             </td>
                             

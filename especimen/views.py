@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.core.urlresolvers import reverse_lazy
 from django.contrib import messages
-from django.shortcuts import render, redirect
 from django.shortcuts import render, HttpResponseRedirect
-from django.http import JsonResponse
+from django.forms import ModelForm, inlineformset_factory
+from django.forms.formsets import formset_factory
 from .models import  Especimen
 from cientifico.models import Cientifico
 from cientifico.forms import CientificoForm
@@ -12,12 +12,10 @@ from coleccion.forms import ColeccionForm,ColectoresForm
 from categoriaTaxonomica.models import CategoriaTaxonomica
 from categoriaTaxonomica.forms import TaxonomiaForm
 from .forms import EspecimenForm
-from django.forms import ModelForm, inlineformset_factory
-from django.forms.formsets import formset_factory
+from django.contrib.auth.decorators  import  login_required
 
 
-import psycopg2, psycopg2.extras
-
+@login_required
 def RegistrarEspecimen(request, pk=None):
     
     ColectoresFormSet = formset_factory(CientificoForm)
@@ -34,6 +32,7 @@ def RegistrarEspecimen(request, pk=None):
         determinadorObje=Cientifico.objects.get(pk=especimen.determinador.pk)
         cientificos= coleccionObje.colectores_secu.all()
         mensaje_exito="Se edito exitosamente"
+        viewsRedirect='especimen:listar_especimen'
         
         #rrecorre cientificos, que es la query con los colectores secundarios y crea un diccionario con estos para pasarlo por initial al formset
         for cientifico in cientificos:
@@ -53,6 +52,7 @@ def RegistrarEspecimen(request, pk=None):
         determinadorObje= Cientifico()
         cientificos=Cientifico()
         mensaje_exito='Se ha guardado exitosamente'
+        viewsRedirect='especimen:crear_especimen'
         
     
     print especimen.imagen
@@ -133,7 +133,7 @@ def RegistrarEspecimen(request, pk=None):
             print ("se envio")
             
             messages.success(request, mensaje_exito)
-            return HttpResponseRedirect(reverse_lazy('especimen:listar_especimen'))
+            return HttpResponseRedirect(reverse_lazy(viewsRedirect))
             
         
     else:
@@ -170,15 +170,16 @@ def autocomplete(request):
         return JsonResponse(data) 
         
 
+@login_required
 def ListarEspecimen(request):
     especimen= Especimen.objects.filter(visible=True)
     contexto = {'especimenes':especimen}
     return render(request,'especimen_listar.html', contexto )
-        
+    
+@login_required   
 def EliminarEspecimen(request, pk):
     especimen= Especimen.objects.get(pk=pk)
     especimen.visible_set=False
     #especimen.save()
     response = {}
     return HttpResponseRedirect(reverse_lazy('especimen:listar_especimen'))
-    return JsonResponse(response) 
