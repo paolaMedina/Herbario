@@ -1,7 +1,7 @@
-from django.conf.urls import url
-from django.contrib.auth.views import logout
-
+from django.conf.urls import url, include
+from django.contrib.auth.views import logout, password_reset, password_reset_done, password_reset_confirm, password_reset_complete
 from .views import RegistroUsuario, EditarUsuario, ListarUsuarios,EliminarUsuario, Login
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url(r'^registrar', RegistroUsuario.as_view(), name='registrar_usuario'),
@@ -12,6 +12,6 @@ urlpatterns = [
     #kwargs={'next_page': '/'} ->redirecciona a la url raiz  
     url(r'^salir$', logout, name="salir", kwargs={'next_page': '/'}),
     
-    ]
     
+    ]    
     

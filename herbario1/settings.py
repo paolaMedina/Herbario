@@ -147,9 +147,9 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 LOGIN_URL = '/'
 
 #para el envio de mensajes
-EMAIL_USE_TLS="true"
-EMAIL_HOST='smtp.gmail.com'
-EMAIL_PORT=25
-EMAIL_HOST_USER='angiepmc93@gmail.com'
-EMAIL_HOST_PASSWORD='paola2905'
-EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'angiepmc93@gmail.com'
+EMAIL_HOST_PASSWORD = 'paola2905'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

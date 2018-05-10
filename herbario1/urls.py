@@ -19,6 +19,8 @@ from django.contrib import admin
 from django.conf import settings
 from .views import Dashboard
 from .views import Home
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import logout, password_reset, password_reset_done, password_reset_confirm, password_reset_complete
 
 
 urlpatterns = [
@@ -29,4 +31,13 @@ urlpatterns = [
     url(r'^usuario/', include('usuario.urls', namespace = 'usuario')),
     #url permite acceder a las imagenes de la carpeta media
     url(r'^media/(?P<path>.*)$','django.views.static.serve',{'document_root':settings.MEDIA_ROOT,}),
+    
+    
+    url(r'^reset/password_reset/$',password_reset,{'template_name':'password_reset.html',
+    'email_template_name':'password_reset_email.html'},name="password_reset"),
+    url(r'^password_reset_done/$', password_reset_done, {'template_name':'password_reset_done.html'},name="password_reset_done"),
+   
+    url(r'^reset/(?P<uidb64>[0-94-Za-z_\-]+)/(?P<token>.+)/$',password_reset_confirm,{'template_name':'password_reset_confirm.html'},name="password_reset_confirm"), 
+    url(r'^reset/done',password_reset_complete,{'template_name':'password_reset_complete.html'},name="password_reset_complete"),
+ 
 ]

@@ -13,6 +13,7 @@ monitor='monitor'
 grupos = ((director, 'Director'), (investigador, 'Investigador'), (curador, 'Curador'), (monitor, 'Monitor'))
 
 class Usuario(User):
+    identificacion= models.IntegerField()
     rol=models.CharField(max_length=10, choices=grupos, default='monitor')
     
     

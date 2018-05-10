@@ -23,10 +23,12 @@ class RegistroUsuario(LoginRequiredMixin,CreateView):
     form_class = RegistroForm
     template_name = "registrar.html"
     success_url=reverse_lazy("usuario:registrar_usuario")
-    
+
     
     def form_valid(self, form):
         usuario= form.instance
+        contra= usuario.first_name[0]
+        print contra
         self.object = form.save()
         if (usuario.rol=='director'):
             grupo_director, grupo_director_creado = Group.objects.get_or_create(name='Director')
