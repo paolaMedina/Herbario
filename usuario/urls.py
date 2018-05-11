@@ -12,6 +12,5 @@ urlpatterns = [
     #kwargs={'next_page': '/'} ->redirecciona a la url raiz  
     url(r'^salir$', logout, name="salir", kwargs={'next_page': '/'}),
     
-    
     ]    
     

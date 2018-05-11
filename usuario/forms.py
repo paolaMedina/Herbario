@@ -6,25 +6,33 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
 from .models import Usuario
 
 
-class RegistroForm(UserCreationForm):
+
+class RegistroForm(forms.ModelForm):
     username=forms.CharField(required=True,label='Nombre Usuario',widget=forms.TextInput(attrs={'class':'form-control', 'required':'required'}))
     first_name = forms.CharField(required=True, label='Nombres',widget=forms.TextInput(attrs={'class':'form-control', 'required':'required'}))
     last_name = forms.CharField(required=True, label='Apellidos',widget=forms.TextInput(attrs={'class':'form-control', 'required':'required'}))
     email = forms.EmailField(required=True, label= 'Correo Electronico',widget=forms.EmailInput(attrs={'type':'email', 'class':'form-control', 'required':'required'}))
-    password1 = forms.CharField(required=True, label='Contrasena',widget=forms.PasswordInput(attrs={'class':'form-control example1','id':"password" ,'required':'required'}))
-    password2 = forms.CharField(required=True, label='Confirmacion contrasena',widget=forms.PasswordInput(attrs={'class':'form-control','id':"password_again", 'required':'required'}))
+    #password1 = forms.CharField(required=True, label='Contrasena',widget=forms.PasswordInput(attrs={'class':'form-control example1','id':"password" ,'required':'required'}))
+    #password2 = forms.CharField(required=True, label='Confirmacion contrasena',widget=forms.PasswordInput(attrs={'class':'form-control','id':"password_again", 'required':'required'}))
  
     class Meta:
         model = Usuario
-        fields = ('username','first_name', 'last_name', 'email', 'password1', 'password2','rol','identificacion')
+        fields = ('username','first_name', 'last_name', 'email','rol','identificacion')
         
         widgets = {
             'rol': forms.Select(attrs={'class': 'form-control col-sm-2'}),
             'identificacion': forms.TextInput(attrs={ 'onkeypress':'return isNumberKey(event)','required':'required', 'class':'form-control col-md-7 col-xs-12'}),
            }
            
-
-
+    #clean email field
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        try:
+            User._default_manager.get(email=email)
+        except User.DoesNotExist:
+            return email
+        raise forms.ValidationError('email duplicado')
+   
 
 class FormularioLogin(AuthenticationForm):
 

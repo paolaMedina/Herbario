@@ -12,9 +12,11 @@ from django.views.generic import ListView,CreateView,UpdateView,DeleteView
 from .forms import RegistroForm,FormularioLogin
 from .models import Usuario
 from django.contrib.auth.models import Group
-
+from django.core.mail import send_mail
+import hashlib, datetime, random
+from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.shortcuts import get_object_or_404, render_to_response
 # Create your views here.
 
 
@@ -27,9 +29,22 @@ class RegistroUsuario(LoginRequiredMixin,CreateView):
     
     def form_valid(self, form):
         usuario= form.instance
-        contra= usuario.first_name[0]
-        print contra
-        self.object = form.save()
+        contra= usuario.first_name[0].upper()+str(usuario.identificacion)+usuario.last_name[0].upper()
+        usuario.password1=contra
+        
+        email = form.cleaned_data['email']
+        
+        # Enviar un email de confirmacion
+        email_subject = 'Account confirmation'
+        email_body = "Hola %s, Tu contrasena es %s puedes ingresar al siguiente link para loguearte: https://herbario1-paolamedina.c9users.io/usuario/" % (usuario.username,usuario.password1)
+        
+        send_mail(email_subject, email_body, 'angiepmc93@gmail.com',
+            [email], fail_silently=False)
+        
+        self.object = form.save(commit=False)
+        self.object.set_password(contra)
+        self.object.save()
+        
         if (usuario.rol=='director'):
             grupo_director, grupo_director_creado = Group.objects.get_or_create(name='Director')
             grupo_director.user_set.add(self.object)
@@ -42,15 +57,17 @@ class RegistroUsuario(LoginRequiredMixin,CreateView):
         else:
             grupo_monitor, grupo_monitor_creado = Group.objects.get_or_create(name='Monitor')
             grupo_monitor.user_set.add(self.object)
-        
+            
         messages.success(self.request, 'Se agrego el usuario con EXITO')
         print "exito"
         return super(RegistroUsuario, self).form_valid(form)
     
     def form_invalid(self, form):
         messages.error(self.request, 'hay uno o mas campos invalidos. Por favor verifique de nuevo')
-        print "malo"
+        print form
         return  super(RegistroUsuario, self).form_invalid(form)
+        
+
         
          
 class ListarUsuarios(LoginRequiredMixin,ListView):
