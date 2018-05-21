@@ -13,9 +13,12 @@ from categoriaTaxonomica.models import CategoriaTaxonomica
 from categoriaTaxonomica.forms import TaxonomiaForm
 from .forms import EspecimenForm
 from django.contrib.auth.decorators  import  login_required
+from rolepermissions.decorators import has_role_decorator
+
 
 
 @login_required
+@has_role_decorator(['monitor', 'curador'])
 def RegistrarEspecimen(request, pk=None):
     
     ColectoresFormSet = formset_factory(CientificoForm)
@@ -167,10 +170,10 @@ def autocomplete(request):
         data = {
             'list': list,
         }
-        return JsonResponse(data) 
         
 
 @login_required
+@has_role_decorator(['monitor', 'curador'])
 def ListarEspecimen(request):
     especimen= Especimen.objects.filter(visible=True)
     contexto = {'especimenes':especimen}

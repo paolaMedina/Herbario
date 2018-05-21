@@ -7,23 +7,17 @@ from datetime import datetime
  
 # Create your models here.
 director='director'
-investigador = 'investigador'
+investigador='investigador'
 curador= 'curador'
 monitor='monitor'
 
-grupos = ((director, 'Director'), (investigador, 'Investigador'), (curador, 'Curador'), (monitor, 'Monitor'))
+grupos = ((monitor, 'Monitor'),(investigador, 'Investigador'), (curador, 'Curador'), (director, 'Director'))
+
 
 class Usuario(User):
     identificacion= models.IntegerField()
-    rol=models.CharField(max_length=10, choices=grupos, default='monitor')
-    activation_key = models.CharField(max_length=40, blank=True)
-    key_expires = models.DateTimeField(default=datetime.now)
+    rol=models.CharField(max_length=12, choices=grupos, default='monitor')
 
-    def __str__(self):
-        return self.user.username
-
-    class Meta:
-        verbose_name_plural=u'Perfiles de Usuario'
     
     
 

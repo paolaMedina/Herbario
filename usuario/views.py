@@ -2,33 +2,40 @@
 from django.views.generic.edit import FormView
 from django.http.response import HttpResponseRedirect
 from django.contrib.auth import login
-from django.shortcuts import render
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
-from django.views.generic import CreateView
+from django.shortcuts import render,get_object_or_404, render_to_response
 from django.core.urlresolvers import reverse_lazy
 from django.contrib import messages
 from django.views.generic import ListView,CreateView,UpdateView,DeleteView
-from .forms import RegistroForm,FormularioLogin
-from .models import Usuario
 from django.contrib.auth.models import Group
 from django.core.mail import send_mail
 import hashlib, datetime, random
 from django.utils import timezone
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, render_to_response
-# Create your views here.
+from .forms import RegistroForm,FormularioLogin
+from .models import Usuario
+from herbario1.utilities import *
 
 
-class RegistroUsuario(LoginRequiredMixin,CreateView):
-    model = Usuario
-    form_class = RegistroForm
+class RegistroUsuario(CreateView):
     template_name = "registrar.html"
     success_url=reverse_lazy("usuario:registrar_usuario")
-
+    model = Usuario
+    form_class = RegistroForm
+             
+    
+    @verificar_rol(roles_permitidos=["curador", "director"])
+    def dispatch(self, request, *args, **kwargs):
+        return super(RegistroUsuario, self).dispatch(request, *args, **kwargs)
+        
+    #se envia el grupo del usuario al formulario
+    def get_form_kwargs(self):
+        kwargs = super(RegistroUsuario, self).get_form_kwargs()
+        return dict(kwargs, groups=self.request.user.groups.values_list('name', flat=True))
+        
+        
     
     def form_valid(self, form):
         usuario= form.instance
+        #contrasena con la inicial del nopmbre en mayuscula, la identificacion y la inicial del apellido en mayuscula
         contra= usuario.first_name[0].upper()+str(usuario.identificacion)+usuario.last_name[0].upper()
         usuario.password1=contra
         
@@ -36,7 +43,7 @@ class RegistroUsuario(LoginRequiredMixin,CreateView):
         
         # Enviar un email de confirmacion
         email_subject = 'Account confirmation'
-        email_body = "Hola %s, Tu contrasena es %s puedes ingresar al siguiente link para loguearte: https://herbario1-paolamedina.c9users.io/usuario/" % (usuario.username,usuario.password1)
+        email_body = "Buenas acabas de ser registrado en la pagina del Herbario CUVC de la Universidad del valle. Tus datos de registro son: \n Usuario:%s \n contrasena es %s \n puedes ingresar al siguiente link para loguearte: https://herbario1-paolamedina.c9users.io/usuario/" % (usuario.username,usuario.password1)
         
         send_mail(email_subject, email_body, 'angiepmc93@gmail.com',
             [email], fail_silently=False)
@@ -45,18 +52,20 @@ class RegistroUsuario(LoginRequiredMixin,CreateView):
         self.object.set_password(contra)
         self.object.save()
         
+        #agrupar usuario depndiendo su rol
         if (usuario.rol=='director'):
-            grupo_director, grupo_director_creado = Group.objects.get_or_create(name='Director')
+            grupo_director, grupo_director_creado = Group.objects.get_or_create(name='director')
             grupo_director.user_set.add(self.object)
         elif (usuario.rol=='investigador'):
-            grupo_investigador, grupo_investigador_creado = Group.objects.get_or_create(name='Investigador')
+            grupo_investigador, grupo_investigador_creado = Group.objects.get_or_create(name='investigador')
             grupo_investigador.user_set.add(self.object)
         elif (usuario.rol=='curador'):
-            grupo_curador, grupo_curador_creado = Group.objects.get_or_create(name='Curador')
+            grupo_curador, grupo_curador_creado = Group.objects.get_or_create(name='curador')
             grupo_curador.user_set.add(self.object)
         else:
-            grupo_monitor, grupo_monitor_creado = Group.objects.get_or_create(name='Monitor')
+            grupo_monitor, grupo_monitor_creado = Group.objects.get_or_create(name='monitor')
             grupo_monitor.user_set.add(self.object)
+            
             
         messages.success(self.request, 'Se agrego el usuario con EXITO')
         print "exito"
@@ -64,27 +73,48 @@ class RegistroUsuario(LoginRequiredMixin,CreateView):
     
     def form_invalid(self, form):
         messages.error(self.request, 'hay uno o mas campos invalidos. Por favor verifique de nuevo')
-        print form
+        print form.errors
         return  super(RegistroUsuario, self).form_invalid(form)
         
 
         
          
-class ListarUsuarios(LoginRequiredMixin,ListView):
+class ListarUsuarios(ListView):
+    
+    @verificar_rol(roles_permitidos=["curador", "director"])
+    def dispatch(self, request, *args, **kwargs):
+        return super(ListarUsuarios, self).dispatch(request, *args, **kwargs)
+        
     model=Usuario
     template_name='listar.html'
     
 
-class EditarUsuario(LoginRequiredMixin,UpdateView):
-     model = Usuario
-     form_class = RegistroForm
-     template_name = "registrar.html"
-     success_url=reverse_lazy("usuario:registrar_usuario")
+class EditarUsuario(UpdateView):
+    
+    @verificar_rol(roles_permitidos=["curador", "director"])
+    def dispatch(self, request, *args, **kwargs):
+        return super(EditarUsuario, self).dispatch(request, *args, **kwargs)
+    
+    model = Usuario
+    form_class = RegistroForm
+    template_name = "registrar.html"
+    success_url=reverse_lazy("usuario:registrar_usuario")
   
   
-class EliminarUsuario(LoginRequiredMixin,DeleteView):
+class EliminarUsuario(DeleteView):
+    
+    @verificar_rol(roles_permitidos=["curador", "director"])
+    def dispatch(self, request, *args, **kwargs):
+        return super(EliminarUsuario, self).dispatch(request, *args, **kwargs)
+        
     model = Usuario
     success_url=reverse_lazy("usuario:listar_usuario")
+    success_message = 'Se elimino el usuario con EXITO'
+    
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(EliminarUsuario, self).delete(request, *args, **kwargs) 
+        
     #funcion para no ingresar template de confirmacion delete
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)

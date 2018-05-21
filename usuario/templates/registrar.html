@@ -1,7 +1,7 @@
 
 {% extends "base1.html" %}
 {% load static %}
-
+{% load bootstrap3 %}
 
 
 {% block titulo %}
@@ -46,8 +46,8 @@ Registrar Usuario
                     
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for={{form.email.name}}>{{form.email.label}}</label>
-                        <div class="col-sm-6">{{form.email}}</div>
-                        {{form.errors.values.1}} 
+                        <div class="col-sm-6">{% bootstrap_field form.email show_label=False  placeholder='' field_class='col-sm-12' %}</div>
+                        
                     </div >
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for={{form.rol.name}}>{{form.rol.label}}</label>
@@ -78,6 +78,8 @@ Registrar Usuario
 <script src="{% static 'plantilla-backend/js/plugins/pwstrength/pwstrength-bootstrap.min.js' %}"></script>
 <script src="{% static 'plantilla-backend/js/plugins/pwstrength/zxcvbn.js' %}"></script>
 
+
+
 <!-- validar solo numeros en el campo de numero de registro -->
 <script language=Javascript>
       function isNumberKey(evt)
@@ -89,9 +91,15 @@ Registrar Usuario
       }
 </script>
 
-
 <script>
  $(document).ready(function(){
+     jQuery(function ($) {
+         $('form').bind('submit', function () {
+             $(this).find(':id_rol').prop('disabled', false);
+             
+         });
+         
+     });
      
      var options1 = {};
             options1.ui = {
@@ -110,17 +118,22 @@ Registrar Usuario
      $.validator.addMethod('betterEmail', function (value, element) {
             return this.optional(element) || /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value);
         }, "Please enter a valid email address.");
-        
+    
      $("#form").validate({
+         
+         
          rules: {
              email:{
-                 betterEmail: true
-             },
+                 betterEmail: true,
+             }, 
              password2:{
                 equalTo: "#password"
                  
              },
+             
+             
          }
+         
      });
 
 });
