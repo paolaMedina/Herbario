@@ -14,7 +14,7 @@ class RegistroForm(forms.ModelForm):
     def __init__(self, groups, *args, **kwargs):
         super(RegistroForm, self).__init__(*args, **kwargs)
         if groups[0]=='curador':  
-            self.fields['rol'].widget.attrs['readonly'] = True
+            self.fields['rol'].widget.attrs['disabled'] = True
         else:
            self.fields['rol'].widget.attrs['disabled'] = False
     

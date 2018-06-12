@@ -92,14 +92,15 @@ Registrar Usuario
 </script>
 
 <script>
- $(document).ready(function(){
+   $(document).ready(function(){
      jQuery(function ($) {
-         $('form').bind('submit', function () {
-             $(this).find(':id_rol').prop('disabled', false);
+        jQuery('form').bind('submit', function() {
+            jQuery(this).find(':disabled').removeAttr('disabled');
              
          });
          
      });
+     
      
      var options1 = {};
             options1.ui = {
