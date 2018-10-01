@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'especimen',
     'ubicacion',
     'usuario',
+    'cargarArchivo',
     'easy_thumbnails',#para permitir que aparezca imagen en el formulario de especimen
     'crispy_forms',#para permitir que aparezca imagen ene l formulario de especimen
     'bootstrap3',#permite tags de boostrap
@@ -157,6 +158,6 @@ EMAIL_HOST_USER = 'angiepmc93@gmail.com'
 EMAIL_HOST_PASSWORD = 'paola2905'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-
-ROLEPERMISSIONS_MODULE = 'herbario1.roles' #reconozca el archivo roles.py
+#reconozca el archivo roles.py
+ROLEPERMISSIONS_MODULE = 'herbario1.roles' 
 ROLEPERMISSIONS_REDIRECT_TO_LOGIN = True

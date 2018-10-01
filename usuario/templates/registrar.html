@@ -58,7 +58,7 @@ Registrar Usuario
                     <div class="form-group">
                         <div class="col-sm-6 col-sm-offset-7">
                             <button class="btn btn-white" type="submit">Cancel</button>
-                            <button class="btn btn-primary" type="submit">Guardar</button>
+                            <button  id="guardar" class="btn btn-primary" type="submit">Guardar</button>
                         </div>
                     </div>
                     
@@ -93,13 +93,19 @@ Registrar Usuario
 
 <script>
    $(document).ready(function(){
-     jQuery(function ($) {
-        jQuery('form').bind('submit', function() {
-            jQuery(this).find(':disabled').removeAttr('disabled');
-             
-         });
-         
-     });
+     
+     $('#guardar').click(function(){
+         jQuery(this).find(':disabled').removeAttr('disabled');
+         var validado = $("#form").valid();
+         if(!validado) {
+             $("id_rol").attr('disabled','disabled');
+            //alert('invalido');
+         }
+        else {
+            jQuery('form').bind('submit', function() {
+            jQuery(this).find(':disabled').removeAttr('disabled');});
+        }  
+      });
      
      
      var options1 = {};

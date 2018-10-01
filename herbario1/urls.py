@@ -29,6 +29,9 @@ urlpatterns = [
     url(r'^dashboard', Dashboard, name = 'dashboard'),
     url(r'^especimen/', include('especimen.urls', namespace = 'especimen')), 
     url(r'^usuario/', include('usuario.urls', namespace = 'usuario')),
+    url(r'^archivo/', include('cargarArchivo.urls', namespace = 'archivo')),
+    
+    
     #url permite acceder a las imagenes de la carpeta media
     url(r'^media/(?P<path>.*)$','django.views.static.serve',{'document_root':settings.MEDIA_ROOT,}),
     

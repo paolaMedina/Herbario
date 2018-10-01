@@ -18,7 +18,7 @@ from rolepermissions.decorators import has_role_decorator
 
 
 @login_required
-@has_role_decorator(['monitor', 'curador'])
+@has_role_decorator(['monitor', 'curador','investigador'])
 def RegistrarEspecimen(request, pk=None):
     
     ColectoresFormSet = formset_factory(CientificoForm)
@@ -172,13 +172,19 @@ def autocomplete(request):
         }
         
 
+
+#funcion que lista los especimenes de la base de datos
 @login_required
-@has_role_decorator(['monitor', 'curador'])
 def ListarEspecimen(request):
+    
+        
     especimen= Especimen.objects.filter(visible=True)
     contexto = {'especimenes':especimen}
     return render(request,'especimen_listar.html', contexto )
     
+    
+
+#funcion que elimina un especimen dado    
 @login_required   
 def EliminarEspecimen(request, pk):
     especimen= Especimen.objects.get(pk=pk)

@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.views.generic import ListView,CreateView,UpdateView,DeleteView
 from django.contrib.auth.models import Group
 from django.core.mail import send_mail
+from django.contrib.messages.views import SuccessMessageMixin
 import hashlib, datetime, random
 from django.utils import timezone
 from .forms import RegistroForm,FormularioLogin
@@ -26,7 +27,7 @@ class RegistroUsuario(CreateView):
     def dispatch(self, request, *args, **kwargs):
         return super(RegistroUsuario, self).dispatch(request, *args, **kwargs)
         
-    #se envia el grupo del usuario al formulario
+    #se envia el grupo del usuario al formulario, para poder verificar si es un curador y hacer el respectivo cambio 
     def get_form_kwargs(self):
         kwargs = super(RegistroUsuario, self).get_form_kwargs()
         return dict(kwargs, groups=self.request.user.groups.values_list('name', flat=True))
@@ -35,7 +36,7 @@ class RegistroUsuario(CreateView):
     
     def form_valid(self, form):
         usuario= form.instance
-        #contrasena con la inicial del nopmbre en mayuscula, la identificacion y la inicial del apellido en mayuscula
+        #contrasena con la inicial del nombre en mayuscula, la identificacion y la inicial del apellido en mayuscula
         contra= usuario.first_name[0].upper()+str(usuario.identificacion)+usuario.last_name[0].upper()
         usuario.password1=contra
         
@@ -80,20 +81,34 @@ class RegistroUsuario(CreateView):
         
          
 class ListarUsuarios(ListView):
-    
-    @verificar_rol(roles_permitidos=["curador", "director"])
+    print "usuario"
+    @verificar_rol(roles_permitidos=["director","curador"])
     def dispatch(self, request, *args, **kwargs):
         return super(ListarUsuarios, self).dispatch(request, *args, **kwargs)
         
     model=Usuario
     template_name='listar.html'
     
+    
 
+def ListarMonitores(request):
+    
+    monitor= Usuario.objects.filter(rol='monitor')
+    contexto = {'monitores':monitor}
+    return render(request,'listarMonitores.html', contexto )
+    
+    
 class EditarUsuario(UpdateView):
     
     @verificar_rol(roles_permitidos=["curador", "director"])
     def dispatch(self, request, *args, **kwargs):
         return super(EditarUsuario, self).dispatch(request, *args, **kwargs)
+        
+        
+    #se envia el grupo del usuario al formulario, para poder verificar si es un curador y hacer el respectivo cambio 
+    def get_form_kwargs(self):
+        kwargs = super(EditarUsuario, self).get_form_kwargs()
+        return dict(kwargs, groups=self.request.user.groups.values_list('name', flat=True))
     
     model = Usuario
     form_class = RegistroForm

@@ -1,0 +1,6 @@
+django==1.11
+django-datetime-widget==0.9.3
+django-bootstrap3==10.0.1 
+django-floppyforms==1.7.0 
+django-crispy-forms==1.7.2
+easy-thumbnails==2.5
