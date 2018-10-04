@@ -1,0 +1,292 @@
+
+{% extends "base1.html" %}
+{% load static %}
+
+
+
+{% block titulo %}
+Crear Especimen
+{% endblock %}
+
+{% block extrahead %}
+<link href="{% static 'plantilla-backend/css/plugins/iCheck/custom.css' %}" rel="stylesheet">
+<link href="{% static 'plantilla-backend/css/plugins/steps/jquery.steps.css' %}" rel="stylesheet">
+<link href="{% static 'plantilla-backend/css/plugins/datapicker/datepicker3.css' %}" rel="stylesheet">
+<link href="{% static 'style.css' %}" rel="stylesheet">
+<!-- Toastr style -->
+<link href="{% static 'plantilla-backend/css/plugins/toastr/toastr.min.css' %}" rel="stylesheet">
+<!-- query-ui style -->
+<link href="{% static 'plantilla-backend/js/plugins/jquery-ui/jquery-ui.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block content %} 
+ <div class="row">
+    <div class="col-lg-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Actualizar  Especimen</h5>
+            </div>
+            
+            <div class="ibox-content">
+                
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Número de registro</label>
+                    <div class="col-sm-3" id='input_search'>
+                        <input type="search" id='registro' class="form-control">
+                    </div>
+                     <button class="btn btn-info col-sm-1" id='search' ><span class="glyphicon glyphicon-search" aria-hidden="true"></button>
+                </div>
+                <br>
+                <hr/>
+                
+                 
+                <form method="post" class="form-horizontal">
+                    {% csrf_token %}
+                    <!-- genero-taxonomia -->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for={{formCateTaxonomica.genero.name}}>{{formCateTaxonomica.genero.label}}</label>
+                        <div class="col-sm-6">
+                            {{formCateTaxonomica.genero}}
+                        </div>
+                    </div>
+                    <!-- familia-taxonomia -->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for={{formCateTaxonomica.familia.name}}>{{formCateTaxonomica.familia.label}}</label>
+                        <div class="col-sm-6">
+                            {{formCateTaxonomica.familia}}
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!-- determinador -->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Determinador</label>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-md-9">{{formDeterminador.nombre_completo}} <span class="help-block m-b-none">Nombre completo</span></div>
+                                <div class="col-md-3">{{formDeterminador.nombre_abreviado}} <span class="help-block m-b-none">Abreviatura</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- fecha_det-taxonomia -->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for={{formCateTaxonomica.fecha_det.name}}>{{formCateTaxonomica.fecha_det.label}}</label>
+                        <div class="col-sm-6" id="data_3">
+                            <div class="input-group date m-b">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>{{formCateTaxonomica.fecha_det}}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="hr-line-dashed"></div>
+                    <!-- epiteto_especifico-taxonomia -->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for={{formCateTaxonomica.epiteto_especifico.name}}>{{formCateTaxonomica.epiteto_especifico.label}}</label>
+                        <div class="col-sm-6">
+                            {{formCateTaxonomica.epiteto_especifico}}
+                        </div>
+                    </div>
+                    <!-- autor1 -->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Autor 1</label>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-md-9">{{formAutor1.nombre_completo}} <span class="help-block m-b-none">Nombre completo</span></div>
+                                <div class="col-md-3">{{formAutor1.nombre_abreviado}} <span class="help-block m-b-none">Abreviatura</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!-- epiteto_infraespecifico-->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for={{formCateTaxonomica.epiteto_infraespecifico.name}}>{{formCateTaxonomica.epiteto_infraespecifico.label}}</label>
+                        <div class="col-sm-6">
+                            {{formCateTaxonomica.epiteto_infraespecifico}}
+                        </div>
+                    </div>
+                    <!-- autor2 -->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Autor 2</label>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-md-9">{{formAutor2.nombre_completo}} <span class="help-block m-b-none">Nombre completo</span></div>
+                                <div class="col-md-3">{{formAutor2.nombre_abreviado}} <span class="help-block m-b-none">Abreviatura</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <button class="btn btn-white" type="submit">Cancelar</button>
+                            <button class="btn btn-primary" type="submit">Guardar cambios</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+     </div>
+</div>
+{% endblock %}
+       
+
+{% block plugins %}
+
+<!-- Image cropper -->
+<script src="{% static 'plantilla-backend/js/plugins/cropper/cropper.min.js' %}"></script>
+<!-- Tags Input -->
+<script src="{% static 'plantilla-backend/js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js' %}"></script>
+<!-- formset -->
+<script src="{% static 'formset/jquery.formset.js' %}"></script>
+<!-- Steps -->
+<script src="{% static 'plantilla-backend/js/plugins/steps/jquery.steps.min.js' %}"></script>
+<!-- Jquery Validate -->
+<script src="{% static 'plantilla-backend/js/plugins/validate/jquery.validate.min.js' %}"></script>
+<!-- Toastr -->
+<script src="{% static 'plantilla-backend/js/plugins/toastr/toastr.min.js' %}"></script>
+<!-- jquery-ui -->
+<script src="{% static 'plantilla-backend/js/plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+<!-- Data picker -->
+<script src="{% static 'plantilla-backend/js/plugins/datapicker/bootstrap-datepicker.js'%}"></script>
+
+
+<!-- validar solo numeros en el campo de numero de registro -->
+<script language=Javascript>
+      function isNumberKey(evt)
+      {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+         return true;
+      }
+</script>
+
+
+<script>
+    $(document).ready(function(){
+       
+        $("#wizard").steps();
+        $("#form").steps({
+            bodyTag: "fieldset",
+            onStepChanging: function (event, currentIndex, newIndex)
+            {
+                // Siempre permita retroceder incluso si el paso actual contiene campos no válidos.
+                if (currentIndex > newIndex)
+                {
+                    return true;
+                }
+
+                var form = $(this);
+
+                // Limpiar si el usuario retrocedió antes
+                if (currentIndex < newIndex)
+                {
+                    // To remove error styles
+                    $(".body:eq(" + newIndex + ") label.error", form).remove();
+                    $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+                }
+
+                // no valida los campos que están deshabilitados u ocultos.
+                form.validate().settings.ignore = ":disabled,:hidden";
+
+                // valida cada pestaña, no permite avanzar si no es valido
+                return form.valid();
+            },
+            onFinishing: function (event, currentIndex)
+            {
+                var form = $(this);
+
+                //  no valida los campos que están deshabilitados.
+                form.validate().settings.ignore = ":disabled";
+
+                // hace la validación; Evitar el envío de formularios si es falso no permite avanzar
+                return form.valid();
+            },
+            onFinished: function (event, currentIndex)
+            {
+                var form = $(this);
+                
+
+                // Submit form input
+                form.submit();
+
+            }
+        });
+        //dinamico tabla colectores secundarios
+          $('.formset_row').formset({
+            addText: 'add colector secundario',
+            deleteText: 'remove'
+        });
+        //calenddario en los campos date
+        $('#data_3 .input-group.date').datepicker({
+                startView: 2,
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true
+            });
+            
+        //autocompletado en los nombre de cientificos
+        $('.nombre-complete').on('keyup', function(){
+        var value = $(this).val();
+        $.ajax({
+            url: "{% url 'especimen:ajax_autocomplete' %}",
+            data: {
+              'search': value 
+            },
+            dataType: 'json',
+            success: function (data) {
+                list = data.list;
+                $('.nombre-complete').autocomplete({
+                source: list,
+                minLength: 2
+                });       
+            }});  
+        });
+        
+        $(function() {
+          $('#id_imagen').change(function(e) {
+              addImage(e); 
+             });
+        
+             function addImage(e){
+              var file = e.target.files[0],
+              imageType = /image.*/;
+            
+              if (!file.type.match(imageType))
+               return;
+          
+              var reader = new FileReader();
+              reader.onload = fileOnload;
+              reader.readAsDataURL(file);
+             }
+          
+             function fileOnload(e) {
+              var result=e.target.result;
+              $('#imgSalida').attr("src",result);
+             }
+            });
+   });
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#search").click(function () {
+	    $num_registro=$("#registro").val()
+	    url = "{% url 'especimen:cambiar_especimen' pk=0 %}".replace('0', $num_registro);
+	    $(location).attr('href', url);
+	    
+	    
+	});
+});
+</script>
+
+
+
+
+
+{% endblock %}
+
+
+

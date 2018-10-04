@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.core.urlresolvers import reverse_lazy
 from django.contrib import messages
@@ -14,8 +16,8 @@ from categoriaTaxonomica.forms import TaxonomiaForm
 from .forms import EspecimenForm
 from django.contrib.auth.decorators  import  login_required
 from rolepermissions.decorators import has_role_decorator
-
-
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
 
 @login_required
 @has_role_decorator(['monitor', 'curador','investigador'])
@@ -192,3 +194,86 @@ def EliminarEspecimen(request, pk):
     #especimen.save()
     response = {}
     return HttpResponseRedirect(reverse_lazy('especimen:listar_especimen'))
+
+
+
+def ChangeEspecimen(request, pk=None):
+      #cargar datos en caso de ser edicion
+    if pk:
+        
+        try:
+            especimenObject = Especimen.objects.get( num_registro=pk)
+            categoriaTaxoObje=CategoriaTaxonomica.objects.get(pk=especimenObject.categoria.pk)
+            autor1Obje=Cientifico.objects.get(pk=especimenObject.categoria.autor1.pk)
+            autor2Obje=Cientifico.objects.get(pk=especimenObject.categoria.autor2.pk)
+            determinadorObje=Cientifico.objects.get(pk=especimenObject.determinador.pk)
+        except Especimen.DoesNotExist:
+            messages.error(request, 'No existe un especimen con el número de registro ingresado')
+            return redirect('especimen:obtener_especimen')
+        
+       
+    else: 
+        especimenObject = Especimen()
+        categoriaTaxoObje=CategoriaTaxonomica()
+        autor1Obje=Cientifico()
+        autor2Obje=Cientifico()
+        determinadorObje= Cientifico()
+        
+    if request.method == 'POST':
+        
+        formAutor1 = CientificoForm (request.POST,prefix="autor1",instance=autor1Obje)
+        formAutor2 =  CientificoForm (request.POST,prefix="autor2",instance=autor2Obje)
+        
+        formCateTaxonomica= TaxonomiaForm(request.POST,instance=categoriaTaxoObje)
+        
+        #especimen
+        formDeterminador= CientificoForm (request.POST,prefix="determinador",instance=determinadorObje)
+        formEspecimen = EspecimenForm(instance=especimenObject)
+        
+        #and formCateTaxonomica.is_valid() ---falta corregir esto
+        if formAutor1.is_valid() and  formAutor2.is_valid() : 
+            print("valido")
+            
+            try :
+                autor1Obje = Cientifico.objects.get(nombre_completo=formAutor1['nombre_completo'].value(),nombre_abreviado=formAutor1['nombre_abreviado'].value()) 
+            except Cientifico.DoesNotExist:
+                autor1Obje = formAutor1.save()
+            try :
+                autor2Obje = Cientifico.objects.get(nombre_completo=formAutor2['nombre_completo'].value(), nombre_abreviado=formAutor2['nombre_abreviado'].value())
+            except Cientifico.DoesNotExist:
+                autor2Obje = formAutor2.save()
+            try :
+                determinadorObje = Cientifico.objects.get(nombre_completo=formDeterminador['nombre_completo'].value(),nombre_abreviado=formDeterminador['nombre_abreviado'].value())
+            except Cientifico.DoesNotExist:
+                determinadorObje = formDeterminador.save()
+            
+            
+            categoriaTaxoObje.genero=formCateTaxonomica['genero'].value()
+            categoriaTaxoObje.familia=formCateTaxonomica['familia'].value()
+            categoriaTaxoObje.epiteto_especifico=formCateTaxonomica['epiteto_especifico'].value()
+            categoriaTaxoObje.epiteto_infraespecifico=formCateTaxonomica['epiteto_infraespecifico'].value()
+            categoriaTaxoObje.fecha_det=formCateTaxonomica['fecha_det'].value()
+            categoriaTaxoObje.autor1=autor1Obje
+            categoriaTaxoObje.autor2=autor2Obje
+            categoriaTaxoObje.save()
+            
+            especimenObject.determinador=determinadorObje
+            especimenObject.save()
+        
+        else:
+            print ' formulario invalido'
+            
+        
+    else:
+        formCateTaxonomica= TaxonomiaForm(instance=categoriaTaxoObje)
+        formEspecimen = EspecimenForm(instance=especimenObject)
+        formAutor1 = CientificoForm (prefix="autor1", instance=autor1Obje)
+        formAutor2 =  CientificoForm (prefix="autor2",instance=autor2Obje)
+        formDeterminador = CientificoForm (prefix="determinador",instance=determinadorObje)
+        
+    contexto={'formAutor1':formAutor1, 'formAutor2': formAutor2,'formCateTaxonomica': formCateTaxonomica, 
+              'formDeterminador': formDeterminador, 'formEspecimen':formEspecimen}
+   
+    
+    return render(request,'updateEspecimen.html',contexto)
+    

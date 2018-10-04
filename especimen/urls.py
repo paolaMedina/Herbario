@@ -8,5 +8,8 @@ urlpatterns = [
     url(r'^listar', views.ListarEspecimen, name='listar_especimen'),
     url(r'^editar/(?P<pk>\d+)', views.RegistrarEspecimen, name='editar_especimen'),
     url(r'^eliminar/(?P<pk>\d+)', views.EliminarEspecimen, name='eliminar_especimen'),
+    url(r'^update/(?P<pk>\d+)', views.ChangeEspecimen, name='cambiar_especimen'),
+    url(r'^update', views.ChangeEspecimen, name='obtener_especimen'),
+    
     
 ]
