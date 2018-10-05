@@ -17,6 +17,11 @@ Crear Especimen
 <link href="{% static 'plantilla-backend/css/plugins/toastr/toastr.min.css' %}" rel="stylesheet">
 <!-- query-ui style -->
 <link href="{% static 'plantilla-backend/js/plugins/jquery-ui/jquery-ui.min.css' %}" rel="stylesheet">
+<style type="text/css">
+    #form-especimen {
+        display: {{ show|yesno:"block,none" }};
+    }
+</style>
 {% endblock %}
 
 
@@ -31,7 +36,7 @@ Crear Especimen
             <div class="ibox-content">
                 
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">Número de registro</label>
+                    <label class="col-md-2 control-label">Número de registro:</label>
                     <div class="col-sm-3" id='input_search'>
                         <input type="search" id='registro' class="form-control">
                     </div>
@@ -41,7 +46,7 @@ Crear Especimen
                 <hr/>
                 
                  
-                <form method="post" class="form-horizontal">
+                <form method="post" class="form-horizontal" id="form-especimen">
                     {% csrf_token %}
                     <!-- genero-taxonomia -->
                     <div class="form-group">
@@ -276,8 +281,21 @@ $(document).ready(function(){
 	    $num_registro=$("#registro").val()
 	    url = "{% url 'especimen:cambiar_especimen' pk=0 %}".replace('0', $num_registro);
 	    $(location).attr('href', url);
+	    //$("#form-especimen").css({display: "block"});
 	    
-	    
+	   // $.ajax({
+    //         url: url,
+    //         success: function (response) {
+    //             console.log(response);
+    //             $var="{{show}}";
+    //             console.log($var);
+    //             if ($var){
+    //                 console.log($var);
+    //     	        $("#form-especimen").css({display: "block"});
+        	        
+    //     	    }
+    //           }
+    //     });
 	});
 });
 </script>

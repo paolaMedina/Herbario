@@ -18,6 +18,7 @@ from django.contrib.auth.decorators  import  login_required
 from rolepermissions.decorators import has_role_decorator
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
+from django.http import JsonResponse
 
 @login_required
 @has_role_decorator(['monitor', 'curador','investigador'])
@@ -199,6 +200,7 @@ def EliminarEspecimen(request, pk):
 
 def ChangeEspecimen(request, pk=None):
       #cargar datos en caso de ser edicion
+    print pk
     if pk:
         
         try:
@@ -207,8 +209,12 @@ def ChangeEspecimen(request, pk=None):
             autor1Obje=Cientifico.objects.get(pk=especimenObject.categoria.autor1.pk)
             autor2Obje=Cientifico.objects.get(pk=especimenObject.categoria.autor2.pk)
             determinadorObje=Cientifico.objects.get(pk=especimenObject.determinador.pk)
+            show=True
+            print 'especime'
         except Especimen.DoesNotExist:
             messages.error(request, 'No existe un especimen con el número de registro ingresado')
+            show=False
+            print"no especimen"
             return redirect('especimen:obtener_especimen')
         
        
@@ -218,6 +224,9 @@ def ChangeEspecimen(request, pk=None):
         autor1Obje=Cientifico()
         autor2Obje=Cientifico()
         determinadorObje= Cientifico()
+        print"sin pk"
+        show=False
+        
         
     if request.method == 'POST':
         
@@ -259,10 +268,11 @@ def ChangeEspecimen(request, pk=None):
             
             especimenObject.determinador=determinadorObje
             especimenObject.save()
-        
+            show=False 
+            
         else:
             print ' formulario invalido'
-            
+            show=True
         
     else:
         formCateTaxonomica= TaxonomiaForm(instance=categoriaTaxoObje)
@@ -270,10 +280,12 @@ def ChangeEspecimen(request, pk=None):
         formAutor1 = CientificoForm (prefix="autor1", instance=autor1Obje)
         formAutor2 =  CientificoForm (prefix="autor2",instance=autor2Obje)
         formDeterminador = CientificoForm (prefix="determinador",instance=determinadorObje)
+        print show
+        
+        
         
     contexto={'formAutor1':formAutor1, 'formAutor2': formAutor2,'formCateTaxonomica': formCateTaxonomica, 
-              'formDeterminador': formDeterminador, 'formEspecimen':formEspecimen}
+              'formDeterminador': formDeterminador, 'formEspecimen':formEspecimen, 'show':show}
    
-    
     return render(request,'updateEspecimen.html',contexto)
     
