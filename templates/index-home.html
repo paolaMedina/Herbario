@@ -1,93 +1,286 @@
-<!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Home | Impact By Distinctive Themes</title>
-    <link href="{% static 'plantilla-fronend/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'plantilla-fronend/css/font-awesome.min.css' %}" rel="stylesheet}">
-    <link href="{% static 'plantilla-fronend/css/pe-icons.css' %}" rel="stylesheet">
-    <link href="{% static 'plantilla-fronend/css/prettyPhoto.css' %}" rel="stylesheet">
-    <link href="{% static 'plantilla-fronend/css/animate.css' %}" rel="stylesheet">
-    <link href="{% static 'plantilla-fronend/css/style.css' %}" rel="stylesheet"> 
-    <link rel="shortcut icon" href="images/ico/favicon.ico">
-    <link rel="apple-touch-icon" sizes="144x144" href="static/plantilla-fronend/images/ico/apple-touch-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="static/plantilla-fronend/images/ico/apple-touch-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="static/plantilla-fronend/images/ico/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" href="static/plantilla-fronend/images/ico/apple-touch-icon-57x57.png">
-    {% block extrahead %}
-    {% endblock%}
+  <meta charset="utf-8">
+  <title>Herbario CUVC</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="" name="keywords">
+  <meta content="" name="description">
 
-   
-</head><!--/head-->
+  <!-- Favicons -->
+  <link href="{% static 'plantilla-frontend/img/univalle-rojopuro-159x226.png' %}" rel="icon">
+  <link href="{% static 'plantilla-frontend/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Poppins:300,400,500,700" rel="stylesheet">
+
+  <!-- Bootstrap CSS File -->
+  <link href="{% static 'plantilla-frontend/lib/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <!-- Libraries CSS Files -->
+  <link href="{% static 'plantilla-frontend/lib/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+  <link href="{% static 'plantilla-frontend/lib/animate/animate.min.css' %}" rel="stylesheet">
+
+  <!-- Main Stylesheet File -->
+  <link href="{% static 'plantilla-frontend/css/style.css' %}" rel="stylesheet">
+
+</head>
+
 <body>
-<div id="preloader"></div>
-    <header class="navbar navbar-inverse navbar-fixed-top " role="banner">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <i class="fa fa-bars"></i>
-                </button>
+
+  <!--==========================
+  Header
+  ============================-->
+  <header id="header">
+    <div class="container">
+
+      <div id="logo" class="pull-left">
+        <!-- Uncomment below if you prefer to use a text logo -->
+        <h1><a href="/#hero">Herbario CUVC</a></h1>
+      </div>
+
+      <nav id="nav-menu-container">
+        <ul class="nav-menu">
+          <li><a href="{% url 'usuario:login' %}">Login</a></li>
+        </ul>
+      </nav><!-- #nav-menu-container -->
+    </div>
+  </header><!-- #header -->
+
+  <!--==========================
+    Hero Section
+  ============================-->
+  <section id="hero">
+    <div class="hero-container">
+      <center style="width: 50%">
+        <div class = "busqueda" style="width:100%; background-color:rgba(255,255,255,0.7); border-radius: 5px; padding: 10px; transform: translateY(50%);" align="left">
+          <form  action= '/especimen/testing/' class="unal-form" method="post">
+            {% csrf_token %}
+            <div style="display: flex-wrap ; justify-content: space-around; font-size: 1.3rem">
+              <label  for="option0"><input checked="checked" id="option0" name="option" type="radio" value="especie"> Especie</label>
+            
+              <label   for="option1"><input id="option1" name="option" type="radio" value="familia"> Familia</label>
+            
+              <label for="option2"><input id="option2" name="option" type="radio" value="genero"> Género</label>
             </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{% url 'usuario:login' %}">login</a></li> 
-                    <li><span class="search-trigger"><i class="fa fa-search"></i></span></li>
-                </ul>
+            <br>
+              <input style="width: 100%" autocomplete="off" id="especimen" name="filtro" type="text" class="ui-autocomplete-input">
+            
+
+            <div style="margin-top:10px;">
+              <a href="/es/colecciones/advancedsearch/plants/">
+                <strong><big>Búsqueda avanzada</big></strong>
+              </a>
             </div>
+            <div style="display: flex; justify-content: space-around;">
+            <button type="submit">Buscar</button>
+          </div>
+          </form>
         </div>
-    </header><!--/header-->
-    
-    
-        {% block content %} {% endblock %} 
+      </center>
+    </div>
+  </section><!-- #hero -->
 
-    
-    
+  <main id="main">
 
-    
-    <script src="{% static 'plantilla-fronend/js/jquery.js' %}"></script>      
-    <script src="{% static 'plantilla-fronend/js/plugins.js' %}"></script>
-    <script src="{% static 'plantilla-fronend/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'plantilla-fronend/js/jquery.prettyPhoto.js' %}"></script>   
-    <script src="{% static 'plantilla-fronend/js/init.js' %}"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWDPCiH080dNCTYC-uprmLOn2mt2BMSUk&amp;sensor=true"></script> 
-    
-    
-     <script type="text/javascript">
-    jQuery(document).ready(function($){
-	'use strict';
-      	jQuery('body').backstretch([
-	        "images/bg/bg1.jpg",
-	        "images/bg/bg2.jpg",
-	        "images/bg/bg3.jpg"
-	    ], {duration: 5000, fade: 500, centeredY: true });
+    <!--==========================
+      About Us Section
+    ============================-->
+    <section id="about">
+      <div class="container">
+        <div class="row about-container">
 
-		$("#mapwrapper").gMap({ controls: false,
-         	scrollwheel: false,
-         	markers: [{ 	
-              	latitude:40.7566,
-				longitude: -73.9863,
-          	icon: { image: "images/marker.png",
-              	iconsize: [44,44],
-          		iconanchor: [12,46],
-          		infowindowanchor: [12, 0] } }],
-          	icon: { 
-              	image: "images/marker.png", 
-             	iconsize: [26, 46],
-              	iconanchor: [12, 46],
-              	infowindowanchor: [12, 0] },
-         	latitude:40.7566,
-         	longitude: -73.9863,
-          	zoom: 14 });
-    });
-    </script>
-    
-    
-    {% block plugins %}
-    {% endblock %}
+          <div class="col-lg-6 content order-lg-1 order-2">
+            <h2 class="title">Sobre nosotros</h2>
+            <p>
+              El herbario de la Universidad del Valle fue fundado en 1965 por Luis Sigifredo Espinal-Tascón, pionero en el estudio de la ecología en Colombia. Su acrónimo internacional (registrado con el Jardín Botánico de Nueva York) es CUVC. Actualmente cuenta con unos 100.000 especímenes de los cuales 53.000 están incluídos y a disposición en la colección. Colecciones importantes: Bajo Calima, Cerro del Torrá, frontera Chocó-Valle, páramo de Pan de Azúcar, parte central del Departamento del Cauca, y valle geográfico del río Cauca. La información que se está compartiendo es de la familia Fabaceae. La familia Fabaceae es una de las más grandes y de distribución cosmopolita; cuenta con alrededor de 700 géneros y 18.000 especies, lo cual la convierte en la tercera familia de mayor riqueza después de las Asteraceae y Orchidaceae; además están altamente representadas en los ecosistemas de bosque seco. Esta familia se compone de tres subfamilias: caesalpinoideae, faboideae y mimosoideae. La base de datos proporcionada corresponde por lo pronto a los registros de las subfamilias caesalpinoideae y faboideae que se encuentran depositadas en la colección de herbario CUVC de la Universidad del Valle. 
+            </p>
+
+           
+
+          </div>
+
+          <div class="col-lg-6 background order-lg-2 order-1 wow fadeInRight"></div>
+        </div>
+
+      </div>
+    </section><!-- #about -->
+
+    <!--==========================
+
+    <!--==========================
+      Services Section
+    ============================-->
+    <section id="services">
+      <div class="container wow fadeIn">
+        <div class="section-header">
+          <h3 class="section-title">Servicios</h3>
+          <p class="section-description">Servicios ofrecidos por el Herbario, para el público en general</p>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.2s">
+            <div class="box">
+              <div class="icon"><a href="/"><i class="fa fa-desktop"></i></a></div>
+              <h4 class="title"><a href="/">Prestamo de especimenes</a></h4>
+              <p class="description">detalle</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.4s">
+            <div class="box">
+              <div class="icon"><a href="/"><i class="fa fa-bar-chart"></i></a></div>
+              <h4 class="title"><a href="/">Agendamiento de Visitas</a></h4>
+              <p class="description">detalle</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.6s">
+            <div class="box">
+              <div class="icon"><a href="/"><i class="fa fa-paper-plane"></i></a></div>
+              <h4 class="title"><a href="/">Solicitud de espacios</a></h4>
+              <p class="description">Para estudiantes de postgrado de la Universidad del Valle, podran solicitar espacios de estudio</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.2s" align="center">
+            <div class="box" >
+              <div class="icon"><a href="/"><i class="fa fa-photo"></i></a></div>
+              <h4 class="title"><a href="">Identificación de especimenes</a></h4>
+              <p class="description">detalle</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- #services -->
+
+
+    <!--==========================
+        Team Section
+    ============================-->
+    <section id="team">
+      <div class="container wow fadeInUp">
+        <div class="section-header">
+          <h3 class="section-title">Equipo</h3>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <div class="member">
+              <div class="pic"><img src="{% static 'plantilla-frontend/img/director.jpeg' %}" alt=""></div>
+              <h4>Alba Marina Torres</h4>
+              <span>Director</span>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="member">
+              <div class="pic"><img src="{% static 'plantilla-frontend/img/curador.jpg' %}" alt=""></div>
+              <h4>Maria Esther</h4>
+              <span>Curador</span>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6">
+            <div class="member">
+              <div class="pic"><img src="{% static 'plantilla-frontend/img/investigador.jpg' %}" alt=""></div>
+              <h4>Alejandro </h4>
+              <span>Investigador</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- #team -->
+
+    <!--==========================
+      Contact Section
+    ============================-->
+    <section id="contact">
+      <div class="container wow fadeInUp">
+        <div class="section-header">
+          <h3 class="section-title">Contact</h3>
+          <p class="section-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque</p>
+        </div>
+      </div>
+
+      <!-- Uncomment below if you wan to use dynamic maps -->
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3982.8872085422504!2d-76.53659318671936!3d3.377733752650436!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e30a16f02717383%3A0xd4c6c006f1049885!2sHerbario+CUVC+Luis+Sigiftedo+Espinal!5e0!3m2!1ses!2sco!4v1541645405543" width="100%" height="380"frameborder="0" style="border:0" allowfullscreen></iframe>
+
+    </section><!-- #contact -->
+
+  </main>
+
+  <!--==========================
+    Footer
+  ============================-->
+  <footer id="footer">
+    <div class="footer-top">
+      <div class="container">
+
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong>Universidad del Valle</strong>
+      </div>
+    </div>
+  </footer><!-- #footer -->
+
+  <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+  <!-- JavaScript Libraries -->
+  <script src="{% static 'plantilla-frontend/lib/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'plantilla-frontend/lib/jquery/jquery-migrate.min.js' %}"></script>
+  <script src="{% static 'plantilla-frontend/lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'plantilla-frontend/lib/easing/easing.min.js' %}"></script>
+  <script src="{% static 'plantilla-frontend/lib/wow/wow.min.js' %}"></script>
+  <script src="{% static 'plantilla-frontend/lib/waypoints/waypoints.min.js' %}"></script>
+  <script src="{% static 'plantilla-frontend/lib/counterup/counterup.min.js' %}"></script>
+  <script src="{% static 'plantilla-frontend/lib/superfish/hoverIntent.js' %}"></script>
+  <script src="{% static 'plantilla-frontend/lib/superfish/superfish.min.js' %}"></script>
+
+  <!-- Contact Form JavaScript File -->
+  <script src="{% static 'plantilla-frontend/contactform/contactform.js' %}"></script>
+
+  <!-- Template Main Javascript File -->
+  <script src="{% static 'plantilla-frontend/js/main.js' %}"></script>
+  
+  <script type="text/javascript" >
+      
+      function busqueda(){
+          var radios = document.getElementsByName('option');
+          var especimen = document.getElementById('especimen').value;
+          var seleccion="";
+          
+          for (var i = 0, length = radios.length; i < length; i++) {
+              if (radios[i].checked) {
+                seleccion=radios[i].value
+                  //alert(especimen);
+                  break;
+              }
+          }
+          $.ajax({
+            type: 'GET',
+            url: '/especimen/testing/',
+            data: {
+              'especimen': especimen,
+              'seleccion': seleccion,
+            },
+            success: function(data){
+              alert('success');
+              console.log(data);
+              document.write(data.html);
+              //window.location = data;
+            },
+            error: function(error) { 
+              // if ajax fails display error alert
+              console.log(error)
+              alert('error');
+            }
+          });
+      }
+      
+      
+  </script>
 </body>
 </html>

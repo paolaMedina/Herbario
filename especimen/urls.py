@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^eliminar/(?P<pk>\d+)', views.EliminarEspecimen, name='eliminar_especimen'),
     url(r'^update/(?P<pk>\d+)', views.ChangeEspecimen, name='cambiar_especimen'),
     url(r'^update', views.ChangeEspecimen, name='obtener_especimen'),
+    url(r'^testing/$', views.searchEspecimen, name='testing'),
     
     
 ]

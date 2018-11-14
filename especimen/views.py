@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from django.shortcuts import render
 from django.core.urlresolvers import reverse_lazy
 from django.contrib import messages
 from django.shortcuts import render, HttpResponseRedirect
+from django.http import HttpResponse
 from django.forms import ModelForm, inlineformset_factory
 from django.forms.formsets import formset_factory
 from .models import  Especimen
@@ -288,4 +288,27 @@ def ChangeEspecimen(request, pk=None):
               'formDeterminador': formDeterminador, 'formEspecimen':formEspecimen, 'show':show}
    
     return render(request,'updateEspecimen.html',contexto)
+    
+    
+
+def searchEspecimen(request):
+    especimensObject=None
+    print"aqui"
+    print request.POST
+    print request.POST.get('option', None)
+    seleccion = request.POST.get('option', None)
+    filtro= request.POST.get('filtro', None)
+    
+    if(seleccion =='especie'):
+        a=0
+    elif(seleccion =='familia'):
+        especimensObject = Especimen.objects.filter(categoria__familia__icontains=filtro)
+    elif(seleccion =='genero'):
+        especimensObject = Especimen.objects.filter(categoria__genero__icontains=filtro)
+        
+    contexto = {
+        'especimenes': especimensObject
+        }
+    print contexto
+    return render(request,'testing.html',contexto)
     
