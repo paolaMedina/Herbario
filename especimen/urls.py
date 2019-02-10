@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^update/(?P<pk>\d+)', views.ChangeEspecimen, name='cambiar_especimen'),
     url(r'^update', views.ChangeEspecimen, name='obtener_especimen'),
     url(r'^testing/$', views.searchEspecimen, name='testing'),
+    url(r'^api/get_especimenes', views.autocompleteFilter, name='autocompleteEspecimen'),
     
     
 ]

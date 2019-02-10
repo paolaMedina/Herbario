@@ -1,34 +1,15 @@
+{% extends "base_front.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <title>Herbario CUVC</title>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta content="" name="keywords">
-  <meta content="" name="description">
 
-  <!-- Favicons -->
-  <link href="{% static 'plantilla-frontend/img/univalle-rojopuro-159x226.png' %}" rel="icon">
-  <link href="{% static 'plantilla-frontend/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+{% block extrahead %}
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Poppins:300,400,500,700" rel="stylesheet">
 
-  <!-- Bootstrap CSS File -->
-  <link href="{% static 'plantilla-frontend/lib/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+{% endblock%}
 
-  <!-- Libraries CSS Files -->
-  <link href="{% static 'plantilla-frontend/lib/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
-  <link href="{% static 'plantilla-frontend/lib/animate/animate.min.css' %}" rel="stylesheet">
-
-  <!-- Main Stylesheet File -->
-  <link href="{% static 'plantilla-frontend/css/style.css' %}" rel="stylesheet">
-
-</head>
-
-<body>
-
+{% block content %} 
   <!--==========================
   Header
   ============================-->
@@ -69,7 +50,8 @@
             
 
             <div style="margin-top:10px;">
-              <a href="/es/colecciones/advancedsearch/plants/">
+              <!--<a href="/es/colecciones/advancedsearch/plants/">-->
+              <a href="#">
                 <strong><big>Búsqueda avanzada</big></strong>
               </a>
             </div>
@@ -197,8 +179,7 @@
     <section id="contact">
       <div class="container wow fadeInUp">
         <div class="section-header">
-          <h3 class="section-title">Contact</h3>
-          <p class="section-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque</p>
+          <h3 class="section-title">Contacto</h3>
         </div>
       </div>
 
@@ -227,10 +208,10 @@
   </footer><!-- #footer -->
 
   <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+  
+{% endblock %} 
 
-  <!-- JavaScript Libraries -->
-  <script src="{% static 'plantilla-frontend/lib/jquery/jquery.min.js' %}"></script>
-  <script src="{% static 'plantilla-frontend/lib/jquery/jquery-migrate.min.js' %}"></script>
+{% block extraScript %} 
   <script src="{% static 'plantilla-frontend/lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'plantilla-frontend/lib/easing/easing.min.js' %}"></script>
   <script src="{% static 'plantilla-frontend/lib/wow/wow.min.js' %}"></script>
@@ -238,49 +219,11 @@
   <script src="{% static 'plantilla-frontend/lib/counterup/counterup.min.js' %}"></script>
   <script src="{% static 'plantilla-frontend/lib/superfish/hoverIntent.js' %}"></script>
   <script src="{% static 'plantilla-frontend/lib/superfish/superfish.min.js' %}"></script>
-
-  <!-- Contact Form JavaScript File -->
-  <script src="{% static 'plantilla-frontend/contactform/contactform.js' %}"></script>
-
-  <!-- Template Main Javascript File -->
-  <script src="{% static 'plantilla-frontend/js/main.js' %}"></script>
   
-  <script type="text/javascript" >
-      
-      function busqueda(){
-          var radios = document.getElementsByName('option');
-          var especimen = document.getElementById('especimen').value;
-          var seleccion="";
-          
-          for (var i = 0, length = radios.length; i < length; i++) {
-              if (radios[i].checked) {
-                seleccion=radios[i].value
-                  //alert(especimen);
-                  break;
-              }
-          }
-          $.ajax({
-            type: 'GET',
-            url: '/especimen/testing/',
-            data: {
-              'especimen': especimen,
-              'seleccion': seleccion,
-            },
-            success: function(data){
-              alert('success');
-              console.log(data);
-              document.write(data.html);
-              //window.location = data;
-            },
-            error: function(error) { 
-              // if ajax fails display error alert
-              console.log(error)
-              alert('error');
-            }
-          });
-      }
+<!-- jQuery UI !-->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+  <script src="{% static 'plantilla-frontend/js/home.js' %}"></script>
       
       
-  </script>
-</body>
-</html>
+{% endblock %}

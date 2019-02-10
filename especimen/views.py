@@ -19,6 +19,7 @@ from rolepermissions.decorators import has_role_decorator
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.http import JsonResponse
+import json
 
 @login_required
 @has_role_decorator(['monitor', 'curador','investigador'])
@@ -173,7 +174,8 @@ def autocomplete(request):
         data = {
             'list': list,
         }
-        
+    return JsonResponse(data) 	
+
 
 
 #funcion que lista los especimenes de la base de datos
@@ -300,7 +302,7 @@ def searchEspecimen(request):
     filtro= request.POST.get('filtro', None)
     
     if(seleccion =='especie'):
-        a=0
+        especimensObject = Especimen.objects.filter(categoria__epiteto_especifico__icontains=filtro)
     elif(seleccion =='familia'):
         especimensObject = Especimen.objects.filter(categoria__familia__icontains=filtro)
     elif(seleccion =='genero'):
@@ -312,3 +314,27 @@ def searchEspecimen(request):
     print contexto
     return render(request,'testing.html',contexto)
     
+import types
+def autocompleteFilter(request):
+    query=[]
+    if request.is_ajax():
+        type=request.GET.get('type', None)
+        search = request.GET.get('search', '').capitalize()
+        if(type =='especie'):
+            query = CategoriaTaxonomica.objects.filter(epiteto_especifico__istartswith=search).values_list('epiteto_especifico',flat=True).distinct('epiteto_especifico')
+        elif(type =='familia'):
+            query = CategoriaTaxonomica.objects.filter(familia__istartswith=search).values_list('familia',flat=True).distinct('familia')
+        elif(type =='genero'):
+            query = CategoriaTaxonomica.objects.filter(genero__istartswith=search).values_list('genero',flat=True).distinct('genero')
+        
+        list = []        
+        for i in query:
+            list.append(i )
+            
+        data ={'list': list,}
+    else:
+        data = 'fail'
+        
+    return JsonResponse(data) 
+        
+        
