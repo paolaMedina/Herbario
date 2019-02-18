@@ -3,9 +3,8 @@
 
 
 {% block extrahead %}
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Poppins:300,400,500,700" rel="stylesheet">
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+  
 
 {% endblock%}
 
@@ -46,12 +45,12 @@
               <label for="option2"><input id="option2" name="option" type="radio" value="genero"> Género</label>
             </div>
             <br>
-              <input style="width: 100%" autocomplete="off" id="especimen" name="filtro" type="text" class="ui-autocomplete-input">
+              <input style="width: 100%" autocomplete="off" id="especimen" name="filtro" type="text" class="ui-autocomplete-input col-12">
             
 
             <div style="margin-top:10px;">
               <!--<a href="/es/colecciones/advancedsearch/plants/">-->
-              <a href="#">
+              <a href="" data-toggle="modal" data-target="#myModal">
                 <strong><big>Búsqueda avanzada</big></strong>
               </a>
             </div>
@@ -209,6 +208,82 @@
 
   <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
   
+  
+  
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Busqueda Avanzada</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form method="post" action='/especimen/api/busqueda/'>
+            {% csrf_token %}
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label class="control-label col-12">Tipo</label>
+                  <select class="col-12" id="id_tipo" name="tipo" style="height: 30px;">
+                    <option value="volvo">Seleccione</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-12">Género</label>
+                  <input autocomplete="off" id="id_genero" name="genero" type="text" class="ui-autocomplete-input col-12">
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-12">País</label>
+                  <input autocomplete="off" id="id_pais" name="pais" type="text" class="ui-autocomplete-input col-12">
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-12">Departamento</label>
+                  <input autocomplete="off" id="id_departamento" name="departamento" type="text" class="ui-autocomplete-input col-12">
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-12">Municipio</label>
+                  <input autocomplete="off" id="id_municipio" name="municipio" type="text" class="ui-autocomplete-input col-12">
+                </div>
+              </div>
+              <div class="col-sm">
+                <div class="form-group">
+                  <label class="control-label col-12">Familia</label>
+                  <input autocomplete="off" id="id_familia" name="familia" type="text" class="ui-autocomplete-input col-12">
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-12">Número de registro</label>
+                  <input autocomplete="off" id="id_numerocatalogo" name="numerocatalogo" type="text" class="col-12">
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-12">Colector principal</label>
+                  <input autocomplete="off" id="id_colectorprimario" name="colectorprimario" type="text" class="col-12">
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-12">Número de colector</label>
+                  <input autocomplete="off" id="id_numerocoleccion" name="numerocoleccion" type="text"class="col-12">
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-12">Nombre científico</label>
+                  <input autocomplete="off" id="id_nombrecientifico" name="nombrecientifico" type="text" class="ui-autocomplete-input col-12">
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <div class="text-left"">
+          <button class="btn btn-primary" type="reset">impiar formulario</button>
+          </div>
+          <a class="btn btn-success" type="button" href='/especimen/api/busqueda/'>Buscar</a>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
 {% endblock %} 
 
 {% block extraScript %} 
@@ -220,9 +295,13 @@
   <script src="{% static 'plantilla-frontend/lib/superfish/hoverIntent.js' %}"></script>
   <script src="{% static 'plantilla-frontend/lib/superfish/superfish.min.js' %}"></script>
   
+
+<!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Poppins:300,400,500,700" rel="stylesheet">
 <!-- jQuery UI !-->
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+
   <script src="{% static 'plantilla-frontend/js/home.js' %}"></script>
       
       

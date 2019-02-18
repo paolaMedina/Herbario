@@ -25,7 +25,7 @@ SECRET_KEY = '$&a7azey)pqip%@dbgw6=9m)eeow_ls^l6wb4eac1)c4l)p%_&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
@@ -90,15 +90,34 @@ WSGI_APPLICATION = 'herbario1.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 
+# DATABASES = {  
+#       'default': {  
+#          'ENGINE': 'django.db.backends.postgresql_psycopg2',  
+#          'NAME': 'dyhwnexd',  
+#          'USER': 'dyhwnexd',  
+#          'PASSWORD': 'BNJfs1RMOY6hpEm7s9HH3bDNxvM56QR_',  
+#          'HOST': 'elmer.db.elephantsql.com',  
+#          'PORT': '5432',  
+#       }  
+#      }  
+
+# DATABASES = {  
+#       'default': { 
+#           'ENGINE': 'django.db.backends.sqlite3',
+#           'NAME': 'mydatabase',
+#       }  
+#       }  
+
+
 DATABASES = {  
-       'default': {  
-         'ENGINE': 'django.db.backends.postgresql_psycopg2',  
-         'NAME': 'dyhwnexd',  
-         'USER': 'dyhwnexd',  
-         'PASSWORD': 'BNJfs1RMOY6hpEm7s9HH3bDNxvM56QR_',  
-         'HOST': 'elmer.db.elephantsql.com',  
+      'default': {  
+         'ENGINE': 'django.db.backends.postgresql',  
+         'NAME': 'herbario', 
+         'USER': 'django',
+         'PASSWORD':'django',
+         'HOST': 'localhost',
          'PORT': '5432',  
-       }  
+      }  
      }  
 
 

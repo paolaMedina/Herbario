@@ -20,6 +20,8 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.http import JsonResponse
 import json
+import types
+from django.db import connection
 
 @login_required
 @has_role_decorator(['monitor', 'curador','investigador'])
@@ -314,7 +316,7 @@ def searchEspecimen(request):
     print contexto
     return render(request,'testing.html',contexto)
     
-import types
+
 def autocompleteFilter(request):
     query=[]
     if request.is_ajax():
@@ -337,4 +339,37 @@ def autocompleteFilter(request):
         
     return JsonResponse(data) 
         
-        
+from django.db import connection, transaction
+    
+def busquedaAvanzada(request):
+    # cursor = connection.cursor()
+    # print cursor
+    # cursor.execute("SELECT * FROM ubicacion")
+    # row=cursor.fetchone()
+    a=sql_select("""SELECT especimen.categoria_id
+                    FROM especimen_especimen as especimen
+                    JOIN categoriaTaxonomica_categoriataxonomica as taxonomia
+                    ON especimen.categoria_id=taxonomia.id; """)
+    print a
+    return HttpResponseRedirect(reverse_lazy('inicio'))
+
+
+
+def sql_select(sql):
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    results = cursor.fetchall()
+    list = []
+    i = 0
+    for row in results:
+        dict = {} 
+        field = 0
+        while True:
+            try:
+                dict[cursor.description[field][0]] = str(results[i][field])
+                field = field +1
+            except IndexError as e:
+                break
+        i = i + 1
+        list.append(dict) 
+    return list  
