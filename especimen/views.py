@@ -373,10 +373,11 @@ def busquedaAvanzada(request):
                     ON especimen.coleccion_id=coleccion.id
                     JOIN "cientifico_cientifico" as colector
                     ON coleccion.colector_ppal_id=colector.id
-                    """
-    query=query+"where "+condiciones
-    a=sql_select(query)
-    print a
+                   """
+    if condiciones != "":
+        query=query+"where "+condiciones
+        a=sql_select(query)
+        print a
     return HttpResponseRedirect(reverse_lazy('inicio'))
 
 

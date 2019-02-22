@@ -35,7 +35,7 @@
     <div class="hero-container">
       <center style="width: 50%">
         <div class = "busqueda" style="width:100%; background-color:rgba(255,255,255,0.7); border-radius: 5px; padding: 10px; transform: translateY(50%);" align="left">
-          <form  action= '/especimen/testing/' class="unal-form" method="post">
+          <form  action= '/especimen/testing/' method="post">
             {% csrf_token %}
             <div style="display: flex-wrap ; justify-content: space-around; font-size: 1.3rem">
               <label  for="option0"><input checked="checked" id="option0" name="option" type="radio" value="especie"> Especie</label>
@@ -255,7 +255,7 @@
                 </div>
                 <div class="form-group">
                   <label class="control-label col-12">Número de registro</label>
-                  <input autocomplete="off" id="id_numerocatalogo" name="numerocatalogo" type="text" class="col-12">
+                  <input autocomplete="off" id="id_numerocatalogo" name="numeroRegistro" type="text" class="col-12">
                 </div>
                 <div class="form-group">
                   <label class="control-label col-12">Colector principal</label>
@@ -271,13 +271,13 @@
                 </div>
               </div>
             </div>
+            <div class="modal-footer">
+              <div class="text-left">
+              <button class="btn btn-primary" type="reset">Limpiar formulario</button>
+              </div>
+              <button class="btn btn-success" type="submit" >Buscar</button>
+            </div>
           </form>
-        </div>
-        <div class="modal-footer">
-          <div class="text-left"">
-          <button class="btn btn-primary" type="reset">impiar formulario</button>
-          </div>
-          <a class="btn btn-success" type="button" href='/especimen/api/busqueda/'>Buscar</a>
         </div>
       </div>
       
