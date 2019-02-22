@@ -12,8 +12,8 @@ class CategoriaTaxonomica (models.Model):
         fecha_det = models.CharField(max_length=10)
         categoria_infraespecifica = models.CharField(max_length=200)
         epiteto_infraespecifico = models.CharField(max_length=200)
-        autor1 = models.ForeignKey(Cientifico, null=False, blank=False, on_delete=models.CASCADE, related_name='+',)
-        autor2 = models.ForeignKey(Cientifico, null=False, blank=False, on_delete=models.CASCADE)
+        autor1 = models.TextField()
+        autor2 = models.TextField()
 
 
         

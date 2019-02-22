@@ -36,6 +36,7 @@ class RegistroUsuario(CreateView):
     
     def form_valid(self, form):
         usuario= form.instance
+        print usuario
         #contrasena con la inicial del nombre en mayuscula, la identificacion y la inicial del apellido en mayuscula
         contra= usuario.first_name[0].upper()+str(usuario.identificacion)+usuario.last_name[0].upper()
         usuario.password1=contra

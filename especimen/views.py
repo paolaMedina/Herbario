@@ -21,7 +21,7 @@ from django.shortcuts import redirect
 from django.http import JsonResponse
 import json
 import types
-from django.db import connection
+from django.db import connection, transaction
 
 @login_required
 @has_role_decorator(['monitor', 'curador','investigador'])
@@ -182,9 +182,7 @@ def autocomplete(request):
 
 #funcion que lista los especimenes de la base de datos
 @login_required
-def ListarEspecimen(request):
-    
-        
+def ListarEspecimen(request): 
     especimen= Especimen.objects.filter(visible=True)
     contexto = {'especimenes':especimen}
     return render(request,'especimen_listar.html', contexto )
@@ -199,8 +197,6 @@ def EliminarEspecimen(request, pk):
     #especimen.save()
     response = {}
     return HttpResponseRedirect(reverse_lazy('especimen:listar_especimen'))
-
-
 
 def ChangeEspecimen(request, pk=None):
       #cargar datos en caso de ser edicion
@@ -293,7 +289,6 @@ def ChangeEspecimen(request, pk=None):
    
     return render(request,'updateEspecimen.html',contexto)
     
-    
 
 def searchEspecimen(request):
     especimensObject=None
@@ -339,19 +334,52 @@ def autocompleteFilter(request):
         
     return JsonResponse(data) 
         
-from django.db import connection, transaction
+
     
 def busquedaAvanzada(request):
-    # cursor = connection.cursor()
-    # print cursor
-    # cursor.execute("SELECT * FROM ubicacion")
-    # row=cursor.fetchone()
-    a=sql_select("""SELECT especimen.categoria_id
+    print request.POST
+    genero= request.POST.get('genero')
+    familia= request.POST.get('familia')
+    tipo= request.POST.get('tipo')
+    registro= request.POST.get('numeroRegistro')
+    registro= request.POST.get('colectorprimario')
+    listQuery=[]
+    if(genero != ""):
+        dict ={} 
+        dict['genero']=genero
+        listQuery.append(dict)
+    if (familia != ""):
+        dict ={} 
+        dict['familia']=familia
+        listQuery.append(dict)
+        
+    print listQuery
+    condiciones=""
+    i=0
+    for value in listQuery:
+        for key in value:
+            if i>0:
+                condiciones +=" and "
+            condiciones += "UPPER("+ key+ ") LIKE  UPPER('" + value[key] +"%')"
+            i+=1
+        
+    print condiciones
+    
+    query="""SELECT especimen.num_registro, taxonomia.familia, taxonomia.genero, taxonomia.epiteto_especifico, coleccion.id, colector.nombre_completo
                     FROM especimen_especimen as especimen
-                    JOIN categoriaTaxonomica_categoriataxonomica as taxonomia
-                    ON especimen.categoria_id=taxonomia.id; """)
+                    JOIN "categoriaTaxonomica_categoriataxonomica" as taxonomia
+                    ON especimen.categoria_id=taxonomia.id
+                    JOIN "coleccion_coleccion" as coleccion
+                    ON especimen.coleccion_id=coleccion.id
+                    JOIN "cientifico_cientifico" as colector
+                    ON coleccion.colector_ppal_id=colector.id
+                    """
+    query=query+"where "+condiciones
+    a=sql_select(query)
     print a
     return HttpResponseRedirect(reverse_lazy('inicio'))
+
+
 
 
 

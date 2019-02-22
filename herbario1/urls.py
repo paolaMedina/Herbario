@@ -33,7 +33,8 @@ urlpatterns = [
     
     
     #url permite acceder a las imagenes de la carpeta media
-    url(r'^media/(?P<path>.*)$','django.views.static.serve',{'document_root':settings.MEDIA_ROOT,}),        
+    #revisar por que esta dando error
+    #url(r'^media/(?P<path>.*)$','django.views.static.serve',{'document_root':settings.MEDIA_ROOT,}),        
     
     
     url(r'^reset/password_reset/$',password_reset,{'template_name':'password_reset.html',
