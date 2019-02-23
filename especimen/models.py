@@ -34,5 +34,5 @@ class Especimen (models.Model):
     imagen = models.ImageField(upload_to='fotografias/', null=True, blank=True)
     visible= models.BooleanField(default=True)
     tipo=models.CharField(max_length=5, choices=TYPE_CHOICES, default='holo')
-    idGeografico = models.ForeignKey(Ubicacion, null=True, blank=True, on_delete=models.CASCADE)
+    ubicacion = models.ForeignKey(Ubicacion, null=True, blank=True, on_delete=models.CASCADE)
    #id usuario

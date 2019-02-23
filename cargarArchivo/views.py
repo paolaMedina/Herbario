@@ -14,7 +14,7 @@ from cientifico.models import Cientifico
 from coleccion.models import Coleccion,Colectores
 from categoriaTaxonomica.models import CategoriaTaxonomica
 from especimen.models import Especimen
-
+from ubicacion.models import Ubicacion
 
 
 class UploadFileView(FormView):
@@ -37,9 +37,8 @@ class UploadFileView(FormView):
     def post(self, request, *args, **kwargs):
         form = FormUpload(request.POST, request.FILES)
         if form.is_valid():
-            
-            
             file = request.FILES['file']
+            print file
             handle_uploaded_file(file)
         return self.form_valid(form, **kwargs)
         
@@ -47,11 +46,13 @@ class UploadFileView(FormView):
             
 #Para guardar la iniformacion en los archivos ya existentes o crear uno nuevo y guardar             
 def handle_uploaded_file(csv_file):
+    print csv_file
     decoded_file = csv_file.read().decode('utf-8')
     io_string = io.StringIO(decoded_file)
     
     reader=csv.DictReader(io_string, delimiter=str(u','))#CAMBIAR
     reader.next()
+    #print reader.next()
     
     for line in  reader:
         
@@ -60,16 +61,6 @@ def handle_uploaded_file(csv_file):
         fecha_determinacion= formatDate(line['DETMM'].strip(' '),line['DETDD'].strip(' '),line['DETYY'].strip(' '))
         
         
-        try :
-            autor_1 = Cientifico.objects.get(nombre_completo=line['AUTHOR1']) 
-        except Cientifico.DoesNotExist:
-            autor_1=Cientifico(nombre_completo=line['AUTHOR1'])
-            autor_1.save()
-        try :
-            autor_2 = Cientifico.objects.get(nombre_completo=line['AUTHOR2'])
-        except Cientifico.DoesNotExist:
-            autor_2=Cientifico(nombre_completo=line['AUTHOR2'])
-            autor_2.save()
         try :
             colectorPpal = Cientifico.objects.get(nombre_completo=line['COLLECTOR'])
         except Cientifico.DoesNotExist:
@@ -86,7 +77,7 @@ def handle_uploaded_file(csv_file):
         
         cateTaxonomica=CategoriaTaxonomica(familia=line['FAMILY'],genero=line['GENUS'],epiteto_especifico=line['SP1'],
                                            fecha_det=fecha_determinacion,categoria_infraespecifica=line['RANK1'],
-                                           epiteto_infraespecifico=line['SP2'],autor1=autor_1,autor2=autor_2) 
+                                           epiteto_infraespecifico=line['SP2'],autor1=line['AUTHOR1'],autor2=line['AUTHOR2']) 
         cateTaxonomica.save()
         
         fecha_coleccion= formatDate(line['COLLMM'].strip(' '),line['COLLDD'].strip(' '),line['COLLYY'].strip(' '))
@@ -104,9 +95,31 @@ def handle_uploaded_file(csv_file):
                 objeColector.save()
             colectores= Colectores.objects.create(coleccion=objcoleccion, colector=objeColector, orden=i)
             i+=1
-            
+        
+        if (line['LONG'].strip()==""):
+            long=None
+        else:
+            try:
+                long=float(line['LONG'].strip())
+            except:
+                long=None
+                
+
+        if (line['LAT'].strip()==""):
+            lat=None
+        else:
+            try:
+                lat=float(line['LAT'].strip())
+            except:
+                lat=None
+        
+        print long
+        print lat
+        objUbicacion=Ubicacion(pais=line['COUNTRY'],departamento=line['MAJORAREA'],municipio=line['MINORAREA'],divisionPolitica=line['GAZETTEER'],latitud= lat ,longitud= long,especificacionLocacion=line['LOCNOTES'], cultivada=True)
+        objUbicacion.save()
+
         especimen=Especimen(num_registro=line['ACCESSION'],categoria=cateTaxonomica,coleccion=objcoleccion,
-                            determinador=objdeterminador,lugar_duplicado= line['DUPS'] ,peligro='FP',visible=True)
+                            determinador=objdeterminador,lugar_duplicado= line['DUPS'] ,peligro='FP', tipo='holo', ubicacion=objUbicacion,visible=True)
         especimen.save()
     
 def formatDate(month,day,year):
