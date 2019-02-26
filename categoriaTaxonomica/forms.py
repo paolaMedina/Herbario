@@ -34,7 +34,7 @@ class TaxonomiaForm(forms.ModelForm):
                 
         }
         widgets = {
-                'familia': forms.TextInput(attrs={ 'class':'form-control col-md-7 col-xs-12 ignored'}),
+                'familia': forms.TextInput(attrs={'class':'form-control col-md-7 col-xs-12 ignored'}),
                 'genero': forms.TextInput(attrs={'class':'form-control col-md-7 col-xs-12 ignored'}),
                 'epiteto_especifico': forms.TextInput(attrs={ 'class':'form-control col-md-7 col-xs-12 ignored'}),
                 'fecha_det': forms.TextInput(attrs={'type':'text', 'id':'data_3', 'name':'datepicker', 'class':'form-control col-md-7 col-xs-12 ignored' }),

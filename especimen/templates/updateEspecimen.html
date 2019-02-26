@@ -93,12 +93,9 @@ Crear Especimen
                     </div>
                     <!-- autor1 -->
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">Autor 1</label>
+                        <label class="col-sm-3 control-label" for={{formCateTaxonomica.autor1.name}}>{{formCateTaxonomica.autor1.label}}</label>
                         <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-md-9">{{formAutor1.nombre_completo}} <span class="help-block m-b-none">Nombre completo</span></div>
-                                <div class="col-md-3">{{formAutor1.nombre_abreviado}} <span class="help-block m-b-none">Abreviatura</span></div>
-                            </div>
+                            {{formCateTaxonomica.autor1}}
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -111,12 +108,9 @@ Crear Especimen
                     </div>
                     <!-- autor2 -->
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">Autor 2</label>
+                        <label class="col-sm-3 control-label" for={{formCateTaxonomica.autor2.name}}>{{formCateTaxonomica.autor2.label}}</label>
                         <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-md-9">{{formAutor2.nombre_completo}} <span class="help-block m-b-none">Nombre completo</span></div>
-                                <div class="col-md-3">{{formAutor2.nombre_abreviado}} <span class="help-block m-b-none">Abreviatura</span></div>
-                            </div>
+                            {{formCateTaxonomica.autor2}}
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -169,59 +163,6 @@ Crear Especimen
 
 <script>
     $(document).ready(function(){
-       
-        $("#wizard").steps();
-        $("#form").steps({
-            bodyTag: "fieldset",
-            onStepChanging: function (event, currentIndex, newIndex)
-            {
-                // Siempre permita retroceder incluso si el paso actual contiene campos no válidos.
-                if (currentIndex > newIndex)
-                {
-                    return true;
-                }
-
-                var form = $(this);
-
-                // Limpiar si el usuario retrocedió antes
-                if (currentIndex < newIndex)
-                {
-                    // To remove error styles
-                    $(".body:eq(" + newIndex + ") label.error", form).remove();
-                    $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
-                }
-
-                // no valida los campos que están deshabilitados u ocultos.
-                form.validate().settings.ignore = ":disabled,:hidden";
-
-                // valida cada pestaña, no permite avanzar si no es valido
-                return form.valid();
-            },
-            onFinishing: function (event, currentIndex)
-            {
-                var form = $(this);
-
-                //  no valida los campos que están deshabilitados.
-                form.validate().settings.ignore = ":disabled";
-
-                // hace la validación; Evitar el envío de formularios si es falso no permite avanzar
-                return form.valid();
-            },
-            onFinished: function (event, currentIndex)
-            {
-                var form = $(this);
-                
-
-                // Submit form input
-                form.submit();
-
-            }
-        });
-        //dinamico tabla colectores secundarios
-          $('.formset_row').formset({
-            addText: 'add colector secundario',
-            deleteText: 'remove'
-        });
         //calenddario en los campos date
         $('#data_3 .input-group.date').datepicker({
                 startView: 2,
@@ -249,28 +190,6 @@ Crear Especimen
             }});  
         });
         
-        $(function() {
-          $('#id_imagen').change(function(e) {
-              addImage(e); 
-             });
-        
-             function addImage(e){
-              var file = e.target.files[0],
-              imageType = /image.*/;
-            
-              if (!file.type.match(imageType))
-               return;
-          
-              var reader = new FileReader();
-              reader.onload = fileOnload;
-              reader.readAsDataURL(file);
-             }
-          
-             function fileOnload(e) {
-              var result=e.target.result;
-              $('#imgSalida').attr("src",result);
-             }
-            });
    });
 </script>
 
