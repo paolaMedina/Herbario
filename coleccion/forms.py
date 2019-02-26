@@ -22,8 +22,8 @@ class ColeccionForm(ModelForm):
         }
         widgets = {
           
-                'fecha': forms.TextInput(attrs={'type':'text', 'id':'data_3', 'name':'datepicker', 'class':'form-control' }),
-                'descripcion': forms.Textarea(attrs={'required':'required' , 'class':'form-control'}),
+                'fecha': forms.TextInput(attrs={'type':'text', 'id':'data_3', 'name':'datepicker', 'class':'form-control ignored' }),
+                'descripcion': forms.Textarea(attrs={'required':'required' , 'class':'form-control ignored'}),
 
         }
 

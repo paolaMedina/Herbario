@@ -39,7 +39,12 @@ class UploadFileView(FormView):
         if form.is_valid():
             file = request.FILES['file']
             print file
-            handle_uploaded_file(file)
+            result=handle_uploaded_file(file)
+            if result==True:
+                messages.success(self.request, 'El archivo cargo con exito')
+            else:
+                messages.error=(self.request,'No se pudo cargar archivo, por favor revisar la codificación del archivo')
+
         return self.form_valid(form, **kwargs)
         
    
@@ -47,80 +52,86 @@ class UploadFileView(FormView):
 #Para guardar la iniformacion en los archivos ya existentes o crear uno nuevo y guardar             
 def handle_uploaded_file(csv_file):
     print csv_file
-    decoded_file = csv_file.read().decode('utf-8')
-    io_string = io.StringIO(decoded_file)
-    
-    reader=csv.DictReader(io_string, delimiter=str(u','))#CAMBIAR
-    reader.next()
-    #print reader.next()
-    
-    for line in  reader:
+    try:
+        decoded_file = csv_file.read().decode('utf-8')
+        io_string = io.StringIO(decoded_file)
         
+        reader=csv.DictReader(io_string, delimiter=str(u','))#CAMBIAR
+        reader.next()
+        #print reader.next()
         
-        #limpiar espacios en blanco y solo obtener los valores antes del punto para fecha
-        fecha_determinacion= formatDate(line['DETMM'].strip(' '),line['DETDD'].strip(' '),line['DETYY'].strip(' '))
-        
-        
-        try :
-            colectorPpal = Cientifico.objects.get(nombre_completo=line['COLLECTOR'])
-        except Cientifico.DoesNotExist:
-            colectorPpal =Cientifico(nombre_completo=line['COLLECTOR'])
-            colectorPpal.save()
+        for line in  reader:
             
-        print line['DETBY']
-        try :
-            objdeterminador = Cientifico.objects.get(nombre_completo=line['DETBY'], nombre_abreviado="")
-        except Cientifico.DoesNotExist:
-            objdeterminador =Cientifico(nombre_completo=line['DETBY'])
-            objdeterminador.save()    
             
-        
-        cateTaxonomica=CategoriaTaxonomica(familia=line['FAMILY'],genero=line['GENUS'],epiteto_especifico=line['SP1'],
-                                           fecha_det=fecha_determinacion,categoria_infraespecifica=line['RANK1'],
-                                           epiteto_infraespecifico=line['SP2'],autor1=line['AUTHOR1'],autor2=line['AUTHOR2']) 
-        cateTaxonomica.save()
-        
-        fecha_coleccion= formatDate(line['COLLMM'].strip(' '),line['COLLDD'].strip(' '),line['COLLYY'].strip(' '))
-        
-        objcoleccion= Coleccion(colector_ppal=colectorPpal,fecha=fecha_coleccion,descripcion=line['PLANTDESC'])
-        objcoleccion.save()
-        
-        colectoresSec=line['ADDCOLL'].split('.,')#arreglo de colectores secundarios
-        i=0# contador que maneja el orden en que se ingresen los colectores
-        for colector in colectoresSec:
+            #limpiar espacios en blanco y solo obtener los valores antes del punto para fecha
+            fecha_determinacion= formatDate(line['DETMM'].strip(' '),line['DETDD'].strip(' '),line['DETYY'].strip(' '))
+            
+            
             try :
-               objeColector = Cientifico.objects.get(nombre_completo=colector)
+                colectorPpal = Cientifico.objects.get(nombre_completo=line['COLLECTOR'])
             except Cientifico.DoesNotExist:
-                objeColector=Cientifico(nombre_completo=colector)
-                objeColector.save()
-            colectores= Colectores.objects.create(coleccion=objcoleccion, colector=objeColector, orden=i)
-            i+=1
-        
-        if (line['LONG'].strip()==""):
-            long=None
-        else:
-            try:
-                long=float(line['LONG'].strip())
-            except:
-                long=None
+                colectorPpal =Cientifico(nombre_completo=line['COLLECTOR'])
+                colectorPpal.save()
                 
+            print line['DETBY']
+            try :
+                objdeterminador = Cientifico.objects.get(nombre_completo=line['DETBY'], nombre_abreviado="")
+            except Cientifico.DoesNotExist:
+                objdeterminador =Cientifico(nombre_completo=line['DETBY'])
+                objdeterminador.save()    
+                
+            
+            cateTaxonomica=CategoriaTaxonomica(familia=line['FAMILY'],genero=line['GENUS'],epiteto_especifico=line['SP1'],
+                                            fecha_det=fecha_determinacion,categoria_infraespecifica=line['RANK1'],
+                                            epiteto_infraespecifico=line['SP2'],autor1=line['AUTHOR1'],autor2=line['AUTHOR2']) 
+            cateTaxonomica.save()
+            
+            fecha_coleccion= formatDate(line['COLLMM'].strip(' '),line['COLLDD'].strip(' '),line['COLLYY'].strip(' '))
+            
+            objcoleccion= Coleccion(colector_ppal=colectorPpal,fecha=fecha_coleccion,descripcion=line['PLANTDESC'])
+            objcoleccion.save()
+            
+            colectoresSec=line['ADDCOLL'].split('.,')#arreglo de colectores secundarios
+            i=0# contador que maneja el orden en que se ingresen los colectores
+            for colector in colectoresSec:
+                try :
+                    objeColector = Cientifico.objects.get(nombre_completo=colector)
+                except Cientifico.DoesNotExist:
+                    objeColector=Cientifico(nombre_completo=colector)
+                    objeColector.save()
+                colectores= Colectores.objects.create(coleccion=objcoleccion, colector=objeColector, orden=i)
+                i+=1
+            
+            if (line['LONG'].strip()==""):
+                long=None
+            else:
+                try:
+                    long=float(line['LONG'].strip())
+                except:
+                    long=None
+                    
 
-        if (line['LAT'].strip()==""):
-            lat=None
-        else:
-            try:
-                lat=float(line['LAT'].strip())
-            except:
+            if (line['LAT'].strip()==""):
                 lat=None
-        
-        print long
-        print lat
-        objUbicacion=Ubicacion(pais=line['COUNTRY'],departamento=line['MAJORAREA'],municipio=line['MINORAREA'],divisionPolitica=line['GAZETTEER'],latitud= lat ,longitud= long,especificacionLocacion=line['LOCNOTES'], cultivada=True)
-        objUbicacion.save()
+            else:
+                try:
+                    lat=float(line['LAT'].strip())
+                except:
+                    lat=None
+            
+            print long
+            print lat
+            objUbicacion=Ubicacion(pais=line['COUNTRY'],departamento=line['MAJORAREA'],municipio=line['MINORAREA'],divisionPolitica=line['GAZETTEER'],latitud= lat ,longitud= long,especificacionLocacion=line['LOCNOTES'], cultivada=True)
+            objUbicacion.save()
 
-        especimen=Especimen(num_registro=line['ACCESSION'],categoria=cateTaxonomica,coleccion=objcoleccion,
-                            determinador=objdeterminador,lugar_duplicado= line['DUPS'] ,peligro='FP', tipo='holo', ubicacion=objUbicacion,visible=True)
-        especimen.save()
+            especimen=Especimen(num_registro=line['ACCESSION'],categoria=cateTaxonomica,coleccion=objcoleccion,
+                                determinador=objdeterminador,lugar_duplicado= line['DUPS'] ,peligro='FP', tipo='holo', ubicacion=objUbicacion,visible=True)
+            especimen.save()
+        return True
+    except:
+        return False
+        
+
     
 def formatDate(month,day,year):
     return month.split(".")[0]+"/"+day.split(".")[0]+"/"+year.split(".")[0]

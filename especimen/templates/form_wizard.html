@@ -124,14 +124,21 @@ Crear Especimen
                             <div class="col-lg-6">
                                 <!-- numero registro -->
                                 <div class="form-group">
-                                    <label for={{formEspecimen.num_registro.name}}>{{formEspecimen.num_registro.label}} *</label>
+                                    <label for={{formEspecimen.num_registro.name}}>{{formEspecimen.num_registro.label}} <span style="
+                                        color: red;">*</span></label>
                                     {{formEspecimen.num_registro}}
                                 </div>
                                 <!-- lugar duplicado -->
                                 <div class="form-group">
-                                    <label for={{formEspecimen.lugar_duplicado.name}}>{{formEspecimen.lugar_duplicado.label}} *</label>
+                                    <label for={{formEspecimen.lugar_duplicado.name}}>{{formEspecimen.lugar_duplicado.label}} <span style="
+                                        color: red;">*</span></label>
                                     {{formEspecimen.lugar_duplicado}}
                                 </div>
+                                <!-- tipo -->
+                                <div class="form-group">
+                                        <label for={{formEspecimen.tipo.name}}>{{formEspecimen.tipo.label}} </label>
+                                        {{formEspecimen.tipo}}
+                                    </div>
                                 <!-- categoria de amenaza -->
                                 <div class="form-group">
                                     <label for={{formEspecimen.peligro.name}}>{{formEspecimen.peligro.label}} </label>
@@ -216,27 +223,6 @@ Crear Especimen
                                 {{formCateTaxonomica.categoria_infraespecifica}}
                             </div>
                         </div>
-                        
-                        <!-- Autor 1-->
-                        <div class="ibox-title">
-                            <h5>Autor 1</h5>
-                        </div>
-                        <div class="ibox-content">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for={{formAutor1.nombre_completo.name}}>Nombre</label>
-                                        {{formAutor1.nombre_completo}}
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for={{formAutor1.nombre_abreviado.name}}>Abreviatura</label>
-                                        {{formAutor1.nombre_abreviado}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <!-- epiteto_infraespecifico-taxonomia -->
                         <div class="row">
                             <div class="col-lg-8 form-group  ">
@@ -245,26 +231,69 @@ Crear Especimen
                             </div>  
                         </div>
                         
-                        <!-- Autor 2-->
-                        <div class="ibox-title">
-                            <h5>Autor 2</h5>
+                        <div class="row">
+                            <div class="col-lg-8 form-group  ">
+                                <label for={{formCateTaxonomica.autor1.name}}>{{formCateTaxonomica.autor1.label}}</label>
+                                {{formCateTaxonomica.autor1}}
+                            </div>  
                         </div>
-                        <div class="ibox-content">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for={{formAutor2.nombre_completo.name}}>Nombre</label>
-                                        {{formAutor2.nombre_completo}}
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for={{formAutor2.nombre_abreviado.name}}>Abreviatura</label>
-                                        {{formAutor2.nombre_abreviado}}
-                                    </div>
-                                </div>
+                        <div class="row">
+                            <div class="col-lg-8 form-group  ">
+                                <label for={{formCateTaxonomica.autor2.name}}>{{formCateTaxonomica.autor2.label}}</label>
+                                {{formCateTaxonomica.autor2}}
+                            </div>  
+                        </div>
+                    </fieldset>
+                    <h1>Ubicación</h1>
+                    <fieldset>
+                        <div class="row">
+                                <div class="col-lg-8 form-group  ">
+                                    <label for={{formUbicacion.pais.name}}>{{formUbicacion.pais.label}}</label>
+                                    {{formUbicacion.pais}}
+                                </div>  
                             </div>
-                        </div>
+                            <div class="row">
+                                <div class="col-lg-8 form-group  ">
+                                    <label for={{formUbicacion.departamento.name}}>{{formUbicacion.departamento.label}}</label>
+                                    {{formUbicacion.departamento}}
+                                </div>  
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8 form-group  ">
+                                    <label for={{formUbicacion.municipio.name}}>{{formUbicacion.municipio.label}}</label>
+                                    {{formUbicacion.municipio}}
+                                </div>  
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8 form-group  ">
+                                    <label for={{formUbicacion.divisionPolitica.name}}>{{formUbicacion.divisionPolitica.label}}</label>
+                                    {{formUbicacion.divisionPolitica}}
+                                </div>  
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8 form-group  ">
+                                    <label for={{formUbicacion.especificacionLocacion.name}}>{{formUbicacion.especificacionLocacion.label}}</label>
+                                    {{formUbicacion.especificacionLocacion}}
+                                </div>  
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8 form-group  ">
+                                    <label for={{formUbicacion.latitud.name}}>{{formUbicacion.latitud.label}}</label>
+                                    {{formUbicacion.latitud}}
+                                </div>  
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8 form-group  ">
+                                    <label for={{formUbicacion.longitud.name}}>{{formUbicacion.longitud.label}}</label>
+                                    {{formUbicacion.longitud}}
+                                </div>  
+                            </div>
+                            <div class="row">
+                                    <div class="col-lg-8 form-group  ">
+                                        <label for={{formUbicacion.cultivada.name}}>{{formUbicacion.cultivada.label}}</label>
+                                        {{formUbicacion.cultivada}}
+                                    </div>  
+                                </div>
                     </fieldset>
                     
                 </form>
@@ -332,7 +361,7 @@ Crear Especimen
                 }
 
                 // no valida los campos que están deshabilitados u ocultos.
-                form.validate().settings.ignore = ":disabled,:hidden";
+                form.validate().settings.ignore = ":disabled,:hidden, .ignored";
 
                 // valida cada pestaña, no permite avanzar si no es valido
                 return form.valid();
@@ -342,7 +371,7 @@ Crear Especimen
                 var form = $(this);
 
                 //  no valida los campos que están deshabilitados.
-                form.validate().settings.ignore = ":disabled";
+                form.validate().settings.ignore = ":disabled, .ignored";
 
                 // hace la validación; Evitar el envío de formularios si es falso no permite avanzar
                 return form.valid();
