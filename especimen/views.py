@@ -245,24 +245,23 @@ def ChangeEspecimen(request, pk=None):
     
 def searchEspecimen(request):
     especimensObject=None
-    print"aqui"
-    print request.POST
-    print request.POST.get('option', None)
     seleccion = request.POST.get('option', None)
     filtro= request.POST.get('filtro', None).strip()
-    
-    if(seleccion =='especie'):
-        especimensObject = Especimen.objects.filter(categoria__epiteto_especifico__icontains=filtro)
-    elif(seleccion =='familia'):
-        especimensObject = Especimen.objects.filter(categoria__familia__icontains=filtro)
-    elif(seleccion =='genero'):
-        especimensObject = Especimen.objects.filter(categoria__genero__icontains=filtro)
-        
-    contexto = {
-        'especimenes': especimensObject
-        }
-    print contexto
-    return render(request,'testing.html',contexto)
+    if (filtro==""):
+        return render(request, 'index-home.html')
+    else:
+
+        if(seleccion =='especie'):
+            especimensObject = Especimen.objects.filter(categoria__epiteto_especifico__icontains=filtro)
+        elif(seleccion =='familia'):
+            especimensObject = Especimen.objects.filter(categoria__familia__icontains=filtro)
+        elif(seleccion =='genero'):
+            especimensObject = Especimen.objects.filter(categoria__genero__icontains=filtro)
+            
+        contexto = {
+            'especimenes': especimensObject
+            }
+        return render(request,'BusquedaBasica.html',contexto)
     
 def autocompleteFilter(request):
     query=[]
@@ -287,7 +286,6 @@ def autocompleteFilter(request):
     return JsonResponse(data)   
     
 def busquedaAvanzada(request):
-    #print request.POST
     especimenes=None
     genero= request.POST.get('genero')
     familia= request.POST.get('familia')
@@ -331,35 +329,33 @@ def busquedaAvanzada(request):
         dict['municipio']=municipio
         listQuery.append(dict)
 
-        
-    #print listQuery
-    condiciones=""
-    i=0
-    for value in listQuery:
-        for key in value:
-            if i>0:
-                condiciones +=" and "
-            condiciones += "UPPER("+ key+ ") LIKE  UPPER('" + value[key] +"%')"
-            i+=1
-        
-    print condiciones
-    
-    query="""SELECT especimen.id as pk, especimen.tipo,especimen.num_registro, taxonomia.familia, taxonomia.genero, taxonomia.epiteto_especifico, coleccion.id, colector.nombre_completo as colector_ppal, ubicacion.pais,ubicacion.departamento, ubicacion.municipio 
-                    FROM especimen_especimen as especimen
-                    JOIN "categoriaTaxonomica_categoriataxonomica" as taxonomia
-                    ON especimen.categoria_id=taxonomia.id
-                    JOIN "coleccion_coleccion" as coleccion
-                    ON especimen.coleccion_id=coleccion.id
-                    JOIN "cientifico_cientifico" as colector
-                    ON coleccion.colector_ppal_id=colector.id
-                    JOIN "ubicacion_ubicacion" as ubicacion
-                    ON especimen.ubicacion_id=ubicacion.id
-                   """
-    if condiciones != "":
+    if(len(listQuery)>0):
+        condiciones=""
+        i=0
+        for value in listQuery:
+            for key in value:
+                if i>0:
+                    condiciones +=" and "
+                condiciones += "UPPER("+ key+ ") LIKE  UPPER('" + value[key] +"%')"
+                i+=1
+         
+        query="""SELECT especimen.id as pk, especimen.tipo,especimen.num_registro, taxonomia.familia, taxonomia.genero, taxonomia.epiteto_especifico, coleccion.id, colector.nombre_completo as colector_ppal, ubicacion.pais,ubicacion.departamento, ubicacion.municipio 
+                        FROM especimen_especimen as especimen
+                        JOIN "categoriaTaxonomica_categoriataxonomica" as taxonomia
+                        ON especimen.categoria_id=taxonomia.id
+                        JOIN "coleccion_coleccion" as coleccion
+                        ON especimen.coleccion_id=coleccion.id
+                        JOIN "cientifico_cientifico" as colector
+                        ON coleccion.colector_ppal_id=colector.id
+                        JOIN "ubicacion_ubicacion" as ubicacion
+                        ON especimen.ubicacion_id=ubicacion.id
+                    """
         query=query+"where "+condiciones
         especimenes=sql_select(query)
-        #print especimenes
-    return render(request,'busquedaAvanzada.html', {'especimenes':especimenes} )
+        return render(request,'busquedaAvanzada.html', {'especimenes':especimenes} )
+    else:
+        return render(request, 'index-home.html')
+
 
 def sql_select(sql):
     cursor = connection.cursor()
