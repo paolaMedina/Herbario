@@ -81,8 +81,9 @@ def RegistrarEspecimen(request, pk=None):
         #especimen
         formDeterminador= CientificoForm (request.POST,prefix="determinador",instance=determinadorObje)
         formEspecimen = EspecimenForm(request.POST, request.FILES,instance=especimen)
+        print request.FILES
         
-        if formCateTaxonomica.is_valid() and formColector.is_valid() and formColeccion.is_valid() and formEspecimen.is_valid() and formUbicacion.is_valid(): 
+        if formCateTaxonomica.is_valid() and formColector.is_valid() and formColeccion.is_valid() and formUbicacion.is_valid(): 
             print("valido")
             try :
                 colectorPpal = Cientifico.objects.get(nombre_completo=formColector['nombre_completo'].value(),nombre_abreviado=formColector['nombre_abreviado'].value())
@@ -149,8 +150,6 @@ def RegistrarEspecimen(request, pk=None):
     
     return render(request,'form_wizard.html',contexto)
    
-    
-    
 #funcion que permite autocompletar los nombres de cientifico 
 def autocomplete(request):
     if request.is_ajax():
@@ -165,7 +164,6 @@ def autocomplete(request):
     return JsonResponse(data) 	
 
 
-
 #funcion que lista los especimenes de la base de datos
 @login_required
 def ListarEspecimen(request): 
@@ -173,8 +171,6 @@ def ListarEspecimen(request):
     contexto = {'especimenes':especimen}
     return render(request,'especimen_listar.html', contexto )
     
-    
-
 #funcion que elimina un especimen dado    
 @login_required   
 def EliminarEspecimen(request, pk):
@@ -247,14 +243,13 @@ def ChangeEspecimen(request, pk=None):
    
     return render(request,'updateEspecimen.html',contexto)
     
-
 def searchEspecimen(request):
     especimensObject=None
     print"aqui"
     print request.POST
     print request.POST.get('option', None)
     seleccion = request.POST.get('option', None)
-    filtro= request.POST.get('filtro', None)
+    filtro= request.POST.get('filtro', None).strip()
     
     if(seleccion =='especie'):
         especimensObject = Especimen.objects.filter(categoria__epiteto_especifico__icontains=filtro)
@@ -269,7 +264,6 @@ def searchEspecimen(request):
     print contexto
     return render(request,'testing.html',contexto)
     
-
 def autocompleteFilter(request):
     query=[]
     if request.is_ajax():
@@ -290,17 +284,19 @@ def autocompleteFilter(request):
     else:
         data = 'fail'
         
-    return JsonResponse(data) 
-        
-
+    return JsonResponse(data)   
     
 def busquedaAvanzada(request):
-    print request.POST
+    #print request.POST
+    especimenes=None
     genero= request.POST.get('genero')
     familia= request.POST.get('familia')
     tipo= request.POST.get('tipo')
     registro= request.POST.get('numeroRegistro')
-    registro= request.POST.get('colectorprimario')
+    colector= request.POST.get('colectorprimario')
+    pais= request.POST.get('pais')
+    departamento=request.POST.get('departamento')
+    municipio=request.POST.get('municipio')
     listQuery=[]
     if(genero != ""):
         dict ={} 
@@ -310,8 +306,33 @@ def busquedaAvanzada(request):
         dict ={} 
         dict['familia']=familia
         listQuery.append(dict)
+    if (tipo != "volvo"):
+        dict ={} 
+        dict['tipo']=tipo
+        listQuery.append(dict)
+    if (registro != ""):
+        dict ={} 
+        dict['num_registro']=registro
+        listQuery.append(dict)
+    if (colector != ""):
+        dict ={} 
+        dict['colector_ppal']=colector
+        listQuery.append(dict)
+    if (pais != ""):
+        dict ={} 
+        dict['pais']=pais
+        listQuery.append(dict)
+    if (departamento != ""):
+        dict ={} 
+        dict['departamento']=departamento
+        listQuery.append(dict)
+    if (municipio != ""):
+        dict ={} 
+        dict['municipio']=municipio
+        listQuery.append(dict)
+
         
-    print listQuery
+    #print listQuery
     condiciones=""
     i=0
     for value in listQuery:
@@ -323,7 +344,7 @@ def busquedaAvanzada(request):
         
     print condiciones
     
-    query="""SELECT especimen.num_registro, taxonomia.familia, taxonomia.genero, taxonomia.epiteto_especifico, coleccion.id, colector.nombre_completo
+    query="""SELECT especimen.id as pk, especimen.tipo,especimen.num_registro, taxonomia.familia, taxonomia.genero, taxonomia.epiteto_especifico, coleccion.id, colector.nombre_completo as colector_ppal, ubicacion.pais,ubicacion.departamento, ubicacion.municipio 
                     FROM especimen_especimen as especimen
                     JOIN "categoriaTaxonomica_categoriataxonomica" as taxonomia
                     ON especimen.categoria_id=taxonomia.id
@@ -331,16 +352,14 @@ def busquedaAvanzada(request):
                     ON especimen.coleccion_id=coleccion.id
                     JOIN "cientifico_cientifico" as colector
                     ON coleccion.colector_ppal_id=colector.id
+                    JOIN "ubicacion_ubicacion" as ubicacion
+                    ON especimen.ubicacion_id=ubicacion.id
                    """
     if condiciones != "":
         query=query+"where "+condiciones
-        a=sql_select(query)
-        print a
-    return HttpResponseRedirect(reverse_lazy('inicio'))
-
-
-
-
+        especimenes=sql_select(query)
+        #print especimenes
+    return render(request,'busquedaAvanzada.html', {'especimenes':especimenes} )
 
 def sql_select(sql):
     cursor = connection.cursor()

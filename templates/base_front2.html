@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css" type="text/css" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" type="text/css" />
+        <link href="{% static 'plantilla-backend/font-awesome/css/font-awesome.css' %}" rel="stylesheet">
+        {% block head %} {% endblock %}
+        <title>{% block titulo %} {% endblock %} </title>
+
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar ftco-navbar-light" id="ftco-navbar" style="background-color:#bd2130">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">MENU UNIVALLLE</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="oi oi-menu"></span> Menu
+                </button>
+            </div>
+        </nav>
+        <section class="hero-wrap hero-wrap-2" style="background-color: #4b5258 !important;" data-stellar-background-ratio="0.5">
+            <div class="container">
+                <div class="row no-gutters slider-text align-items-end "style="color:aliceblue !important;">
+                        {% block guia %} {% endblock %} 
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="ftco-section ftco-degree-bg" style="margin-bottom: 90px; margin-top: 90px;">
+            <div class="container" >
+                <div class="order-md-last ftco-animate col-8 offset-md-2">
+                    {% block content %} {% endblock %} 
+                </div>
+        
+                </div>
+            </div>
+        </section>
+
+    </body>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    {% block javascript %} {% endblock %}
+    </html>
