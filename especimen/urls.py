@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^busqueda/$', views.searchEspecimen, name='testing'),
     url(r'^api/get_especimenes', views.autocompleteFilter, name='autocompleteEspecimen'),
     url(r'^api/busqueda', views.busquedaAvanzada, name='busquedaAvanzada'),
+    url(r'^detalle/(?P<pk>\d+)', views.vistaEspecimen, name='vistaEspecimen'),
     
     
 ]

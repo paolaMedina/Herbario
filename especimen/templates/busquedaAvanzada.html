@@ -11,73 +11,77 @@
 
 {% block guia %}
 <p class="breadcrumbs" >
-        <span class="mr-2" ><a href="{% url 'inicio' %}" style="color:aliceblue !important;">Home<i class="ion-ios-arrow-forward"></i></a></span> 
+        <span class="mr-2" ><a href="{% url 'inicio' %}" style="color:aliceblue !important;">Inicio<i class="ion-ios-arrow-forward"></i></a></span> 
         <span class="mr-2">></span> 
         <span><u>Busqueda</u> <i class="ion-ios-arrow-forward"></i></span>
     </p>
 {% endblock %}
 
 {% block content %}
-    <table id="example" class="table table-bordered" style="width:100%">
-        <thead>
-            <tr>
-                <th>Imagen</th>
-                <th>Información</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if especimenes %}
-                {% for especimen in especimenes %}
-                    <tr>
-                        {% if especimen.imagen %}
-                            <td><img src="{% get_media_prefix  %}{{especimen.imagen}}"alt="" />
-                                <br>
-                                <a href="{% url 'especimen:editar_especimen' pk=especimen.pk %}"><span class="fa fa-eye">Ver</a>
-                                </td>
-                        {% else %}
-                        <td><img src="/media/fotografias/vacio.jpg" alt="">
-                            <br> 
-                            <a href="{% url 'especimen:editar_especimen' pk=especimen.pk %}"><span class="fa fa-eye">Ver</a>
-                                </td>
-                        {% endif %}
-                        <td>
-                            <div class="container" >
-                                <div class="row">
-                                    <div class="col-5">
-                                        <strong><i>Número de Catálogo:</i></strong> 
-                                        <br>
-                                        <strong><i>Género:</i></strong> 
-                                        <br>
-                                        <strong><i>Familia:</i></strong> 
-                                        <br>
-                                        <strong><i>Colector Principal:</i></strong> 
-                                        <br>
-                                        <strong><i>Tipo:</i></strong> 
-                                        <br>
-                                        <strong><i>País:</i></strong> 
-                                    </div>
-                                    <div class="col-5">
-                                        {{especimen.num_registro}}
-                                        <br>
-                                        {{especimen.genero}}
-                                        <br>
-                                        {{especimen.familia}}
-                                        <br>
-                                        {{especimen.colector_ppal}}
-                                        <br>
-                                        {{especimen.tipo}}
-                                        <br>
-                                        {{especimen.pais}}
+<div class="container" >
+    <div class="order-md-last ftco-animate col-8 offset-md-2">
+        <table id="example" class="table table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Información</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if especimenes %}
+                    {% for especimen in especimenes %}
+                        <tr>
+                            {% if especimen.imagen %}
+                                <td><img src="{% get_media_prefix  %}{{especimen.imagen}}"alt="" />
+                                    <br>
+                                    <a href="{% url 'especimen:vistaEspecimen' pk=especimen.num_registro %}"><span class="fa fa-eye">Ver</a>
+                                    </td>
+                            {% else %}
+                            <td><img src="/media/fotografias/vacio.jpg" alt="">
+                                <br> 
+                                <a href="{% url 'especimen:editar_especimen' pk=especimen.num_registro %}"><span class="fa fa-eye">Ver</a>
+                                    </td>
+                            {% endif %}
+                            <td>
+                                <div class="container" >
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <strong><i>Número de Registro:</i></strong> 
+                                            <br>
+                                            <strong><i>Género:</i></strong> 
+                                            <br>
+                                            <strong><i>Familia:</i></strong> 
+                                            <br>
+                                            <strong><i>Colector Principal:</i></strong> 
+                                            <br>
+                                            <strong><i>Tipo:</i></strong> 
+                                            <br>
+                                            <strong><i>País:</i></strong> 
+                                        </div>
+                                        <div class="col-5">
+                                            {{especimen.num_registro}}
+                                            <br>
+                                            {{especimen.genero}}
+                                            <br>
+                                            {{especimen.familia}}
+                                            <br>
+                                            {{especimen.colector_ppal}}
+                                            <br>
+                                            {{especimen.tipo}}
+                                            <br>
+                                            {{especimen.pais}}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                
-                {% endfor %}
-            {% endif %}
-        </tbody>
-    </table>
+                            </td>
+                        </tr>
+                    
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
 
 {% block javascript %}

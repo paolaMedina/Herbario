@@ -1,0 +1,183 @@
+{% extends "base_front2.html" %}
+{% load static %}
+
+{% block titulo %}  Detalle Especimen  {% endblock %}
+
+{% block guia %}
+<p class="breadcrumbs" >
+        <span class="mr-2" ><a href="{% url 'inicio' %}" style="color:aliceblue !important;">Inicio<i class="ion-ios-arrow-forward"></a></span> 
+        <span class="mr-2">></span> 
+        <span><u>Busqueda</u> <i class="ion-ios-arrow-forward"></span>
+    </p>
+{% endblock %}
+
+{% block content %}
+
+    <h1>{{taxonomia.genero}} {{taxonomia.epiteto_especifico}} {{taxonomia.autor1}} </h1>
+    <br>
+    <div class="container" >
+        <div class="row">
+            <div class="col-6">
+                <div class="container" >
+                    <div class="row">
+                        <div class="col-6">
+                            <strong>Número de Registro:</strong> 
+                            <br>
+                            <strong>Lugar de Duplicado:</strong> 
+                            <br>
+                            <strong>Nivel de Peligro:</strong> 
+                            <br>
+                            <strong>Tipo:</strong> 
+                            <br>
+                            <strong>Determinador:</strong> 
+                        </div>
+                        <div class="col-6">
+                            {{especimen.num_registro}}
+                            <br>
+                            {{especimen.lugar_duplicado}}
+                            <br>
+                            {{especimen.peligro}}
+                            <br>
+                            {{especimen.tipo}}
+                            <br>
+                            {{determinador.nombre_completo}}  {{determinador.nombre_abreviado}}
+                        </div>
+                        <div class="col-6">
+                                <strong>Genero: </strong> 
+                                <br>
+                                <strong>Familia: </strong> 
+                                <br>
+                                <strong>Epiteto Especifico: </strong> 
+                                <br>
+                                <strong>Categoria Infraespecifica: </strong> 
+                                <br>
+                                <strong>Epiteto Infraespecifico: </strong> 
+                                <br>
+                                <strong>Fecha Determinación: </strong> 
+                                <br>
+                                <strong>Autor 1: </strong> 
+                                <br>
+                                <strong>Autor 2: </strong> 
+                        </div>
+                        <div class="col-6">
+                            {{taxonomia.genero}}
+                            <br>
+                            {{taxonomia.familia}}
+                            <br>
+                            {{taxonomia.epiteto_especifico}}
+                            <br>
+                            {{taxonomia.categoria_infraespecifica}}
+                            <br>
+                            {{taxonomia.epiteto_infraespecifico}}
+                            <br>
+                            {{taxonomia.fecha_det}}
+                            <br>
+                            {{taxonomia.autor1}}
+                            <br>
+                            {{taxonomia.autor2}}
+                        </div>
+                        <div class="col-6">
+                            <strong>Fecha de Colección: </strong> 
+                            <br>
+                            <strong>Descripción: </strong> 
+                            <br>
+                            <strong>Colector principal </strong> 
+                            <br>
+                            <strong>Colectores Secundarios: </strong> 
+                            <br>
+                        </div>
+                        <div class="col-6">
+                            {{coleccion.fecha}}
+                            <br>
+                            {{coleccion.descripcion}}
+                            <br>
+                            {{colectorPpal.nombre_completo}}
+                            {{colectorPpal.nombre_abreviado}}
+                            <br>
+                            {% if colecoresSecun %}
+                                {% for colector in colecoresSecun %}
+                                    {{colector.nombre_completo}}
+                                    {{colector.nombre_abreviado}}
+                                    <br>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="col-6">
+                            <strong>Lugar de Duplicado: </strong> 
+                            <br>
+                            <strong>Pais: </strong> 
+                            <br>
+                            <strong>Departamento: </strong>
+                            <br> 
+                            <strong>Municipio: </strong> 
+                            <br>                            
+                            <strong>División Politica: </strong> 
+                            <br>
+                            <strong>Especificación Locacion: </strong> 
+                            <br>
+                            <strong>Latitud: </strong> 
+                            <br>
+                            <strong>Longitud: </strong> 
+                            <br>
+                            <strong>¿Se encuentra cultivada? </strong> 
+                            <br>
+                        </div>
+                        <div class="col-6">
+                            {{ubicacion.lugar_duplicado}}
+                            <br>
+                            {{ubicacion.pais}}
+                            <br>
+                            {% if especimen.peligro == "EX"  or especimen.peligro == "LC" or especimen.peligro == "DD" or especimen.peligro == "NE" %}
+                                
+                                {{ubicacion.departamento}}
+                                <br>
+                                {{ubicacion.municipio}}
+                                <br>
+                                {{ubicacion.divisionPolitica}}
+                                <br>
+                                {{ubicacion.especificacionLocacion}}
+                                <br>
+                                {{ubicacion.longitud}}
+                                <br>
+                                {{ubicacion.latitud}}
+                                <br>
+                                {{ubicacion.cultivada}}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-5">
+                <div id="seadragon-viewer" style="width:600px; height:500px;"></div>
+                
+                <!-- <img src="/media/prueba.jpg"  data-magnify="gallery"
+                 data-caption="Image Caption 1"  data-src="/media/prueba.jpg"> -->
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+
+<script src="/static/plugins/openseadragon/openseadragon.min.js"></script>
+<script>
+    
+    var viewer = OpenSeadragon({
+        id: "seadragon-viewer",
+        prefixUrl: "//openseadragon.github.io/openseadragon/images/",
+        tileSources: {
+        type: 'image',
+        url:  '/media/test.jpg',
+        },
+        showNavigator:  true, 
+    });
+    document.getElementById('contentDiv').querySelector('.openseadragon-canvas').focus();
+</script>
+
+
+
+{% endblock %}
+
+

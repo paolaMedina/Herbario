@@ -17,8 +17,7 @@ function radioValue(){
 
 
 
-/* 
-function busqueda(){
+/* function busqueda(){
   var especimen = document.getElementById('especimen').value;
   var seleccion=radioValue();
   
@@ -41,15 +40,14 @@ function busqueda(){
       alert('error');
     }
   });
-}
-       */
+} */
 
 // autocompletado en la busqueda
 $('#especimen').on('keyup', function(){
     var value = $(this).val();
     var type= radioValue();
     $.ajax({
-        url: "especimen/api/get_especimenes",
+        url: "/especimen/api/get_especimenes",
         data: {
           'search': value,
           'type': type

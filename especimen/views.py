@@ -63,7 +63,6 @@ def RegistrarEspecimen(request, pk=None):
         viewsRedirect='especimen:crear_especimen'
         
     
-    print especimen.imagen
 
     if request.method == 'POST':
         print ("solicitud post")
@@ -81,7 +80,6 @@ def RegistrarEspecimen(request, pk=None):
         #especimen
         formDeterminador= CientificoForm (request.POST,prefix="determinador",instance=determinadorObje)
         formEspecimen = EspecimenForm(request.POST, request.FILES,instance=especimen)
-        print request.FILES
         
         if formCateTaxonomica.is_valid() and formColector.is_valid() and formColeccion.is_valid() and formUbicacion.is_valid(): 
             print("valido")
@@ -132,7 +130,6 @@ def RegistrarEspecimen(request, pk=None):
             messages.success(request, mensaje_exito)
             return HttpResponseRedirect(reverse_lazy(viewsRedirect))
     else:
-        print ("solicitud get******************************************************")
         formCateTaxonomica= TaxonomiaForm(instance=categoriaTaxo)
         formColector= CientificoForm (prefix="colector", instance= colectorppal)
         formColeccion = ColeccionForm(instance=coleccionObje)
@@ -140,8 +137,6 @@ def RegistrarEspecimen(request, pk=None):
         formEspecimen = EspecimenForm(instance=especimen)
         formDeterminador = CientificoForm (prefix="determinador",instance=determinadorObje)
         formUbicacion= UbicacionForm(instance=ubicacionObje)
-        print "-----------------------------------------------------"
-        print formUbicacion 
         
     contexto={'formCateTaxonomica': formCateTaxonomica, 
               'formColector' :formColector,'formColeccion':formColeccion, 'colectoresFormset':colectoresFormset,
@@ -356,7 +351,6 @@ def busquedaAvanzada(request):
     else:
         return render(request, 'index-home.html')
 
-
 def sql_select(sql):
     cursor = connection.cursor()
     cursor.execute(sql)
@@ -375,3 +369,21 @@ def sql_select(sql):
         i = i + 1
         list.append(dict) 
     return list  
+
+def vistaEspecimen(request, pk):
+    
+    especimen = Especimen.objects.get(num_registro=pk)
+    categoriaTaxo=CategoriaTaxonomica.objects.get(pk=especimen.categoria.pk)
+    coleccionObje= Coleccion.objects.get(pk=especimen.coleccion.pk)
+    ubicacionObje=Ubicacion.objects.get(pk=especimen.ubicacion.pk)
+    colectorppal=Cientifico.objects.get(pk=especimen.coleccion.colector_ppal.pk)
+    determinadorObje=Cientifico.objects.get(pk=especimen.determinador.pk)
+    colecoresSecun= coleccionObje.colectores_secu.all()
+   
+        
+        #print dicColectoresSecu
+    print colecoresSecun[0].nombre_completo
+    contexto={'especimen':especimen, 'taxonomia':categoriaTaxo,'coleccion':coleccionObje,'ubicacion':ubicacionObje,
+                'colectorPpal':colectorppal,'determinador':determinadorObje,'colecoresSecun':colecoresSecun}
+
+    return render(request,'detalleEspecimen.html',contexto)

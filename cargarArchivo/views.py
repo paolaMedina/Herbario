@@ -125,7 +125,7 @@ def handle_uploaded_file(csv_file):
                 objUbicacion.save()
 
                 especimen=Especimen(num_registro=line['ACCESSION'],categoria=cateTaxonomica,coleccion=objcoleccion,
-                                    determinador=objdeterminador,lugar_duplicado= line['DUPS'] ,peligro='FP', tipo='holo', ubicacion=objUbicacion,visible=True)
+                                    determinador=objdeterminador,lugar_duplicado= line['DUPS'] ,peligro='LC', tipo='holo', ubicacion=objUbicacion,visible=True)
                 especimen.save()
         return True
     except:
