@@ -251,8 +251,7 @@ def searchEspecimen(request):
                 gen=aux[0]
                 epiteto=aux[1]
                 especimensObject = Especimen.objects.filter(categoria__epiteto_especifico__icontains=epiteto).filter(categoria__genero__icontains=gen)
-                print especimensObject
-            else:return render(request, 'index-home.html')
+            else: especimensObject=[]
         elif(seleccion =='familia'):
             especimensObject = Especimen.objects.filter(categoria__familia__icontains=filtro)
         elif(seleccion =='genero'):
