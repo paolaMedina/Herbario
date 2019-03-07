@@ -23,11 +23,11 @@ class UbicacionForm(forms.ModelForm):
                 'pais' : 'Pais',
                 'departamento' : 'Departamento',
                 'municipio' : 'Municipio',
-                'divisionPolitica' : 'División politica',
+                'divisionPolitica' : 'División politica menor',
                 'latitud' : 'Latitud',
                 'longitud' : 'Longitud',
-                'especificacionLocacion' : 'Especificación de longitud',
-                'cultivada' : '¿Esta cultivada?'
+                'especificacionLocacion' : 'Especificación de localidad',
+                'cultivada' : '¿Es una planta cultivada?  '
                 
         }
         widgets = {
@@ -38,6 +38,6 @@ class UbicacionForm(forms.ModelForm):
                 'especificacionLocacion' : forms.Textarea(attrs={'class':'form-control col-md-7 col-xs-12  ignored'}),
                 'latitud': forms.TextInput(attrs={ 'onkeypress':'return isNumberKey(event)', 'class':'form-control col-md-7 col-xs-12 ignored'}),
                 'longitud' : forms.TextInput(attrs={ 'onkeypress':'return isNumberKey(event)', 'class':'form-control col-md-7 col-xs-12 ignored'}),
-                'cultivada' : forms.CheckboxInput(attrs={'class':' ignored'}),
+                'cultivada' : forms.CheckboxInput(attrs={'class':' ignored i-checks'}),
         }
         

@@ -12,11 +12,18 @@ Crear Especimen
 <link href="{% static 'plantilla-backend/css/plugins/iCheck/custom.css' %}" rel="stylesheet">
 <link href="{% static 'plantilla-backend/css/plugins/steps/jquery.steps.css' %}" rel="stylesheet">
 <link href="{% static 'plantilla-backend/css/plugins/datapicker/datepicker3.css' %}" rel="stylesheet">
+<link href="{% static 'plantilla-backend/css/plugins/iCheck/custom.css' %}" rel="stylesheet">
 <link href="{% static 'style.css' %}" rel="stylesheet">
 <!-- Toastr style -->
 <link href="{% static 'plantilla-backend/css/plugins/toastr/toastr.min.css' %}" rel="stylesheet">
 <!-- query-ui style -->
 <link href="{% static 'plantilla-backend/js/plugins/jquery-ui/jquery-ui.min.css' %}" rel="stylesheet">
+
+<style>
+    fieldset {
+        background: white
+    }
+</style>
 {% endblock %}
 
 
@@ -25,12 +32,9 @@ Crear Especimen
     <div class="col-lg-12">
         <div class="ibox">
             <div class="ibox-title">
-                <h5>Ingresar Especimen</h5>
+                <h5>INGRESAR ESPECIMEN</h5>
             </div>
             <div class="ibox-content">
-                <h2>
-                    Formulario Especimen
-                </h2>
 
                 <form id="form"  enctype="multipart/form-data" class="wizard-big  form-big" method="post">
                     {% csrf_token %}
@@ -292,6 +296,7 @@ Crear Especimen
                                     <div class="col-lg-8 form-group  ">
                                         <label for={{formUbicacion.cultivada.name}}>{{formUbicacion.cultivada.label}}</label>
                                         {{formUbicacion.cultivada}}
+                                       
                                     </div>  
                                 </div>
                     </fieldset>
@@ -335,7 +340,7 @@ Crear Especimen
       }
 </script>
 
-
+<!-- Manejo del wizard -->
 <script>
     $(document).ready(function(){
        
@@ -447,6 +452,15 @@ Crear Especimen
    });
 </script>
 
+<!-- iCheck -->
+<script src="{% static 'plantilla-backend/js/plugins/iCheck/icheck.min.js'%}"></script>
+<script>
+    $(document).ready(function () {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+        });
+    });
+</script>
 {% endblock %}
 
 

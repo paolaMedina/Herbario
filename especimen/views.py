@@ -245,9 +245,14 @@ def searchEspecimen(request):
     if (filtro==""):
         return render(request, 'index-home.html')
     else:
-
         if(seleccion =='especie'):
-            especimensObject = Especimen.objects.filter(categoria__epiteto_especifico__icontains=filtro)
+            aux=filtro.split()
+            if(len(aux)>1):
+                gen=aux[0]
+                epiteto=aux[1]
+                especimensObject = Especimen.objects.filter(categoria__epiteto_especifico__icontains=epiteto).filter(categoria__genero__icontains=gen)
+                print especimensObject
+            else:return render(request, 'index-home.html')
         elif(seleccion =='familia'):
             especimensObject = Especimen.objects.filter(categoria__familia__icontains=filtro)
         elif(seleccion =='genero'):
@@ -264,7 +269,22 @@ def autocompleteFilter(request):
         type=request.GET.get('type', None)
         search = request.GET.get('search', '').capitalize()
         if(type =='especie'):
-            query = CategoriaTaxonomica.objects.filter(epiteto_especifico__istartswith=search).values_list('epiteto_especifico',flat=True).distinct('epiteto_especifico')
+            aux=search.split()
+            gen=aux[0]
+            try:
+                epiteto=aux[1]
+                querySet = CategoriaTaxonomica.objects.filter(epiteto_especifico__istartswith=epiteto).filter(genero__istartswith=gen).values_list('genero','epiteto_especifico')
+                query=[]
+                for q in querySet:
+                    concat= q[0]+" "+q[1]    
+                    query.append(concat)
+            except:
+                querySet = CategoriaTaxonomica.objects.filter(genero__istartswith=gen).values_list('genero','epiteto_especifico')
+                query=[]
+                for q in querySet:
+                    concat= q[0]+" "+q[1]    
+                    query.append(concat) 
+            print query
         elif(type =='familia'):
             query = CategoriaTaxonomica.objects.filter(familia__istartswith=search).values_list('familia',flat=True).distinct('familia')
         elif(type =='genero'):
