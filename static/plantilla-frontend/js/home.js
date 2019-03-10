@@ -55,7 +55,7 @@ $('#especimen').on('keyup', function(){
         async: false,
         dataType: 'json',
         success: function (data) {
-            console.log(data.list)
+            console.log(data)
             list = data.list;
             $('#especimen').autocomplete({
             source: list,

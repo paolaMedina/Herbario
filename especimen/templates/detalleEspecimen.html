@@ -32,7 +32,7 @@
 </style>
     <!-- <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css">
  --> 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+<link rel="stylesheet" href="/static/plugins/leaflet/leaflet.css" />
 {% endblock %}
 {% block titulo %}  Detalle Especimen  {% endblock %}
 
@@ -194,24 +194,18 @@
                 </div> -->
             </div>
             <div class="col-5">
-                <div id="seadragon-viewer" style="width:600px; height:500px;"></div>
-                
-                <!-- <img src="/media/prueba.jpg"  data-magnify="gallery"
-                 data-caption="Image Caption 1"  data-src="/media/prueba.jpg"> -->
-
+                <div id="seadragon-viewer" style="width:600px; height:600px;"></div>
+            </div>
         </div>
-
+        <div id="map" class="map" style="height:400px;"></div>
     </div>
-    <div id="map" class="map" style="height:400px;"></div>
 
 {% endblock %}
 
 {% block javascript %}
 
 <script src="/static/plugins/openseadragon/openseadragon.min.js"></script>
-<!-- <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
- -->
- <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+ <script src="/static/plugins/leaflet/leaflet.js "></script>
  <script>
     var viewer = OpenSeadragon({
         id: "seadragon-viewer",
@@ -222,16 +216,7 @@
         },
         showNavigator:  true, 
     });
-    document.getElementById('contentDiv').querySelector('.openseadragon-canvas').focus();
-</script>
-<script>
-    //var map = new ol.Map({
-    //layers: [new ol.layer.Tile({source: new ol.source.OSM()})],
-    //target: 'map',
-    //view: new ol.View({
-    //projection: 'EPSG:4326',
-    //center: [-74.80875, 5.4153093],//long,lat
-    //zoom: 10})});
+    document.getElementById('seadragon-viewer').querySelector('.openseadragon-canvas').focus();
 </script>
 
 <script>
