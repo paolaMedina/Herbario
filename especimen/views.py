@@ -231,8 +231,7 @@ def ChangeEspecimen(request, pk=None):
         formCateTaxonomica= TaxonomiaForm(instance=categoriaTaxoObje)
         formEspecimen = EspecimenForm(instance=especimenObject)
         formDeterminador = CientificoForm (prefix="determinador",instance=determinadorObje)
-        print show
-        
+
     contexto={'formCateTaxonomica': formCateTaxonomica, 
               'formDeterminador': formDeterminador, 'formEspecimen':formEspecimen, 'show':show}
    
@@ -283,7 +282,6 @@ def autocompleteFilter(request):
                 for q in querySet:
                     concat= q[0]+" "+q[1]    
                     query.append(concat) 
-            print query
         elif(type =='familia'):
             query = CategoriaTaxonomica.objects.filter(familia__istartswith=search).values_list('familia',flat=True).distinct('familia')
         elif(type =='genero'):
@@ -398,10 +396,6 @@ def vistaEspecimen(request, pk):
     colectorppal=Cientifico.objects.get(pk=especimen.coleccion.colector_ppal.pk)
     determinadorObje=Cientifico.objects.get(pk=especimen.determinador.pk)
     colecoresSecun= coleccionObje.colectores_secu.all()
-   
-        
-        #print dicColectoresSecu
-    print colecoresSecun[0].nombre_completo
     contexto={'especimen':especimen, 'taxonomia':categoriaTaxo,'coleccion':coleccionObje,'ubicacion':ubicacionObje,
                 'colectorPpal':colectorppal,'determinador':determinadorObje,'colecoresSecun':colecoresSecun}
 
