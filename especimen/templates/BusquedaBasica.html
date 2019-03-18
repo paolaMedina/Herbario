@@ -33,12 +33,12 @@
                             {% if especimen.imagen %}
                                 <td><img src="{% get_media_prefix  %}{{especimen.imagen}}"alt="" />
                                     <br>
-                                    <a href="{% url 'especimen:editar_especimen' pk=especimen.num_registro %}"><span class="fa fa-eye">Ver</a>
+                                    <a href="{% url 'especimen:vistaEspecimen' pk=especimen.num_registro %}"><span class="fa fa-eye">Ver</a>
                                 </td>
                             {% else %}
                             <td><img src="/media/fotografias/vacio.jpg" alt="">
                                 <br>
-                                <a href="{% url 'especimen:vistaEspecimen' pk=especimen.num_registro %}"><span class="fa fa-eye"></a>
+                                <a href="{% url 'especimen:vistaEspecimen' pk=especimen.num_registro %}" target="_blank"><span class="fa fa-eye"></a>
                             </td>
                             {% endif %}
                             <td>

@@ -24,6 +24,7 @@ from django.http import JsonResponse
 import json
 import types
 from django.db import connection, transaction
+import ast
 
 @login_required
 @has_role_decorator(['monitor', 'curador','investigador'])
@@ -237,7 +238,7 @@ def ChangeEspecimen(request, pk=None):
    
     return render(request,'updateEspecimen.html',contexto)
     
-def searchEspecimen(request):
+def searchEspecimen(request):           
     especimensObject=None
     seleccion = request.POST.get('option', None)
     filtro= request.POST.get('filtro', None).strip()
@@ -316,17 +317,13 @@ def busquedaAvanzada(request):
         dict ={} 
         dict['familia']=familia
         listQuery.append(dict)
-    if (tipo != "volvo"):
+    if (tipo != "ninguno"):
         dict ={} 
         dict['tipo']=tipo
         listQuery.append(dict)
     if (registro != ""):
         dict ={} 
         dict['num_registro']=registro
-        listQuery.append(dict)
-    if (colector != ""):
-        dict ={} 
-        dict['colector_ppal']=colector
         listQuery.append(dict)
     if (pais != ""):
         dict ={} 
@@ -340,8 +337,13 @@ def busquedaAvanzada(request):
         dict ={} 
         dict['municipio']=municipio
         listQuery.append(dict)
-
+        
+    if (colector != ""):
+        dict ={} 
+        dict['colector.nombre_completo']=colector
+        listQuery.append(dict)
     if(len(listQuery)>0):
+    # and colector == ""):
         condiciones=""
         i=0
         for value in listQuery:
@@ -350,23 +352,44 @@ def busquedaAvanzada(request):
                     condiciones +=" and "
                 condiciones += "UPPER("+ key+ ") LIKE  UPPER('" + value[key] +"%')"
                 i+=1
-         
-        query="""SELECT especimen.id as pk, especimen.tipo,especimen.num_registro, taxonomia.familia, taxonomia.genero, taxonomia.epiteto_especifico, coleccion.id, colector.nombre_completo as colector_ppal, ubicacion.pais,ubicacion.departamento, ubicacion.municipio 
-                        FROM especimen_especimen as especimen
-                        JOIN "categoriaTaxonomica_categoriataxonomica" as taxonomia
-                        ON especimen.categoria_id=taxonomia.id
-                        JOIN "coleccion_coleccion" as coleccion
-                        ON especimen.coleccion_id=coleccion.id
-                        JOIN "cientifico_cientifico" as colector
-                        ON coleccion.colector_ppal_id=colector.id
-                        JOIN "ubicacion_ubicacion" as ubicacion
-                        ON especimen.ubicacion_id=ubicacion.id
-                    """
-        query=query+"where "+condiciones
+        select='SELECT especimen.id as pk,especimen.imagen, especimen.tipo,especimen.num_registro, taxonomia.familia, taxonomia.genero, taxonomia.epiteto_especifico, coleccion.id, colector.id as id_colector_ppal,colector.nombre_completo as colector_ppal, ubicacion.pais,ubicacion.departamento, ubicacion.municipio '
+
+        join="""FROM especimen_especimen as especimen
+                JOIN "categoriaTaxonomica_categoriataxonomica" as taxonomia
+                ON especimen.categoria_id=taxonomia.id
+                JOIN "coleccion_coleccion" as coleccion
+                ON especimen.coleccion_id=coleccion.id
+                JOIN "cientifico_cientifico" as colector
+                ON coleccion.colector_ppal_id=colector.id
+                JOIN "ubicacion_ubicacion" as ubicacion
+                ON especimen.ubicacion_id=ubicacion.id"""
+        query= select + join +" where "+condiciones
         especimenes=sql_select(query)
-        return render(request,'busquedaAvanzada.html', {'especimenes':especimenes} )
+
+        if colector != "":
+            distinct='select DISTINCT colector.id, colector.nombre_completo '
+            queryColector=distinct + join + " where " + condiciones
+            print queryColector
+            colectores=sql_select(queryColector)
+            context={ 'colectores':colectores, 'especimenes_dumps':json.dumps(especimenes)} 
+            return render(request,'busquedaColectores.html',context) 
+        else:
+            return render(request,'busquedaColectores.html', {'especimenes':especimenes} ) 
     else:
         return render(request, 'index-home.html')
+
+
+
+def busquedaColectores(request):
+    especimenesIni= request.POST.get('especimenes') 
+    lista = ast.literal_eval(especimenesIni)#convertir unicode a list
+    colector= request.POST.get('colector')
+    filtro=[]
+    for item in lista:
+        if (item['id_colector_ppal']==colector):
+            filtro.append(item)
+    # print filtro
+    return JsonResponse({'data':filtro})   
 
 def sql_select(sql):
     cursor = connection.cursor()
