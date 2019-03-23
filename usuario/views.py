@@ -99,9 +99,9 @@ def ListarMonitores(request):
     return render(request,'listarMonitores.html', contexto )
     
     
-class EditarUsuario(UpdateView):
+class EditarUsuario(SuccessMessageMixin,UpdateView):
     
-    @verificar_rol(roles_permitidos=["curador", "director"])
+    @verificar_rol(roles_permitidos=["director"])
     def dispatch(self, request, *args, **kwargs):
         return super(EditarUsuario, self).dispatch(request, *args, **kwargs)
         
@@ -110,11 +110,13 @@ class EditarUsuario(UpdateView):
     def get_form_kwargs(self):
         kwargs = super(EditarUsuario, self).get_form_kwargs()
         return dict(kwargs, groups=self.request.user.groups.values_list('name', flat=True))
-    
+
+
     model = Usuario
     form_class = RegistroForm
+    success_message = 'Usuario actualizado'
     template_name = "registrar.html"
-    success_url=reverse_lazy("usuario:registrar_usuario")
+    success_url=reverse_lazy("usuario:listar_usuario")
   
   
 class EliminarUsuario(DeleteView):

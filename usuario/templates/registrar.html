@@ -5,13 +5,22 @@
 
 
 {% block titulo %}
-Registrar Usuario
+{% if form.usernamev%}
+    Registar Usuario
+{% else %}
+ Editar Usuario
+{% endif %}
 {% endblock %}
 
 
 {% block extrahead %}
 <!-- Text spinners style -->
 <link href="{% static 'plantilla-backend/css/plugins/textSpinners/spinners.css' %}" rel="stylesheet">
+<style>
+/* eefafb */
+.form-control[readonly], fieldset[disabled] .form-control {
+    background-color: #eefafb;
+</style>
 {% endblock %}
 
 {% block content %}
@@ -19,7 +28,11 @@ Registrar Usuario
     <div class="col-lg-10">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
+                {% if form.usernamev%}
                 <h2>Registar Usuario</h2>
+                {% else %}
+                <h2>Editar Usuario</h2>
+                {% endif %}
             </div>
             
             <div class="ibox-content">

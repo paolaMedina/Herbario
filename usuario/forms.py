@@ -17,6 +17,14 @@ class RegistroForm(forms.ModelForm):
             self.fields['rol'].widget.attrs['disabled'] = True
         else:
            self.fields['rol'].widget.attrs['disabled'] = False
+        
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            self.fields['username'].widget.attrs['readonly'] = True
+            self.fields['first_name'].widget.attrs['readonly'] = True
+            self.fields['last_name'].widget.attrs['readonly'] = True
+            self.fields['email'].widget.attrs['readonly'] = True
+            self.fields['identificacion'].widget.attrs['readonly'] = True
     
     username=forms.CharField(required=True,label='Nombre Usuario',widget=forms.TextInput(attrs={'class':'form-control', 'required':'required'}))
     first_name = forms.CharField(required=True, label='Nombres',widget=forms.TextInput(attrs={'class':'form-control', 'required':'required'}))
@@ -42,14 +50,17 @@ class RegistroForm(forms.ModelForm):
            
     #clean email field
     def clean_email(self):
-        email = self.cleaned_data["email"]
-        try:
-            User._default_manager.get(email=email)
-        except User.DoesNotExist:
-            return email
-        raise forms.ValidationError('Este email ya se encuentra registrado')
-  
-  
+        instance = getattr(self, 'instance', None)
+        if instance:
+            return instance.email
+        else:
+            email = self.cleaned_data["email"]
+            try:
+                User._default_manager.get(email=email)
+            except User.DoesNotExist:
+                return email
+            raise forms.ValidationError('Este email ya se encuentra registrado')
+   
 class FormularioLogin(AuthenticationForm):
 
     def __init__(self, *args, **kwargs):
@@ -60,6 +71,7 @@ class FormularioLogin(AuthenticationForm):
             self.fields['password'].widget.attrs['placeholder'] = 'Contraseña'
             
 class FormularioReset(PasswordResetForm):
+
     def __init__(self, *args, **kwargs):
             super(FormularioReset, self).__init__(*args, **kwargs)
             self.fields['email'].widget.attrs['class'] = 'form-control'
