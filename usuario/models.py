@@ -17,6 +17,7 @@ grupos = ((monitor, 'Monitor'),(investigador, 'Investigador'), (curador, 'Curado
 class Usuario(User):
     identificacion= models.IntegerField()
     rol=models.CharField(max_length=12, choices=grupos, default='monitor')
+    # active=models.BooleanField(default=True)
 
     
     

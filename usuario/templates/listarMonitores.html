@@ -30,6 +30,7 @@ Listar Monitores
                         <th>Apellidos</th>
                         <th>Correo Electronico</th>
                         <th>Rol</th>
+                        <th>Activo</th>
                         <th>Acciones</th>
                     </tr>
                     </thead>
@@ -42,10 +43,11 @@ Listar Monitores
                             <td>{{monitor.last_name}}</td>
                             <td>{{monitor.email}}</td>
                             <td>{{monitor.rol}}</td>
+                            <td>{{monitor.is_active}}</td>
                             <td>
                               <a class="btn btn-primary" href="{% url 'usuario:editar_usuario' pk=monitor.pk %}" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></a>
-                              <a class="btn btn-danger" href="{% url 'usuario:eliminar_usuario' pk=monitor.pk %}" onclick="return confirm('Desea eliminar el registro {{usuario.first_name }} {{usuario.last_name }}?')"
-                              ><span class="glyphicon glyphicon-trash" aria-hidden="true"></a>
+                             <!-- <a class="btn btn-danger" href="{% url 'usuario:eliminar_usuario' pk=monitor.pk %}" onclick="return confirm('Desea eliminar el registro {{usuario.first_name }} {{usuario.last_name }}?')"
+                              ><span class="glyphicon glyphicon-trash" aria-hidden="true"></a> -->
                             </td>
                             
                         </tr>

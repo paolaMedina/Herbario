@@ -5,11 +5,11 @@
 
 
 {% block titulo %}
-{% if form.usernamev%}
-    Registar Usuario
-{% else %}
- Editar Usuario
-{% endif %}
+{% if form.username.value != None %}
+        Editar Usuario
+    {% else %}
+        Registar Usuario
+    {% endif %}
 {% endblock %}
 
 
@@ -28,10 +28,10 @@
     <div class="col-lg-10">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                {% if form.usernamev%}
-                <h2>Registar Usuario</h2>
+                {% if form.username.value != None %}
+                    <h2>Editar Usuario</h2>
                 {% else %}
-                <h2>Editar Usuario</h2>
+                    <h2>Registar Usuario</h2>
                 {% endif %}
             </div>
             
@@ -66,6 +66,11 @@
                         <label class="col-sm-2 control-label" for={{form.rol.name}}>{{form.rol.label}}</label>
                         <div class="col-sm-6">{{form.rol}}</div>
                     </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for={{form.is_active.name}}>{{form.is_active.label}}</label>
+                        <div class="col-sm-6">{{form.is_active}}</div>
+                    </div>
                     
                     
                     <div class="form-group">
@@ -90,7 +95,7 @@
 <!-- Password meter -->
 <script src="{% static 'plantilla-backend/js/plugins/pwstrength/pwstrength-bootstrap.min.js' %}"></script>
 <script src="{% static 'plantilla-backend/js/plugins/pwstrength/zxcvbn.js' %}"></script>
-
+<script src="{% static 'plantilla-backend/js/plugins/iCheck/icheck.min.js' %}"></script>
 
 
 <!-- validar solo numeros en el campo de numero de registro -->
@@ -104,9 +109,10 @@
       }
 </script>
 
+
 <script>
    $(document).ready(function(){
-     
+
      $('#guardar').click(function(){
          jQuery(this).find(':disabled').removeAttr('disabled');
          var validado = $("#form").valid();

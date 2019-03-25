@@ -25,7 +25,7 @@ SECRET_KEY = '$&a7azey)pqip%@dbgw6=9m)eeow_ls^l6wb4eac1)c4l)p%_&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['*']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
@@ -176,6 +176,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'angiepmc93@gmail.com'
 EMAIL_HOST_PASSWORD = 'A.P.Medina1208'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = 'Herbario CUVC  <noreply@example.com>'
 
 #reconozca el archivo roles.py
 ROLEPERMISSIONS_MODULE = 'herbario1.roles' 

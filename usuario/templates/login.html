@@ -13,6 +13,8 @@
     <link href="{% static 'plantilla-backend/font-awesome/css/font-awesome.css' %}" rel="stylesheet">
     <link href="{% static 'plantilla-backend/css/animate.css' %}" rel="stylesheet">
     <link href="{% static 'plantilla-backend/css/style.css' %}" rel="stylesheet">
+    <!-- Toastr style -->
+    <link href="{% static 'plantilla-backend/css/plugins/toastr/toastr.min.css' %}" rel="stylesheet">
 
     <style>
         .title{
@@ -45,7 +47,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary block full-width m-b">Log in</button>
 
-                <a href="{% url 'password_reset' %}"><small>Forgot password?</small></a>
+                <a href="{% url 'password_reset' %}"><small>¿Se te olvidó tu contraseña?</small></a>
             </form>
            
         
@@ -54,6 +56,28 @@
     <!-- Mainly scripts -->
     <script src="{% static 'plantilla-backend/js/jquery-3.1.1.min.js' %}"></script>
     <script src="{% static 'plantilla-backend/js/bootstrap.min.js' %}"></script>
+
+     
+    <!-- Toastr -->
+    <script src="{% static 'plantilla-backend/js/plugins/toastr/toastr.min.js' %}"></script>
+    
+    
+    <!-- mostrar mensaje de exito o error que se envia desde las vistas  -->
+    <script type="text/javascript">
+        {% for msg in messages %}
+            $(document).ready(function(){
+                setTimeout(function() {
+                    toastr.options = {
+                        "closeButton": true,
+                        "progressBar": true,
+                        showMethod: 'slideDown',
+                    }
+                    toastr["{{ msg.tags }}"]("{{msg}}")
+                },500);
+            });
+        {% endfor %}
+    </script>
+
 
 </body>
 

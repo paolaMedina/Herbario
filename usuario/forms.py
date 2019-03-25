@@ -30,11 +30,11 @@ class RegistroForm(forms.ModelForm):
     first_name = forms.CharField(required=True, label='Nombres',widget=forms.TextInput(attrs={'class':'form-control', 'required':'required'}))
     last_name = forms.CharField(required=True, label='Apellidos',widget=forms.TextInput(attrs={'class':'form-control', 'required':'required'}))
     email = forms.EmailField(required=True, label= 'Correo Electrónico',widget=forms.EmailInput(attrs={'type':'email', 'class':'form-control', 'required':'required'}))
- 
+    is_active= forms.BooleanField(required=False, label= 'Activo',widget=forms.CheckboxInput(attrs={ 'type':'checkbox'}))
     
     class Meta:
         model = Usuario
-        fields = ('username','first_name', 'last_name', 'email','rol','identificacion')
+        fields = ('username','first_name', 'last_name', 'email','rol','identificacion','is_active')
         
         labels = {
             
@@ -51,7 +51,7 @@ class RegistroForm(forms.ModelForm):
     #clean email field
     def clean_email(self):
         instance = getattr(self, 'instance', None)
-        if instance:
+        if instance and instance.pk:
             return instance.email
         else:
             email = self.cleaned_data["email"]
@@ -66,7 +66,7 @@ class FormularioLogin(AuthenticationForm):
     def __init__(self, *args, **kwargs):
             super(FormularioLogin, self).__init__(*args, **kwargs)
             self.fields['username'].widget.attrs['class'] = 'form-control'
-            self.fields['username'].widget.attrs['placeholder'] = 'Usuario'
+            self.fields['username'].widget.attrs['placeholder'] = 'Usuario o Email'
             self.fields['password'].widget.attrs['class'] = 'form-control'
             self.fields['password'].widget.attrs['placeholder'] = 'Contraseña'
             
