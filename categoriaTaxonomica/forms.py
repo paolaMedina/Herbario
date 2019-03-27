@@ -24,11 +24,11 @@ class TaxonomiaForm(forms.ModelForm):
             
         labels = {
                 'familia' : 'Familia',
-                'genero' : 'Genero',
-                'epiteto_especifico': 'Epiteto Especifico' ,
-                'fecha_det' : 'Fecha Determinacion',
-                'categoria_infraespecifica' : 'Categoria Infraespecifico',
-                'epiteto_infraespecifico' : 'Epiteto Infraespecifico',
+                'genero' : 'Género',
+                'epiteto_especifico': 'Epíteto Específico' ,
+                'fecha_det' : 'Fecha Determinación',
+                'categoria_infraespecifica' : 'Categoría Infraespecífica',
+                'epiteto_infraespecifico' : 'Epíteto Infraespecífico',
                 'autor1' : 'Autor 1',
                 'autor2' : 'Autor 2'
                 

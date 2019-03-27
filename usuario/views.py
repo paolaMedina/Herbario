@@ -90,7 +90,8 @@ class ListarUsuarios(ListView):
     # queryset = Usuario.objects.filter(is_active=True)
     
 @login_required
-@has_role_decorator(['curador'])
+# @has_role_decorator(['curador'])
+@verificar_rol(roles_permitidos=["curador"])
 def ListarMonitores(request):
         
     # monitor= Usuario.objects.filter(rol='monitor', is_active=True)

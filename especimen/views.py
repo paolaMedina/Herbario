@@ -21,13 +21,15 @@ from rolepermissions.decorators import has_role_decorator
 from django.shortcuts import get_object_or_404 
 from django.shortcuts import redirect
 from django.http import JsonResponse
+from herbario1.utilities import *
 import json
 import types
 from django.db import connection, transaction
 import ast
 
 @login_required
-@has_role_decorator(['monitor', 'curador','investigador'])
+# @has_role_decorator(['monitor', 'curador','investigador'])
+@verificar_rol(roles_permitidos=['monitor', 'curador','investigador'])
 def RegistrarEspecimen(request, pk=None):
     
     ColectoresFormSet = formset_factory(CientificoForm)
@@ -35,21 +37,42 @@ def RegistrarEspecimen(request, pk=None):
     #cargar datos en caso de ser edicion
     if pk:
         especimen = Especimen.objects.get(pk=pk)
-        categoriaTaxo=CategoriaTaxonomica.objects.get(pk=especimen.categoria.pk)
-        coleccionObje= Coleccion.objects.get(pk=especimen.coleccion.pk)
-        ubicacionObje=Ubicacion.objects.get(pk=especimen.ubicacion.pk)
-        colectorppal=Cientifico.objects.get(pk=especimen.coleccion.colector_ppal.pk)
-        determinadorObje=Cientifico.objects.get(pk=especimen.determinador.pk)
-        cientificos= coleccionObje.colectores_secu.all()
+        if (especimen.categoria != None):
+            categoriaTaxo=CategoriaTaxonomica.objects.get(pk=especimen.categoria.pk)
+        else:
+            categoriaTaxo=CategoriaTaxonomica()
+        if (especimen.coleccion != None):
+            coleccionObje= Coleccion.objects.get(pk=especimen.coleccion.pk)
+        else:
+            coleccionObje=Coleccion()
+        if (especimen.ubicacion != None):
+            ubicacionObje=Ubicacion.objects.get(pk=especimen.ubicacion.pk)
+        else:
+            ubicacionObje=Ubicacion()
+        if (especimen.coleccion != None and especimen.coleccion.colector_ppal != None):
+            colectorppal=Cientifico.objects.get(pk=especimen.coleccion.colector_ppal.pk)
+        else:
+            colectorppal=Cientifico()
+        if (especimen.determinador != None):
+            determinadorObje=Cientifico.objects.get(pk=especimen.determinador.pk)
+        else:
+            determinadorObje= Cientifico()
+        if (especimen.coleccion != None and coleccionObje.colectores_secu != None):
+            cientificos= coleccionObje.colectores_secu.all()
+            #rrecorre cientificos, que es la query con los colectores secundarios y crea un diccionario con estos para pasarlo por initial al formset
+            for cientifico in cientificos:
+                x={'nombre_completo':cientifico.nombre_completo,'nombre_abreviado':cientifico.nombre_abreviado}
+                dicColectoresSecu.append(x)
+        else:
+            cientificos= Cientifico()
+        
+
         mensaje_exito="Se edito exitosamente"
         viewsRedirect='especimen:listar_especimen'
         
-        #rrecorre cientificos, que es la query con los colectores secundarios y crea un diccionario con estos para pasarlo por initial al formset
-        for cientifico in cientificos:
-            x={'nombre_completo':cientifico.nombre_completo,'nombre_abreviado':cientifico.nombre_abreviado}
-            dicColectoresSecu.append(x)
         
-        #print dicColectoresSecu
+        
+        # print dicColectoresSecu
             
     else: 
         especimen = Especimen()
@@ -82,37 +105,54 @@ def RegistrarEspecimen(request, pk=None):
         formDeterminador= CientificoForm (request.POST,prefix="determinador",instance=determinadorObje)
         formEspecimen = EspecimenForm(request.POST, request.FILES,instance=especimen)
         
-        if formCateTaxonomica.is_valid() and formColector.is_valid() and formColeccion.is_valid() and formUbicacion.is_valid(): 
+        colectorPpal=None
+        determinador=None
+
+        if formEspecimen.is_valid() and formCateTaxonomica.is_valid() and formColector.is_valid() and formColeccion.is_valid() and formUbicacion.is_valid(): 
             print("valido")
-            try :
-                colectorPpal = Cientifico.objects.get(nombre_completo=formColector['nombre_completo'].value(),nombre_abreviado=formColector['nombre_abreviado'].value())
-            except Cientifico.DoesNotExist:
-                colectorPpal = formColector.save()
-            try :
-                determinador = Cientifico.objects.get(nombre_completo=formDeterminador['nombre_completo'].value(),nombre_abreviado=formDeterminador['nombre_abreviado'].value())
-            except Cientifico.DoesNotExist:
-                determinador = formDeterminador.save()
+            if(formColector['nombre_completo'].value() != ""):
+                try :
+                    colectorPpal = Cientifico.objects.get(nombre_completo=formColector['nombre_completo'].value(),nombre_abreviado=formColector['nombre_abreviado'].value())
+                except Cientifico.DoesNotExist:
+                    colectorPpal = formColector.save()
+            if(formDeterminador['nombre_completo'].value() != ""):
+                try :
+                    determinador = Cientifico.objects.get(nombre_completo=formDeterminador['nombre_completo'].value(),nombre_abreviado=formDeterminador['nombre_abreviado'].value())
+                except Cientifico.DoesNotExist:
+                    determinador = formDeterminador.save()
+
+        #    validar que el formulario no venga completamente vacio
+            if (formCateTaxonomica['familia'].value()=="" and formCateTaxonomica['genero'].value()=="" and formCateTaxonomica['epiteto_especifico'].value()=="" and formCateTaxonomica['fecha_det'].value()=="" and formCateTaxonomica['epiteto_infraespecifico'].value()=="" and formCateTaxonomica['categoria_infraespecifica'].value()=="" and formCateTaxonomica['autor1'].value()=="" and formCateTaxonomica['autor2'].value()=="" ):
+                cateTaxonomica=None
+            else:
+                cateTaxonomica=formCateTaxonomica.save() 
             
-            cateTaxonomica=formCateTaxonomica.save()   
-            ubicacion=formUbicacion.save()  
+            if (formUbicacion['pais'].value()=="" and formUbicacion['departamento'].value()=="" and formUbicacion['municipio'].value()=="" and formUbicacion['divisionPolitica'].value()=="" and formUbicacion['especificacionLocacion'].value()=="" and formUbicacion['latitud'].value()=="" and formUbicacion['longitud'].value()=="" and formUbicacion['alturaMinima'].value()=="" and formUbicacion['alturaMaxima'].value()=="" ):
+                 ubicacion=None
+            else:
+                ubicacion=formUbicacion.save()
             
-            fColeccion = formColeccion.save(commit = False)
-            fColeccion.colector_ppal=colectorPpal
-            fColeccion.save()
-           
+            if(formColeccion['fecha'].value() == "" and formColeccion['descripcion'].value() == "" and colectorPpal==None):
+                fColeccion=None
+            else:
+                fColeccion = formColeccion.save(commit = False)
+                fColeccion.colector_ppal=colectorPpal
+                fColeccion.save()
+            # print colectoresFormset   
             #guardar colectores secundarios
             
-            i=0# contador que maneja el orden en que se ingresen los colectores
-            
-            coleccionObje.colectores_secu.clear()#limpia las instancias de colectores
-            #print (colectoresFormset.as_table()) 
-
-            for colector_form in colectoresFormset:
-                if not(colector_form['nombre_completo'].value()==""):
-                    
+            print colectoresFormset.has_changed()
+            if(colectoresFormset.has_changed()):
+                i=0 # contador que maneja el orden en que se ingresen los colectores
+                fColeccion = formColeccion.save()
+                coleccionObje.colectores_secu.clear()#limpia las instancias de colectores
+                for colector_form in colectoresFormset:
+                    print colector_form['nombre_completo'].value()
+                        # se crea la colección en caso que que los campos fecha, descripción y col_principal no existieran, pero si secundarios
+                        
                     try :
-                       objeColector = Cientifico.objects.get(nombre_completo=colector_form['nombre_completo'].value(), nombre_abreviado=colector_form['nombre_abreviado'].value())
-                       #print("existe")
+                        objeColector = Cientifico.objects.get(nombre_completo=colector_form['nombre_completo'].value(), nombre_abreviado=colector_form['nombre_abreviado'].value())
+                    #print("existe")
                     except Cientifico.DoesNotExist:
                         objeColector=Cientifico(nombre_completo=colector_form['nombre_completo'].value(), nombre_abreviado=colector_form['nombre_abreviado'].value())
                         objeColector.save()
@@ -120,16 +160,18 @@ def RegistrarEspecimen(request, pk=None):
                 
                     colectores= Colectores.objects.create(coleccion=fColeccion, colector=objeColector, orden=i)
                     i+=1
-            especimen = formEspecimen.save(commit = False)
+            especimen = formEspecimen.save(commit = False)    
             especimen.categoria=cateTaxonomica
-            especimen.determinador=determinador
+            especimen.determinador=determinador  
             especimen.coleccion=fColeccion
             especimen.ubicacion=ubicacion
+            especimen.id_usuario=request.user
             especimen.save()
-            print ("se envio")
-            
             messages.success(request, mensaje_exito)
             return HttpResponseRedirect(reverse_lazy(viewsRedirect))
+            print ("se envio")
+        
+        else: print 'algun formulario esta invalido'
     else:
         formCateTaxonomica= TaxonomiaForm(instance=categoriaTaxo)
         formColector= CientificoForm (prefix="colector", instance= colectorppal)
@@ -163,7 +205,7 @@ def autocomplete(request):
 #funcion que lista los especimenes de la base de datos
 @login_required
 def ListarEspecimen(request): 
-    especimen= Especimen.objects.filter(visible=True)
+    especimen= Especimen.objects.all()
     contexto = {'especimenes':especimen}
     return render(request,'especimen_listar.html', contexto )
     

@@ -6,9 +6,9 @@ from cientifico.models import Cientifico
 
 # Create your models here.
 class Coleccion(models.Model):
-    colector_ppal = models.ForeignKey(Cientifico, null=False, blank=False, on_delete=models.CASCADE,related_name="principal")
-    fecha = models.CharField(max_length=10)
-    descripcion = models.CharField(max_length=200)
+    colector_ppal = models.ForeignKey(Cientifico, null=True, blank=True, on_delete=models.CASCADE,related_name="principal")
+    fecha = models.CharField(max_length=10, null=True, blank=True)
+    descripcion = models.TextField(null=True, blank=True)
     colectores_secu =models.ManyToManyField(Cientifico, through='Colectores', null=True, blank=True)
 
 #relacion muchos a muchos de coleccion y cientifico, con atributo adicional, que indica en orden de relevancia 

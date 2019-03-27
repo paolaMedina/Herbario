@@ -25,6 +25,8 @@ class RegistroForm(forms.ModelForm):
             self.fields['last_name'].widget.attrs['readonly'] = True
             self.fields['email'].widget.attrs['readonly'] = True
             self.fields['identificacion'].widget.attrs['readonly'] = True
+        else:
+            self.fields['is_active'].widget.attrs['checked'] = True
     
     username=forms.CharField(required=True,label='Nombre Usuario',widget=forms.TextInput(attrs={'class':'form-control', 'required':'required'}))
     first_name = forms.CharField(required=True, label='Nombres',widget=forms.TextInput(attrs={'class':'form-control', 'required':'required'}))
