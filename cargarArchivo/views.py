@@ -38,25 +38,24 @@ class UploadFileView(FormView):
         form = FormUpload(request.POST, request.FILES)
         if form.is_valid():
             file = request.FILES['file']
-            print file
             result=handle_uploaded_file(file)
-            print result
             if result==True:
                 messages.success(self.request, 'El archivo cargo con exito')
             else:
-                messages.error=(self.request,'No se pudo cargar archivo, por favor revisar la codificación del archivo')
+                messages.error(self.request,'No se pudo cargar archivo, por favor revisar la codificación del archivo')
 
         return self.form_valid(form, **kwargs)
         
    
             
-#Para guardar la iniformacion en los archivos ya existentes o crear uno nuevo y guardar             
+#Para guardar la iniformacion en los archivos ya existentes o crear uno nuevo y guardar  
+import win_unicode_console
+         
 def handle_uploaded_file(csv_file):
-    print csv_file
     try:
+        win_unicode_console.enable()  
         decoded_file = csv_file.read().decode('utf-8')
         io_string = io.StringIO(decoded_file)
-        
         reader=csv.DictReader(io_string, delimiter=str(u','))#CAMBIAR
         reader.next()
         
@@ -72,8 +71,6 @@ def handle_uploaded_file(csv_file):
                 except Cientifico.DoesNotExist:
                     colectorPpal =Cientifico(nombre_completo=line['COLLECTOR'])
                     colectorPpal.save()
-                    
-                print line['DETBY']
                 try :
                     objdeterminador = Cientifico.objects.get(nombre_completo=line['DETBY'], nombre_abreviado="")
                 except Cientifico.DoesNotExist:
@@ -118,10 +115,39 @@ def handle_uploaded_file(csv_file):
                         lat=float(line['LAT'].strip())
                     except:
                         lat=None
+
+                if (line['NS'].strip()==""):
+                    posicionLat=None
+                else:
+                    posicionLat=line['NS'].strip()
                 
-                print long
-                print lat
-                objUbicacion=Ubicacion(pais=line['COUNTRY'],departamento=line['MAJORAREA'],municipio=line['MINORAREA'],divisionPolitica=line['GAZETTEER'],latitud= lat ,longitud= long,especificacionLocacion=line['LOCNOTES'], cultivada=True)
+                if (line['EW'].strip()==""):
+                    posicionLong=None
+                else:
+                    posicionLong=line['EW'].strip()
+                
+                if (line['ALT'].strip()==""):
+                    alturaMinima=None
+                else:
+                    try:
+                        alturaMinima=float(line['ALT'].strip())
+                    except:
+                        alturaMinima=None
+                
+                if (line['ALTMAX'].strip()==""):
+                    alturaMaxima=None
+                else:
+                    try:
+                        alturaMaxima=float(line['ALTMAX'].strip())
+                    except:
+                        alturaMaxima=None
+                
+                if (line['ALTUNIT'].strip()==""):
+                    altUni=None
+                else:
+                    altUni=line['ALTUNIT'].strip()
+                
+                objUbicacion=Ubicacion(pais=line['COUNTRY'],departamento=line['MAJORAREA'],municipio=line['MINORAREA'],divisionPolitica=line['GAZETTEER'],latitud= lat ,longitud= long,especificacionLocacion=line['LOCNOTES'],posicionLat=posicionLat,posicionLong=posicionLong, alturaMinima=alturaMinima,alturaMaxima=alturaMaxima,altUni=altUni, cultivada=True)
                 objUbicacion.save()
 
                 especimen=Especimen(num_registro=line['ACCESSION'],categoria=cateTaxonomica,coleccion=objcoleccion,

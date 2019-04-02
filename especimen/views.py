@@ -141,7 +141,6 @@ def RegistrarEspecimen(request, pk=None):
             # print colectoresFormset   
             #guardar colectores secundarios
             
-            print colectoresFormset.has_changed()
             if(colectoresFormset.has_changed()):
                 i=0 # contador que maneja el orden en que se ingresen los colectores
                 fColeccion = formColeccion.save()
@@ -165,7 +164,7 @@ def RegistrarEspecimen(request, pk=None):
             especimen.determinador=determinador  
             especimen.coleccion=fColeccion
             especimen.ubicacion=ubicacion
-            especimen.id_usuario=request.user
+            especimen.usuario=request.user
             especimen.save()
             messages.success(request, mensaje_exito)
             return HttpResponseRedirect(reverse_lazy(viewsRedirect))
@@ -204,18 +203,29 @@ def autocomplete(request):
 
 #funcion que lista los especimenes de la base de datos
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador','investigador'])
 def ListarEspecimen(request): 
-    especimen= Especimen.objects.all()
+    especimen= Especimen.objects.filter(visible=True) #si no esta visible es por que se ha eliminado
+    contexto = {'especimenes':especimen}
+    return render(request,'especimen_listar.html', contexto )
+
+#funcion que lista los especimenes creado por el monitor logueado de la base de datos
+@login_required
+@verificar_rol(roles_permitidos=['monitor'])
+def ListarEspecimenesPersonales(request):
+    print request.user.id
+    especimen= Especimen.objects.filter(visible=True,usuario=request.user) #si no esta visible es por que se ha eliminado
+    print especimen
     contexto = {'especimenes':especimen}
     return render(request,'especimen_listar.html', contexto )
     
 #funcion que elimina un especimen dado    
-@login_required   
+@login_required
+@verificar_rol(roles_permitidos=['monitor', 'curador','investigador'])
 def EliminarEspecimen(request, pk):
     especimen= Especimen.objects.get(pk=pk)
-    especimen.visible_set=False
-    #especimen.save()
-    response = {}
+    especimen.visible=False
+    especimen.save()
     return HttpResponseRedirect(reverse_lazy('especimen:listar_especimen'))
 
 def ChangeEspecimen(request, pk=None):
@@ -224,15 +234,24 @@ def ChangeEspecimen(request, pk=None):
         
         try:
             especimenObject = Especimen.objects.get( num_registro=pk)
-            categoriaTaxoObje=CategoriaTaxonomica.objects.get(pk=especimenObject.categoria.pk)
-            determinadorObje=Cientifico.objects.get(pk=especimenObject.determinador.pk)
+            
+            if (especimenObject.categoria != None):
+               categoriaTaxoObje=CategoriaTaxonomica.objects.get(pk=especimenObject.categoria.pk)
+            else:
+                categoriaTaxoObje=CategoriaTaxonomica()
+
+            if (especimenObject.determinador != None):
+                determinadorObje=Cientifico.objects.get(pk=especimenObject.determinador.pk)
+            else:
+                determinadorObje= Cientifico()
+            
             show=True
             print 'especime'
         except Especimen.DoesNotExist:
             messages.error(request, 'No existe un especimen con el número de registro ingresado')
             show=False
             print"no especimen"
-            return redirect('especimen:obtener_especimen')
+            return redirect('especimen:actualizar_especimen')
     else: 
         especimenObject = Especimen()
         categoriaTaxoObje=CategoriaTaxonomica()
@@ -244,30 +263,38 @@ def ChangeEspecimen(request, pk=None):
         formCateTaxonomica= TaxonomiaForm(request.POST)
         formDeterminador= CientificoForm (request.POST,prefix="determinador")
         formEspecimen = EspecimenForm(instance=especimenObject)
+
         
         if formDeterminador.is_valid() and formCateTaxonomica.is_valid() : 
+            change=categoriaTaxoObje.genero +','+ categoriaTaxoObje.familia +',' + determinadorObje.nombre_completo +','+ determinadorObje.nombre_abreviado +',' + categoriaTaxoObje.fecha_det +','+categoriaTaxoObje.epiteto_especifico + ',' + categoriaTaxoObje.autor1 +','+categoriaTaxoObje.epiteto_infraespecifico + ',' + categoriaTaxoObje.autor2
             print("valido")
-            try :
-                determinadorObje = Cientifico.objects.get(nombre_completo=formDeterminador['nombre_completo'].value(),nombre_abreviado=formDeterminador['nombre_abreviado'].value())
-            except Cientifico.DoesNotExist:
-                determinadorObje = formDeterminador.save()
+            if(formDeterminador.has_changed()):
+                print "cambio determinador"
+                try :
+                    determinadorObje = Cientifico.objects.get(nombre_completo=formDeterminador['nombre_completo'].value(),nombre_abreviado=formDeterminador['nombre_abreviado'].value())
+                except Cientifico.DoesNotExist:
+                    determinadorObje = formDeterminador.save()
+                
+                especimenObject.determinador=determinadorObje
+            if(formCateTaxonomica.has_changed()):
+                print "cambio determinador"
+                categoriaTaxoObje.genero=formCateTaxonomica['genero'].value()
+                categoriaTaxoObje.familia=formCateTaxonomica['familia'].value()
+                categoriaTaxoObje.epiteto_especifico=formCateTaxonomica['epiteto_especifico'].value()
+                categoriaTaxoObje.epiteto_infraespecifico=formCateTaxonomica['epiteto_infraespecifico'].value()
+                categoriaTaxoObje.fecha_det=formCateTaxonomica['fecha_det'].value()
+                categoriaTaxoObje.autor1=formCateTaxonomica['autor1'].value()
+                categoriaTaxoObje.autor2=formCateTaxonomica['autor2'].value()
+                categoriaTaxoObje.save()
+                especimenObject.categoria=categoriaTaxoObje
             
             
-            categoriaTaxoObje.genero=formCateTaxonomica['genero'].value()
-            categoriaTaxoObje.familia=formCateTaxonomica['familia'].value()
-            categoriaTaxoObje.epiteto_especifico=formCateTaxonomica['epiteto_especifico'].value()
-            categoriaTaxoObje.epiteto_infraespecifico=formCateTaxonomica['epiteto_infraespecifico'].value()
-            categoriaTaxoObje.fecha_det=formCateTaxonomica['fecha_det'].value()
-            categoriaTaxoObje.autor1=formCateTaxonomica['autor1'].value()
-            categoriaTaxoObje.autor2=formCateTaxonomica['autor2'].value()
-            categoriaTaxoObje.save()
-            
-            especimenObject.determinador=determinadorObje
             especimenObject.save()
             show=False 
-            
+            messages.success(request, 'Actualización de especimen '+ str(especimenObject.num_registro) )
         else:
             print ' formulario invalido'
+            messages.error(request, 'Formulario invalido')
             show=True
         
     else:
@@ -419,8 +446,6 @@ def busquedaAvanzada(request):
             return render(request,'busquedaColectores.html', {'especimenes':especimenes} ) 
     else:
         return render(request, 'index-home.html')
-
-
 
 def busquedaColectores(request):
     especimenesIni= request.POST.get('especimenes') 

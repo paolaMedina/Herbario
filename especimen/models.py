@@ -36,4 +36,4 @@ class Especimen (models.Model):
     visible= models.BooleanField(default=True)
     tipo=models.CharField(max_length=15, choices=TYPE_CHOICES, default='NoTipo')
     ubicacion = models.ForeignKey(Ubicacion, null=True, blank=True, on_delete=models.CASCADE,default=None)
-    id_usuario = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE, default=None)
+    usuario = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE, default=None)
