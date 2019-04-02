@@ -49,11 +49,10 @@ class UploadFileView(FormView):
    
             
 #Para guardar la iniformacion en los archivos ya existentes o crear uno nuevo y guardar  
-import win_unicode_console
+
          
 def handle_uploaded_file(csv_file):
     try:
-        win_unicode_console.enable()  
         decoded_file = csv_file.read().decode('utf-8')
         io_string = io.StringIO(decoded_file)
         reader=csv.DictReader(io_string, delimiter=str(u','))#CAMBIAR
