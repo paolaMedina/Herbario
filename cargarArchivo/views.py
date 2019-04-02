@@ -59,6 +59,8 @@ def handle_uploaded_file(csv_file):
         reader.next()
         
         for line in  reader:
+            # print line
+            # print "--------------------------------------------------------------------"
             try:
                 especimen=Especimen.objects.get(num_registro=line['ACCESSION'])
             except Especimen.DoesNotExist:
@@ -68,14 +70,19 @@ def handle_uploaded_file(csv_file):
                 try :
                     colectorPpal = Cientifico.objects.get(nombre_completo=line['COLLECTOR'])
                 except Cientifico.DoesNotExist:
-                    colectorPpal =Cientifico(nombre_completo=line['COLLECTOR'])
-                    colectorPpal.save()
+                    if(line['COLLECTOR'] != ""):
+                        colectorPpal =Cientifico(nombre_completo=line['COLLECTOR'])
+                        colectorPpal.save()
+                    else:
+                        colectorPpal=None
                 try :
-                    objdeterminador = Cientifico.objects.get(nombre_completo=line['DETBY'], nombre_abreviado="")
+                    objdeterminador = Cientifico.objects.get(nombre_completo=line['DETBY'])
                 except Cientifico.DoesNotExist:
-                    objdeterminador =Cientifico(nombre_completo=line['DETBY'])
-                    objdeterminador.save()    
-                    
+                    if(line['DETBY'] != ""):
+                        objdeterminador =Cientifico(nombre_completo=line['DETBY'])
+                        objdeterminador.save()    
+                    else:
+                        objdeterminador= None
                 
                 cateTaxonomica=CategoriaTaxonomica(familia=line['FAMILY'],genero=line['GENUS'],epiteto_especifico=line['SP1'],
                                                 fecha_det=fecha_determinacion,categoria_infraespecifica=line['RANK1'],
@@ -93,10 +100,11 @@ def handle_uploaded_file(csv_file):
                     try :
                         objeColector = Cientifico.objects.get(nombre_completo=colector)
                     except Cientifico.DoesNotExist:
-                        objeColector=Cientifico(nombre_completo=colector)
-                        objeColector.save()
-                    colectores= Colectores.objects.create(coleccion=objcoleccion, colector=objeColector, orden=i)
-                    i+=1
+                        if(colector != ""):
+                            objeColector=Cientifico(nombre_completo=colector)
+                            objeColector.save()
+                            colectores= Colectores.objects.create(coleccion=objcoleccion, colector=objeColector, orden=i)
+                            i+=1
                 
                 if (line['LONG'].strip()==""):
                     long=None
@@ -106,7 +114,7 @@ def handle_uploaded_file(csv_file):
                     except:
                         long=None
                         
-
+    
                 if (line['LAT'].strip()==""):
                     lat=None
                 else:
@@ -114,14 +122,14 @@ def handle_uploaded_file(csv_file):
                         lat=float(line['LAT'].strip())
                     except:
                         lat=None
-
+    
                 if (line['NS'].strip()==""):
-                    posicionLat=None
+                    posicionLat='ninguno'
                 else:
                     posicionLat=line['NS'].strip()
                 
                 if (line['EW'].strip()==""):
-                    posicionLong=None
+                    posicionLong='ninguno'
                 else:
                     posicionLong=line['EW'].strip()
                 
@@ -146,11 +154,15 @@ def handle_uploaded_file(csv_file):
                 else:
                     altUni=line['ALTUNIT'].strip()
                 
-                objUbicacion=Ubicacion(pais=line['COUNTRY'],departamento=line['MAJORAREA'],municipio=line['MINORAREA'],divisionPolitica=line['GAZETTEER'],latitud= lat ,longitud= long,especificacionLocacion=line['LOCNOTES'],posicionLat=posicionLat,posicionLong=posicionLong, alturaMinima=alturaMinima,alturaMaxima=alturaMaxima,altUni=altUni, cultivada=True)
+                objUbicacion=Ubicacion(pais=line['COUNTRY'],departamento=line['MAJORAREA'],municipio=line['MINORAREA'],divisionPolitica=line['GAZETTEER'],latitud= lat ,longitud= long,especificacionLocacion=line['LOCNOTES'],posicionLat=posicionLat,posicionLong=posicionLong, alturaMinima=alturaMinima,alturaMaxima=alturaMaxima,altUni=altUni, 
+                cultivada=True)
                 objUbicacion.save()
-
+                print objUbicacion
+                
                 especimen=Especimen(num_registro=line['ACCESSION'],categoria=cateTaxonomica,coleccion=objcoleccion,
-                                    determinador=objdeterminador,lugar_duplicado= line['DUPS'] ,peligro='LC', tipo='holo', ubicacion=objUbicacion,visible=True)
+                                    determinador=objdeterminador,lugar_duplicado= line['DUPS'] ,peligro='LC', tipo='NoTipo', ubicacion=objUbicacion,visible=True, usuario=None)
+                print especimen
+              
                 especimen.save()
         return True
     except:
