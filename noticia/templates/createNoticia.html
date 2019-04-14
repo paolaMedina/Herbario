@@ -1,0 +1,133 @@
+
+{% extends "baseBackend.html" %}
+{% load static %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <!-- Krajee plugin-upload file -->
+    <link href="{% static 'plugins/krajee/css/fileinput.min.css' %}" media="all" rel="stylesheet">
+    <link href="{% static 'plugins/krajee/themes/explorer/theme.css' %}" media="all" rel="stylesheet">
+  
+{% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Crear Noticia</h5>
+            </div>
+            <div class="ibox-content">
+                <form method="post" class="form-horizontal" enctype="multipart/form-data"> {% csrf_token %}
+                    <div class="form-group">
+                        <label for={{form.titulo.name}}>{{form.titulo.label}}</label> 
+                        {{form.titulo}}
+                    </div>
+                    <div class="form-group">
+                        <label for={{form.resumen.name}}>{{form.resumen.label}}</label> 
+                        {{form.resumen}}
+                    </div>
+                    <div class="form-group">
+                        <label for={{form.contenido.name}}>{{form.contenido.label}}</label> 
+                        {{form.contenido}}
+                    </div>
+                    <div class="form-group">
+                        <label for={{form.imagen.name}}>{{form.imagen.label}}</label> 
+                        {{form.imagen}}
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-5">
+                            <button class="btn btn-primary" type="submit">Guardar</button>
+                        </div>
+                    </div>
+                
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="file-loading">
+    <input id="input-ke-1" name="input-ke-1[]" type="file" multiple accept="image">
+</div>
+
+
+{% endblock content %}
+
+{% block plugins %}
+  {{ block.super }}
+  <!-- Krajee plugin-upload file -->
+  <script src="{% static 'plugins/krajee/js/fileinput.js' %}" ></script>
+  <script src="{% static 'plugins/krajee/js/locales/es.js' %}" ></script>
+  <script src="{% static 'plugins/krajee/themes/explorer/theme.js' %}" ></script>
+  <script>
+   savedImage='{{form.imagen.value}}'
+    if(savedImage =='None' || savedImage ==''){
+        imagenPrev=''        
+    }
+    else{
+        imagenPrev=['/media/'+savedImage]
+    }
+  
+   $('#id_imagen').fileinput({
+    theme: "explorer",
+    allowedFileExtensions: ['jpg', 'png', 'gif'],
+    language: 'es', 
+    maxFilesNum: 1,  
+    showUpload: false, 
+    initialPreviewAsData: true, 
+    initialPreview:imagenPrev,
+    fileActionSettings: {
+        showUpload: false,
+        showRemove:false
+        }, 
+    });
+
+ </script>
+{% comment %} 
+    <script>
+    var krajeeGetCount = function(id) {
+        var cnt = $('#' + id).fileinput('getFilesCount');
+        return cnt === 0 ? 'You have no files remaining.' :
+            'You have ' +  cnt + ' file' + (cnt > 1 ? 's' : '') + ' remaining.';
+    };
+    $('#id_imagen').fileinput({
+        overwriteInitial: false,
+        validateInitialCount: true,
+        deleteUrl: "/jj/file-delete",
+        initialPreview: [
+            "<img class='kv-preview-data file-preview-image' src='http://lorempixel.com/800/460/nature/1'>",
+            "<img class='kv-preview-data file-preview-image' src='http://lorempixel.com/800/460/nature/2'>",
+        ],
+        initialPreviewConfig: [
+            {caption: "Moon.jpg",size: 930321, width: "120px", key: 1},
+            {caption: "Earth.jpg", size: 1218822, width: "120px", key: 2}
+        ],
+        deleteUrl: "/noticia/deleteFile?csrfmiddlewaretoken={{ csrf_token }}",
+    }).on('filebeforedelete', function() {
+        var aborted = !window.confirm('Are you sure you want to delete this file?');
+        if (aborted) {
+            window.alert('File deletion was aborted! ' + krajeeGetCount('file-5'));
+        };
+        return aborted;
+    }).on('filedeleted', function() {
+        console.log('h')
+        $('#id_imagen').fileinput('clear');
+        $('#id_imagen').fileinput ('refresh')
+        setTimeout(function() {
+            window.alert('File deletion was successful! ' + krajeeGetCount('file-5'));
+        }, 900);
+    });
+</script> {% endcomment %}
+    
+       
+
+ 
+ 
+ 
+{% endblock %}
+
+

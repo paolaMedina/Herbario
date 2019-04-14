@@ -28,7 +28,7 @@ from django.db import connection, transaction
 import ast
 
 @login_required
-# @has_role_decorator(['monitor', 'curador','investigador'])
+# # @has_role_decorator(['monitor', 'curador','investigador'])
 @verificar_rol(roles_permitidos=['monitor', 'curador','investigador'])
 def RegistrarEspecimen(request, pk=None):
     

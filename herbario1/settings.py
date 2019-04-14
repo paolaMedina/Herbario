@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'especimen',
     'ubicacion',
     'usuario',
+    'noticia',
     'cargarArchivo',
     'easy_thumbnails',#para permitir que aparezca imagen en el formulario de especimen
     'crispy_forms',#para permitir que aparezca imagen ene l formulario de especimen
