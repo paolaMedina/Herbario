@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^usuario/', include('usuario.urls', namespace = 'usuario')),
     url(r'^archivo/', include('cargarArchivo.urls', namespace = 'archivo')),
     url(r'^noticia/', include('noticia.urls', namespace = 'noticia')),
+    url(r'^visita/', include('visita.urls', namespace = 'visita')),
 
     url(r'^password_reset/$',password_reset,{'template_name':'password_reset.html',
     'email_template_name':'password_reset_email.html'},name="password_reset"),
