@@ -2,22 +2,23 @@
 {% load static %}
 
 {% block head %} 
-<link href="{% static 'plugins/fullcalendar/packages/core/main.css'%}" rel='stylesheet' />
-<link href="{% static 'plugins/fullcalendar/packages/daygrid/main.css'%}" rel='stylesheet' />
-<link href="{% static 'plantilla-backend/css/plugins/datapicker/datepicker3.css' %}" rel="stylesheet">
-<link href="{% static 'plantilla-backend/css/plugins/clockpicker/clockpicker.css" rel="stylesheet' %}">
-<!--
-<link href="{% static 'plantilla-backend/css/plugins/fullcalendar/fullcalendar.css' %}" rel="stylesheet">
-<link href="{% static 'plantilla-backend/css/plugins/fullcalendar/fullcalendar.print.css' %}" rel='stylesheet' media='print'>
--->
+    <!--FullCalendar-->
+    <link href="{% static 'plugins/fullcalendar/packages/core/main.css'%}" rel='stylesheet' />
+    <link href="{% static 'plugins/fullcalendar/packages/daygrid/main.css'%}" rel='stylesheet' />
+    <link href="{% static 'plugins/fullcalendar/packages/bootstrap/main.css'%}" rel='stylesheet' />
+    <!--Tempusdominus-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
+    <!--SmartWizard-->
+    <link href="{% static 'plugins/SmartWizard-master/dist/css/smart_wizard.css" rel="stylesheet'%}" type="text/css" /> 
+    <link href="{% static 'plugins/SmartWizard-master/dist/css/smart_wizard_theme_dots.css'%}" rel="stylesheet" type="text/css" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
 
 {% endblock %}
+
 {% block titulo %}  Solicitar Visita  {% endblock %}
 
 {% block guia %}
-<p class="breadcrumbs" >
+    <p class="breadcrumbs" >
         <span class="mr-2" ><a href="{% url 'inicio' %}" style="color:aliceblue !important;">Inicio<i class="ion-ios-arrow-forward"></a></span> 
         <span class="mr-2">></span> 
         <span><u>Solicitar visita</u> <i class="ion-ios-arrow-forward"></span>
@@ -27,50 +28,91 @@
 {% block content %}
 
     <div class="container" >
-    
         <h1>Solicitud de visita</h1>
         <br>
+        <div id="smartwizard">
+            <ul>
+                <li><a href="#step-1">Calendario<br /></a></li>
+                <li><a href="#step-2">Solicitud<br /></a></li>
+            </ul>
         
-        <div class="row">
-            <div class="col-lg-12">
-                <form  method="post" enctype="multipart/form-data"  class="form-horizontal" >
-                    {% csrf_token %}
-                     {{form.as_p}} 
-                    <div class="text-center">
-                        <input type="submit"  value="Solicitar" class="btn btn-success btn-lg">
+            <div>
+                <div id="step-1" class="">
+                    <div class=>
+                        <div id='calendar'></div>
                     </div>
-                </form>
-            </div>
+                </div>
+                <div id="step-2" class="col-lg-12">
+                    
+                    <form  method="post" enctype="multipart/form-data"  class="form-horizontal" >
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for={{form.fecha.name}}>{{form.fecha.label}}</label> 
+                            <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
+                                {{form.fecha}}
+                                <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
 
-    
+                        <div class="form-group">
+                            <label for={{form.hora.name}}>{{form.hora.label}}</label> 
+                            <div class="input-group date" id="datetimepicker3" data-target-input="nearest">
+                                {{form.hora}}
+                                <div class="input-group-append" data-target="#datetimepicker3" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for={{form.nombre.name}}>{{form.nombre.label}}</label> 
+                            {{form.nombre}}
+                        </div>
+                        <div class="form-group">
+                            <label for={{form.correo.name}}>{{form.correo.label}}</label> 
+                            {{form.correo}}
+                        </div>
+                        <div class="form-group">
+                            <label for={{form.telefono.name}}>{{form.telefono.label}}</label> 
+                            {{form.telefono}}
+                        </div>
+                        <div class="form-group">
+                            <label for={{form.numPersonas.name}}>{{form.numPersonas.label}}</label> 
+                            {{form.numPersonas}}
+                        </div>
+                        <div class="form-group">
+                            <label for={{form.motivo.name}}>{{form.motivo.label}}</label> 
+                            {{form.motivo}}
+                        </div>                     
+                        <div class="text-center">
+                            <input type="submit"  value="Solicitar" class="btn btn-success btn-lg">
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 
 {% block javascript %}
+    <!-- Full Calendar -->
+    <script src="{% static 'plugins/fullcalendar/packages/core/main.js'%}"></script>
+    <script src="{% static 'plugins/fullcalendar/packages/daygrid/main.js'%}"></script>
+    <script src="{% static 'plugins/fullcalendar/packages/bootstrap/main.js'%}"></script>
+    <!--SmartWizard-->
+    <script type="text/javascript" src="{% static 'plugins/SmartWizard-master/dist/js/jquery.smartWizard.min.js'%}"></script>
+    <!--Tempusdominus-->
+    <script src="{% static 'plugins/moments/moment.js'%}"></script>
+    <script src="{% static 'plugins/moments/moment-locale-es.js'%}"></script>
 
- <!-- Full Calendar -->
- <script src="{% static 'plugins/fullcalendar/packages/core/main.js'%}"></script>
-<script src="{% static 'plugins/fullcalendar/packages/daygrid/main.js'%}"></script>
-<!-- Data picker -->
-<script src="{% static 'plantilla-backend/js/plugins/datapicker/bootstrap-datepicker.js'%}"></script>
-<!-- Clock picker -->
-<script src="{% static 'plantilla-backend/js/plugins/clockpicker/clockpicker.js'%}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/es.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
 
-<!--
- <script src="{% static 'plantilla-backend/js/plugins/fullcalendar/moment.min.js' %}"></script>
-<script src="{% static 'plantilla-backend/js/plugins/fullcalendar/fullcalendar.min.js' %}"></script>
-<script src="{% static 'js/crearVisita.js' %}"></script>
--->
-<script src="/static/js/crearVisita.js"></script>
-<script type="text/javascript">
-            $(function () {
-                $('#datetimepicker3').datetimepicker({
-                    format: 'LT'
-                });
-            });
-        </script>
+    <script src="{% static 'js/crearVisita.js' %}"></script>
+
 
 {% endblock %}
 

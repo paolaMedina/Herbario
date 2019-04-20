@@ -25,19 +25,18 @@ class RegistroUsuario(CreateView):
     success_url=reverse_lazy("usuario:registrar_usuario")
     model = Usuario
     form_class = RegistroForm
-             
-    
+
     @verificar_rol(roles_permitidos=["curador", "director"])
     def dispatch(self, request, *args, **kwargs):
         return super(RegistroUsuario, self).dispatch(request, *args, **kwargs)
         
-    #se envia el grupo del usuario al formulario, para poder verificar si es un curador y hacer el respectivo cambio 
+    # #se envia el grupo del usuario al formulario, para poder verificar si es un curador y hacer el respectivo cambio 
     def get_form_kwargs(self):
         kwargs = super(RegistroUsuario, self).get_form_kwargs()
-        return dict(kwargs, groups=self.request.user.groups.values_list('name', flat=True))
-        
-    
+        return dict(kwargs, groups= self.request.user.groups.values_list('name', flat=True))
+
     def form_valid(self, form):
+
         usuario= form.instance
         #contrasena con la inicial del nombre en mayuscula, la identificacion y la inicial del apellido en mayuscula
         contra= usuario.first_name[0].upper()+str(usuario.identificacion)+usuario.last_name[0].upper()
@@ -48,8 +47,8 @@ class RegistroUsuario(CreateView):
         email_subject = 'Account confirmation'
         email_body = "Buenas acabas de ser registrado en la pagina del Herbario CUVC de la Universidad del valle. Tus datos de registro son: \n Usuario:%s \n contrasena es %s \n puedes ingresar al siguiente link para loguearte: https://herbario1-paolamedina.c9users.io/usuario/" % (usuario.username,usuario.password1)
         
-        send_mail(email_subject, email_body, 'angiepmc93@gmail.com',
-            [email], fail_silently=False)
+        # send_mail(email_subject, email_body, 'angiepmc93@gmail.com',
+        #     [email], fail_silently=False)
         
         self.object = form.save(commit=False)
         self.object.set_password(contra)
@@ -74,6 +73,7 @@ class RegistroUsuario(CreateView):
         return super(RegistroUsuario, self).form_valid(form)
     
     def form_invalid(self, form):
+
         error='hay uno o mas campos invalidos. Por favor verifique de nuevo'
         errorDjango=form.errors
         messages.error(self.request,error )
@@ -81,7 +81,7 @@ class RegistroUsuario(CreateView):
         return  super(RegistroUsuario, self).form_invalid(form)
         
 class ListarUsuarios(ListView):
-    @verificar_rol(roles_permitidos=["director"])
+    # @verificar_rol(roles_permitidos=["director"])
     def dispatch(self, request, *args, **kwargs):
         return super(ListarUsuarios, self).dispatch(request, *args, **kwargs)
         

@@ -11,5 +11,6 @@ class Visita (models.Model):
     nombre = models.CharField(max_length=200)
     correo = models.EmailField()
     telefono = models.IntegerField()
-    numPersonas= models.IntegerField()
-    motivo= models.TextField()
+    numPersonas = models.IntegerField()
+    motivo = models.TextField()
+    aprobada = models.BooleanField(default=False)

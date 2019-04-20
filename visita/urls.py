@@ -1,13 +1,13 @@
 from django.conf.urls import url
 
 from . import views
-from .views import RegistroVisita
+from .views import RegistroVisita,ListarVisitas,aprobar
 
 urlpatterns = [
     
     url(r'^generar', RegistroVisita.as_view(), name='crear_visita'),
-    # url(r'^editar/(?P<pk>\d+)', EditarNoticia.as_view(), name='editar_noticia'),
-    # url(r'^listar', ListarNoticia.as_view(), name='listar_noticia'),
-    # url(r'^eliminar/(?P<pk>\d+)', EliminarNoticia.as_view(), name='eliminar_noticia'),
+    url(r'^ver/(?P<pk>\d+)', views.view, name='detalle_visita'),
+    url(r'^listar', ListarVisitas.as_view(), name='listar_visita'),
+    url(r'^aprobar/(?P<pk>\d+)', views.aprobar, name='aprobar_visita'),
     # url(r'^deleteFile', views.EliminarArchivo, name='eliminar_archivo'),
 ]

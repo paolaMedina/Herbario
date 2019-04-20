@@ -4,22 +4,22 @@ $(document).ready(function() {
      -----------------------------------------------------------------*/
 
 
-    $('#external-events div.external-event').each(function() {
+    // $('#external-events div.external-event').each(function() {
 
-        // store data so the calendar knows to render an event upon drop
-        $(this).data('event', {
-            title: $.trim($(this).text()), // use the element's text as the event title
-            stick: true // maintain when user navigates (see docs on the renderEvent method)
-        });
+    //     // store data so the calendar knows to render an event upon drop
+    //     $(this).data('event', {
+    //         title: $.trim($(this).text()), // use the element's text as the event title
+    //         stick: true // maintain when user navigates (see docs on the renderEvent method)
+    //     });
 
-        // make the event draggable using jQuery UI
-        $(this).draggable({
-            zIndex: 1111999,
-            revert: true,      // will cause the event to go back to its
-            revertDuration: 0  //  original position after the drag
-        });
+    //     // make the event draggable using jQuery UI
+    //     $(this).draggable({
+    //         zIndex: 1111999,
+    //         revert: true,      // will cause the event to go back to its
+    //         revertDuration: 0  //  original position after the drag
+    //     });
 
-    });
+    // });
 
 
     /* initialize the calendar
@@ -55,9 +55,11 @@ $(document).ready(function() {
       var calendarEl = document.getElementById('calendar');
 
       var calendar = new FullCalendar.Calendar(calendarEl, {
-        plugins: [ 'dayGrid' ],
+        plugins: [ 'dayGrid','bootstrap' ],
+        timeZone: 'UTC',
+        themeSystem: 'bootstrap',
         header: {
-            left: 'prev,next today',
+            left: 'prev,next',
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         },
@@ -85,14 +87,30 @@ $(document).ready(function() {
 
       calendar.render();
 
-      $('#data').datepicker({
-        startView: 2,
-        // todayBtn: "linked",
-        gotoCurrent: true,
-        keyboardNavigation: false,
-        forceParse: false,
-        autoclose: true
+    //   $('#data').datepicker({
+    //     startView: 2,
+    //     // todayBtn: "linked",
+    //     gotoCurrent: true,
+    //     keyboardNavigation: false,
+    //     forceParse: false,
+    //     autoclose: true
+    // });
+
+    $(function () {
+        $('#datetimepicker3').datetimepicker({
+            format: 'LT'
+        });
     });
-    // $('.clockpicker').clockpicker();
+
+    $(function () {
+        $('#datetimepicker4').datetimepicker({
+            format: 'L'
+        });
+    });
+
+    $('#smartwizard').smartWizard({
+        theme: 'dots'
+    });
+
 
 });

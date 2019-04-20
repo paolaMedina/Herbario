@@ -9,7 +9,6 @@ from .models import Usuario
 
 
 class RegistroForm(forms.ModelForm):
-    
    #recibe el grupo del usuario que envia desde la vista  y si es un curador, se restringe el campo rol ya que este solo puede crear monitores
     def __init__(self, groups, *args, **kwargs):
         super(RegistroForm, self).__init__(*args, **kwargs)
