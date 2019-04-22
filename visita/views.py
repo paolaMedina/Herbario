@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.views.generic import ListView,CreateView,UpdateView,DeleteView
 from django.contrib.messages.views import SuccessMessageMixin
 from .models import Visita
@@ -25,7 +25,7 @@ class RegistroVisita(CreateView):
         error='hay uno o mas campos invalidos. Por favor verifique de nuevo'
         errorDjango=form.errors
         # messages.error(self.request,error )
-        print errorDjango
+        print (errorDjango)
         return  super(RegistroVisita, self).form_invalid(form)
         
 class ListarVisitas(ListView):
@@ -42,7 +42,7 @@ def aprobar(request,pk):
     try:
         visita= Visita.objects.get(pk=pk)
         visita.aprobada=True
-        print visita
+        print (visita)
         visita.save()  
         messages.success(request, 'Visita agendada')
     except Visita.DoesNotExist:
@@ -54,7 +54,7 @@ def aprobar(request,pk):
 def view(request, pk):
     try:
         visita= Visita.objects.get(pk=pk)
-        print visita
+        print (visita)
         return render(request,'detalleVisita.html',{'visita':visita})
 
     except Visita.DoesNotExist:

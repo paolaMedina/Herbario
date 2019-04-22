@@ -4,7 +4,7 @@ from django.forms import ModelForm, inlineformset_factory
 from django import forms
 from .models import Coleccion, Colectores
 from django.forms import widgets
-from django.core.urlresolvers import reverse
+from django.urls  import reverse
 from django.utils.safestring import mark_safe
 from django.forms import widgets
 from django.conf import settings
