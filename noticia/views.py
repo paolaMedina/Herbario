@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.views.generic import ListView,CreateView,UpdateView,DeleteView
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from .models import Noticia
 from .forms import NoticiaForm
 from django.contrib.messages.views import SuccessMessageMixin
@@ -32,7 +32,7 @@ class RegistroNoticia(CreateView):
         error='hay uno o mas campos invalidos. Por favor verifique de nuevo'
         errorDjango=form.errors
         messages.error(self.request,error )
-        print errorDjango
+        print (errorDjango)
         return  super(RegistroNoticia, self).form_invalid(form)
         
 class EditarNoticia(UpdateView):
@@ -77,5 +77,5 @@ class ListarNoticia(ListView):
     template_name='listarNoticia.html'
 
 def  EliminarArchivo():
-    print 'aqui'
+    print ('aqui')
     return HttpResponse(json.dumps({}), content_type="application/json")

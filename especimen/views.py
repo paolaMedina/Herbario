@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.contrib import messages
 from django.shortcuts import render, HttpResponseRedirect
 from django.http import HttpResponse
@@ -72,7 +72,7 @@ def RegistrarEspecimen(request, pk=None):
         
         
         
-        # print dicColectoresSecu
+        # print (dicColectoresSecu)
             
     else: 
         especimen = Especimen()
@@ -138,7 +138,7 @@ def RegistrarEspecimen(request, pk=None):
                 fColeccion = formColeccion.save(commit = False)
                 fColeccion.colector_ppal=colectorPpal
                 fColeccion.save()
-            # print colectoresFormset   
+            # print (colectoresFormset)   
             #guardar colectores secundarios
             
             if(colectoresFormset.has_changed()):
@@ -146,7 +146,7 @@ def RegistrarEspecimen(request, pk=None):
                 fColeccion = formColeccion.save()
                 coleccionObje.colectores_secu.clear()#limpia las instancias de colectores
                 for colector_form in colectoresFormset:
-                    print colector_form['nombre_completo'].value()
+                    print (colector_form['nombre_completo'].value())
                         # se crea la colección en caso que que los campos fecha, descripción y col_principal no existieran, pero si secundarios
                         
                     try :
@@ -170,7 +170,7 @@ def RegistrarEspecimen(request, pk=None):
             return HttpResponseRedirect(reverse_lazy(viewsRedirect))
             print ("se envio")
         
-        else: print 'algun formulario esta invalido'
+        else: print ('algun formulario esta invalido')
     else:
         formCateTaxonomica= TaxonomiaForm(instance=categoriaTaxo)
         formColector= CientificoForm (prefix="colector", instance= colectorppal)
@@ -213,9 +213,9 @@ def ListarEspecimen(request):
 @login_required
 @verificar_rol(roles_permitidos=['monitor'])
 def ListarEspecimenesPersonales(request):
-    print request.user.id
+    print (request.user.id)
     especimen= Especimen.objects.filter(visible=True,usuario=request.user) #si no esta visible es por que se ha eliminado
-    print especimen
+    print (especimen)
     contexto = {'especimenes':especimen}
     return render(request,'especimen_listar.html', contexto )
     
@@ -246,17 +246,17 @@ def ChangeEspecimen(request, pk=None):
                 determinadorObje= Cientifico()
             
             show=True
-            print 'especime'
+            print ('especime')
         except Especimen.DoesNotExist:
             messages.error(request, 'No existe un especimen con el número de registro ingresado')
             show=False
-            print"no especimen"
+            print ("no especimen")
             return redirect('especimen:actualizar_especimen')
     else: 
         especimenObject = Especimen()
         categoriaTaxoObje=CategoriaTaxonomica()
         determinadorObje= Cientifico()
-        print"sin pk"
+        print ("sin pk")
         show=False
         
     if request.method == 'POST':
@@ -269,7 +269,7 @@ def ChangeEspecimen(request, pk=None):
             change=categoriaTaxoObje.genero +','+ categoriaTaxoObje.familia +',' + determinadorObje.nombre_completo +','+ determinadorObje.nombre_abreviado +',' + categoriaTaxoObje.fecha_det +','+categoriaTaxoObje.epiteto_especifico + ',' + categoriaTaxoObje.autor1 +','+categoriaTaxoObje.epiteto_infraespecifico + ',' + categoriaTaxoObje.autor2
             print("valido")
             if(formDeterminador.has_changed()):
-                print "cambio determinador"
+                print ("cambio determinador")
                 try :
                     determinadorObje = Cientifico.objects.get(nombre_completo=formDeterminador['nombre_completo'].value(),nombre_abreviado=formDeterminador['nombre_abreviado'].value())
                 except Cientifico.DoesNotExist:
@@ -277,7 +277,7 @@ def ChangeEspecimen(request, pk=None):
                 
                 especimenObject.determinador=determinadorObje
             if(formCateTaxonomica.has_changed()):
-                print "cambio determinador"
+                print ("cambio determinador")
                 categoriaTaxoObje.genero=formCateTaxonomica['genero'].value()
                 categoriaTaxoObje.familia=formCateTaxonomica['familia'].value()
                 categoriaTaxoObje.epiteto_especifico=formCateTaxonomica['epiteto_especifico'].value()
@@ -293,7 +293,7 @@ def ChangeEspecimen(request, pk=None):
             show=False 
             messages.success(request, 'Actualización de especimen '+ str(especimenObject.num_registro) )
         else:
-            print ' formulario invalido'
+            print ('formulario invalido')
             messages.error(request, 'Formulario invalido')
             show=True
         
@@ -438,7 +438,7 @@ def busquedaAvanzada(request):
         if colector != "":
             distinct='select DISTINCT colector.id, colector.nombre_completo '
             queryColector=distinct + join + " where " + condiciones
-            print queryColector
+            print (queryColector)
             colectores=sql_select(queryColector)
             context={ 'colectores':colectores, 'especimenes_dumps':json.dumps(especimenes)} 
             return render(request,'busquedaColectores.html',context) 
@@ -455,7 +455,7 @@ def busquedaColectores(request):
     for item in lista:
         if (item['id_colector_ppal']==colector):
             filtro.append(item)
-    # print filtro
+    # print (filtro)
     return JsonResponse({'data':filtro})   
 
 def sql_select(sql):

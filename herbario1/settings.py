@@ -51,17 +51,18 @@ INSTALLED_APPS = [
     'crispy_forms',#para permitir que aparezca imagen ene l formulario de especimen
     'bootstrap3',#permite tags de boostrap
     'rolepermissions',#librerias para el manejo de permisos 
+    # 'channels', #webservices
     
 
 ]
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE  = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    # 'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]

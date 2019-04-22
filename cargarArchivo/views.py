@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.views.generic.edit import FormView
 from .forms import FormUpload
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.contrib import messages
 import os
 from herbario1.utilities import *
@@ -59,8 +59,8 @@ def handle_uploaded_file(csv_file):
         reader.next()
         
         for line in  reader:
-            # print line
-            # print "--------------------------------------------------------------------"
+            # print (line)
+            # print ("--------------------------------------------------------------------")
             try:
                 especimen=Especimen.objects.get(num_registro=line['ACCESSION'])
             except Especimen.DoesNotExist:
@@ -157,11 +157,11 @@ def handle_uploaded_file(csv_file):
                 objUbicacion=Ubicacion(pais=line['COUNTRY'],departamento=line['MAJORAREA'],municipio=line['MINORAREA'],divisionPolitica=line['GAZETTEER'],latitud= lat ,longitud= long,especificacionLocacion=line['LOCNOTES'],posicionLat=posicionLat,posicionLong=posicionLong, alturaMinima=alturaMinima,alturaMaxima=alturaMaxima,altUni=altUni, 
                 cultivada=True)
                 objUbicacion.save()
-                print objUbicacion
+                print (objUbicacion)
                 
                 especimen=Especimen(num_registro=line['ACCESSION'],categoria=cateTaxonomica,coleccion=objcoleccion,
                                     determinador=objdeterminador,lugar_duplicado= line['DUPS'] ,peligro='LC', tipo='NoTipo', ubicacion=objUbicacion,visible=True, usuario=None)
-                print especimen
+                print (especimen)
               
                 especimen.save()
         return True

@@ -1,6 +1,7 @@
-from django.conf.urls import url
+from django.urls import include, path
 from . import views
 
+app_name = 'archivo'
 urlpatterns = [
-    url(r'upload', views.UploadFileView.as_view(), name='upload'),
+    path(r'upload', views.UploadFileView.as_view(), name='upload'),
 ]

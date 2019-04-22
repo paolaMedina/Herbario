@@ -1,19 +1,19 @@
-from django.conf.urls import url
-
+from django.urls import include, path
 from . import views
 
+app_name= 'especimen'
 urlpatterns = [
-    url(r'^crear', views.RegistrarEspecimen, name='crear_especimen'),
-    url(r'nombres-autocomplete', views.autocomplete, name='ajax_autocomplete'),
-    url(r'^listar', views.ListarEspecimen, name='listar_especimen'),
-    url(r'^mi_lista', views.ListarEspecimenesPersonales, name='listar_personal'),
-    url(r'^editar/(?P<pk>\d+)', views.RegistrarEspecimen, name='editar_especimen'),
-    url(r'^eliminar/(?P<pk>\d+)', views.EliminarEspecimen, name='eliminar_especimen'),
-    url(r'^update/(?P<pk>\d+)', views.ChangeEspecimen, name='cambiar_especimen'),
-    url(r'^update', views.ChangeEspecimen, name='actualizar_especimen'),
-    url(r'^busqueda', views.searchEspecimen, name='testing'),
-    url(r'^api/get_especimenes', views.autocompleteFilter, name='autocompleteEspecimen'),
-    url(r'^api/busqueda', views.busquedaAvanzada, name='busquedaAvanzada'),
-    url(r'^detalle/(?P<pk>\d+)', views.vistaEspecimen, name='vistaEspecimen'),
-    url(r'^colectores', views.busquedaColectores, name='busquedaColectores')
+    path(r'^crear', views.RegistrarEspecimen, name='crear_especimen'),
+    path(r'nombres-autocomplete', views.autocomplete, name='ajax_autocomplete'),
+    path(r'^listar', views.ListarEspecimen, name='listar_especimen'),
+    path(r'^mi_lista', views.ListarEspecimenesPersonales, name='listar_personal'),
+    path(r'^editar/<int:pk>', views.RegistrarEspecimen, name='editar_especimen'),
+    path(r'^eliminar/<int:pk>', views.EliminarEspecimen, name='eliminar_especimen'),
+    path(r'^update/<int:pk>', views.ChangeEspecimen, name='cambiar_especimen'),
+    path(r'^update', views.ChangeEspecimen, name='actualizar_especimen'),
+    path(r'^busqueda', views.searchEspecimen, name='testing'),
+    path(r'^api/get_especimenes', views.autocompleteFilter, name='autocompleteEspecimen'),
+    path(r'^api/busqueda', views.busquedaAvanzada, name='busquedaAvanzada'),
+    path(r'^detalle/<int:pk>', views.vistaEspecimen, name='vistaEspecimen'),
+    path(r'^colectores', views.busquedaColectores, name='busquedaColectores')
 ]

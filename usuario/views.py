@@ -5,7 +5,7 @@ from django.views.generic.edit import FormView
 from django.http.response import HttpResponseRedirect
 from django.contrib.auth import login
 from django.shortcuts import render,get_object_or_404, render_to_response
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.contrib import messages
 from django.views.generic import ListView,CreateView,UpdateView,DeleteView
 from django.contrib.auth.models import Group
@@ -47,8 +47,8 @@ class RegistroUsuario(CreateView):
         email_subject = 'Account confirmation'
         email_body = "Buenas acabas de ser registrado en la pagina del Herbario CUVC de la Universidad del valle. Tus datos de registro son: \n Usuario:%s \n contrasena es %s \n puedes ingresar al siguiente link para loguearte: https://herbario1-paolamedina.c9users.io/usuario/" % (usuario.username,usuario.password1)
         
-        # send_mail(email_subject, email_body, 'angiepmc93@gmail.com',
-        #     [email], fail_silently=False)
+        send_mail(email_subject, email_body, 'angiepmc93@gmail.com',
+            [email], fail_silently=False)
         
         self.object = form.save(commit=False)
         self.object.set_password(contra)
@@ -77,7 +77,7 @@ class RegistroUsuario(CreateView):
         error='hay uno o mas campos invalidos. Por favor verifique de nuevo'
         errorDjango=form.errors
         messages.error(self.request,error )
-        print errorDjango
+        print (errorDjango)
         return  super(RegistroUsuario, self).form_invalid(form)
         
 class ListarUsuarios(ListView):
@@ -173,13 +173,13 @@ def EliminarUsuario(request,pk):
 def myAuthenticate( username=None, password=None):
     try:
         user = Usuario.objects.get(email=username)
-        print user
+        print (user)
         if user.check_password(password):
             return user
     except Usuario.DoesNotExist:
         try:
             user = Usuario.objects.get(username=username)
-            print user
+            print (user)
             if user.check_password(password):
                 return user
         except Usuario.DoesNotExist:
@@ -203,7 +203,7 @@ def Login(request):
             return redirect('usuario:login')
     else:
         # Si el usuario esta autenticado entonces nos direcciona a la url establecida en success_url
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             return redirect('dashboard')
         #Sino lo esta entonces nos muestra la plantilla del login simplemente
         else:
