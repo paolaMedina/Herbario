@@ -42,7 +42,8 @@ class EspecimenForm(forms.ModelForm):
                         'lugar_duplicado': forms.TextInput(attrs={'required':'required', 'class':'form-control col-md-7 col-xs-12', 'placeholder':'lugar de duplicado', 'value':'CUVC'}),
                         'peligro' : forms.Select(attrs={'class': 'form-control col-sm-2'}),
                         'tipo' : forms.Select(attrs={'class': 'form-control col-sm-2'}),
-                        'imagen' : ImageThumbnailFileInput,
+                        'imagen' : forms.ClearableFileInput(attrs={'value':'','class':'form-control col-md-7 col-xs-12'}),
+
                 } 
 
         

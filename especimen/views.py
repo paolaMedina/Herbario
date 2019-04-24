@@ -4,8 +4,8 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.shortcuts import render, HttpResponseRedirect
 from django.http import HttpResponse
-from django.forms import ModelForm, inlineformset_factory
-from django.forms.formsets import formset_factory
+# from django.forms import ModelForm, inlineformset_factory
+from django.forms import formset_factory
 from .models import  Especimen
 from .forms import EspecimenForm
 from cientifico.models import Cientifico
@@ -70,8 +70,6 @@ def RegistrarEspecimen(request, pk=None):
         mensaje_exito="Se edito exitosamente"
         viewsRedirect='especimen:listar_especimen'
         
-        
-        
         # print (dicColectoresSecu)
             
     else: 
@@ -85,7 +83,6 @@ def RegistrarEspecimen(request, pk=None):
         cientificos=Cientifico()
         mensaje_exito='Se ha guardado exitosamente'
         viewsRedirect='especimen:crear_especimen'
-        
     
 
     if request.method == 'POST':
@@ -147,7 +144,7 @@ def RegistrarEspecimen(request, pk=None):
                 coleccionObje.colectores_secu.clear()#limpia las instancias de colectores
                 for colector_form in colectoresFormset:
                     print (colector_form['nombre_completo'].value())
-                        # se crea la colección en caso que que los campos fecha, descripción y col_principal no existieran, pero si secundarios
+                    # se crea la colección en caso que que los campos fecha, descripción y col_principal no existieran, pero si secundarios
                         
                     try :
                         objeColector = Cientifico.objects.get(nombre_completo=colector_form['nombre_completo'].value(), nombre_abreviado=colector_form['nombre_abreviado'].value())
@@ -171,6 +168,7 @@ def RegistrarEspecimen(request, pk=None):
             print ("se envio")
         
         else: print ('algun formulario esta invalido')
+
     else:
         formCateTaxonomica= TaxonomiaForm(instance=categoriaTaxo)
         formColector= CientificoForm (prefix="colector", instance= colectorppal)
@@ -179,7 +177,6 @@ def RegistrarEspecimen(request, pk=None):
         formEspecimen = EspecimenForm(instance=especimen)
         formDeterminador = CientificoForm (prefix="determinador",instance=determinadorObje)
         formUbicacion= UbicacionForm(instance=ubicacionObje)
-        
     contexto={'formCateTaxonomica': formCateTaxonomica, 
               'formColector' :formColector,'formColeccion':formColeccion, 'colectoresFormset':colectoresFormset,
               'formDeterminador': formDeterminador, 'formEspecimen':formEspecimen,'cientificos':cientificos, 'formUbicacion':formUbicacion}
