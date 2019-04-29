@@ -93,16 +93,16 @@ WSGI_APPLICATION = 'herbario1.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 
-# DATABASES = {  
-#       'default': {  
-#          'ENGINE': 'django.db.backends.postgresql_psycopg2',  
-#          'NAME': 'dyhwnexd',  
-#          'USER': 'dyhwnexd',  
-#          'PASSWORD': 'BNJfs1RMOY6hpEm7s9HH3bDNxvM56QR_',  
-#          'HOST': 'elmer.db.elephantsql.com',  
-#          'PORT': '5432',  
-#       }  
-#      }  
+""" DATABASES = {  
+    'default': {  
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',  
+        'NAME': 'abodsovk',  
+        'USER': 'abodsovk',  
+        'PASSWORD': 'LXUfCnIKGTHOuE8UqUj4s80eYGJZ49X1',  
+        'HOST': 'hard-plum.db.elephantsql.com',  
+        'PORT': '5432',  
+    }  
+} """ 
 
 # DATABASES = {  
 #       'default': { 

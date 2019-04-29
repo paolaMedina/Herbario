@@ -29,7 +29,7 @@ import ast
 
 @login_required
 # # @has_role_decorator(['monitor', 'curador','investigador'])
-@verificar_rol(roles_permitidos=['monitor', 'curador','investigador'])
+@verificar_rol(roles_permitidos=['monitor', 'curador','investigador', 'director'])
 def RegistrarEspecimen(request, pk=None):
     
     ColectoresFormSet = formset_factory(CientificoForm)

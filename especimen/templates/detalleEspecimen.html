@@ -51,147 +51,135 @@
         <br>
         <div class="row">
             <div class="col-6">
-                <!-- <div class="container" >
-                    <div class="row"> -->
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="fa fa-barcode"></i>
-                                <b>General</b>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-barcode"></i>
+                        <b>General</b>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                    <strong>Número de Registro:</strong> 
+                                    <br>
+                                    <strong>Tipo:</strong> 
+                                    <br>
+                                    <strong>Determinador:</strong> 
                             </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-6">
-                                            <strong>Número de Registro:</strong> 
-                                            <br>
-                                            <strong>Tipo:</strong> 
-                                            <br>
-                                            <strong>Determinador:</strong> 
-                                    </div>
-                                    <div class="col-6">
-                                        {{especimen.num_registro}}
-                                        <br>
-                                        {% if especimen.tipo %}
-                                            {{especimen.tipo}}
-                                        {% else %}
-                                            ----
-                                        {% endif %}
-                                        <br>
-                                        {% if determinador.nombre_completo %}
-                                            {{determinador.nombre_completo}}  {{determinador.nombre_abreviado}}
-                                        {% else %}
-                                            ----
-                                        {% endif %}
-                                        <br>
-                                        
-                                    </div>
-                                </div>
+                            <div class="col-6">
+                                {{especimen.num_registro}}
+                                <br>
+                                {% if especimen.tipo %}
+                                    {{especimen.tipo}}
+                                {% else %}
+                                    ----
+                                {% endif %}
+                                <br>
+                                {% if determinador.nombre_completo %}
+                                    {{determinador.nombre_completo}}  {{determinador.nombre_abreviado}}
+                                {% else %}
+                                    ----
+                                {% endif %}
+                                <br>
+                                
                             </div>
                         </div>
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="fa fa-pagelines"></i>
-                                <b>Taxonomia</b>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-pagelines"></i>
+                        <b>Taxonomia</b>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                            <strong>Genero: </strong> 
+                            <br>
+                            <strong>Familia: </strong> 
+                            <br>
+                            <strong>Epiteto Especifico: </strong> 
+                            <br>
                             </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-6">
-                                    <strong>Genero: </strong> 
-                                    <br>
-                                    <strong>Familia: </strong> 
-                                    <br>
-                                    <strong>Epiteto Especifico: </strong> 
-                                    <br>
-                                    </div>
-                                    <div class="col-6">
-                                        {{taxonomia.genero}}
-                                        <br>
-                                        {{taxonomia.familia}}
-                                        <br>
-                                        {{taxonomia.epiteto_especifico}}
-                                        <br>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="fa fa-book"></i>
-                                <b>Colección</b> 
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <strong>Fecha de Colección: </strong> 
-                                        <br>
-                                        <strong>Número de Colección: </strong> 
-                                        <br>
-                                        <strong>Colector principal </strong> 
-                                        <br>
-                                    </div>
-                                    <div class="col-6">
-                                        {{coleccion.fecha}}
-                                        <br>
-                                        NUMERO
-                                        <br>
-                                        {% if colectorPpal.nombre_completo %}
-                                        {{ colectorPpal.nombre_completo}} {{colectorPpal.nombre_abreviado}}
-                                        {% else %}
-                                            ----
-                                        {% endif %}
-                                        <br>
-                                    </div>
-                                </div>
+                            <div class="col-6">
+                                {{taxonomia.genero}}
+                                <br>
+                                {{taxonomia.familia}}
+                                <br>
+                                {{taxonomia.epiteto_especifico}}
+                                <br>
                             </div>
                         </div>
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="fa fa-map-marker"></i>
-                                <b>Ubicación</b>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-book"></i>
+                        <b>Colección</b> 
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>Fecha de Colección: </strong> 
+                                <br>
+                                <strong>Número de Colección: </strong> 
+                                <br>
+                                <strong>Colector principal </strong> 
+                                <br>
                             </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-6">
-                                            <strong>Pais: </strong> 
-                                            <br>
-                                            <strong>Departamento: </strong>
-                                            <br> 
-                                            <strong>Municipio: </strong> 
-                                            <br>                            
-                                            <strong>Localidad: </strong> 
-                                            <br>
-                                            <strong>Especificación Locacion: </strong> 
-                                            <br>
-                                            <strong>Latitud: </strong> 
-                                            <br>
-                                            <strong>Longitud: </strong> 
-                                            <br>
-                                            <strong>Altura </strong> 
-                                            <br>
-                                    </div>
-                                    <div class="col-6">
-                                        {{ubicacion.pais}}
-                                        <br>
-                                        {% if especimen.peligro == "EX"  or especimen.peligro == "LC" or especimen.peligro == "DD" or especimen.peligro == "NE" %}
-                                            
-                                            {{ubicacion.departamento}}
-                                            <br>
-                                            {{ubicacion.municipio}}
-                                            <br>
-                                            {{ubicacion.divisionPolitica}} {{ubicacion.especificacionLocacion}}
-                                            <br>
-                                            {{ubicacion.longitud}}
-                                            <br>
-                                            {{ubicacion.latitud}}
-                                        {% endif %}
-                                    </div>
-                                </div>
+                            <div class="col-6">
+                                {{coleccion.fecha}}
+                                <br>
+                                NUMERO
+                                <br>
+                                {% if colectorPpal.nombre_completo %}
+                                {{ colectorPpal.nombre_completo}} {{colectorPpal.nombre_abreviado}}
+                                {% else %}
+                                    ----
+                                {% endif %}
+                                <br>
                             </div>
-                          </div>
-                        
-                        
-                    <!-- </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-map-marker"></i>
+                        <b>Ubicación</b>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6"><strong>Pais: </strong></div>
+                                <div class="col-6">{{ubicacion.pais}}</div>
+                        </div>
+                        {% if especimen.peligro == "EX"  or especimen.peligro == "LC" or especimen.peligro == "DD" or especimen.peligro == "NE" %}
 
-                </div> -->
+                            <div class="row">
+                                <div class="col-6"><strong>Departamento: </strong></div>
+                                <div class="col-6">{{ubicacion.departamento}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6"><strong>Municipio: </strong></div>
+                                <div class="col-6">{{ubicacion.municipio}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6"><strong>Localidad: </strong></div>
+                                <div class="col-6">
+                                    {{ubicacion.divisionPolitica}} {{ubicacion.especificacionLocacion}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6"><strong>Latitud: </strong></div>
+                                <div class="col-6">{{ubicacion.latitud}}</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6"><strong>Longitud: </strong></div>
+                                <div class="col-6">{{ubicacion.longitud}}</div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
             </div>
             <div class="col-5">
                 <div id="seadragon-viewer" style="width:600px; height:600px;"></div>
