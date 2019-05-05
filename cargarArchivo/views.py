@@ -63,6 +63,7 @@ def handle_uploaded_file(csv_file):
                 especimen=Especimen.objects.get(num_registro=line['ACCESSION'])
             except Especimen.DoesNotExist:
                 especimen=Especimen()
+
             #limpiar espacios en blanco y solo obtener los valores antes del punto para fecha
             fecha_determinacion= formatDate(line['DETMM'].strip(' '),line['DETDD'].strip(' '),line['DETYY'].strip(' '))
             #print (fecha_determinacion)
@@ -83,14 +84,22 @@ def handle_uploaded_file(csv_file):
                 else:
                     objdeterminador= None
             
+            if(especimen.categoria ):
+                especimen.categoria.delete()
+
             cateTaxonomica=CategoriaTaxonomica(familia=line['FAMILY'],genero=line['GENUS'],epiteto_especifico=line['SP1'],
                                             fecha_det=fecha_determinacion,categoria_infraespecifica=line['RANK1'],
                                             epiteto_infraespecifico=line['SP2'],autor1=line['AUTHOR1'],autor2=line['AUTHOR2']) 
             cateTaxonomica.save()
             
             fecha_coleccion= formatDate(line['COLLMM'].strip(' '),line['COLLDD'].strip(' '),line['COLLYY'].strip(' '))
+
+            numeroColeccion = line['PREFIX'].strip(' ') + line['NUMBER'].strip(' ') + line['SUFFIX'].strip(' ')
             
-            objcoleccion= Coleccion(colector_ppal=colectorPpal,fecha=fecha_coleccion,descripcion=line['PLANTDESC'])
+            if(especimen.coleccion):
+                especimen.coleccion.delete()
+
+            objcoleccion= Coleccion(colector_ppal=colectorPpal,fecha=fecha_coleccion,descripcion=line['PLANTDESC'], numero=numeroColeccion)
             objcoleccion.save()
             
             colectoresSec=line['ADDCOLL'].split('.,')#arreglo de colectores secundarios
@@ -160,7 +169,10 @@ def handle_uploaded_file(csv_file):
                 altUni=None
             else:
                 altUni=line['ALTUNIT'].strip()
-            
+                
+            if(especimen.ubicacion):
+                especimen.ubicacion.delete()
+
             objUbicacion=Ubicacion(pais=line['COUNTRY'],departamento=line['MAJORAREA'],municipio=line['MINORAREA'],divisionPolitica=line['GAZETTEER'],latitud= lat ,longitud= long,especificacionLocacion=line['LOCNOTES'],posicionLat=posicionLat,posicionLong=posicionLong, alturaMinima=alturaMinima,alturaMaxima=alturaMaxima,altUni=altUni, 
             cultivada=True)
             objUbicacion.save()

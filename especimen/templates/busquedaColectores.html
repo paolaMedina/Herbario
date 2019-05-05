@@ -50,7 +50,7 @@
                     </tbody>
                 </table>
             </div>
-        {%  else %}
+        {% else %}
             <table id="tablaEspecie" class="table table-bordered" style="width:100%">
                 <thead>
                     <tr>
@@ -63,15 +63,13 @@
                         {% for especimen in especimenes %}
                             <tr>
                                 {% if especimen.imagen %}
-                                    <td><img src="{% get_media_prefix  %}{{especimen.imagen}}"alt="" />
-                                        <br>
-                                        <a href="{% url 'especimen:vistaEspecimen' pk=especimen.num_registro %}" target="_blank"><span class="fa fa-eye">Ver</a>
+                                    <td>
+                                        <a href="{% url 'especimen:vistaEspecimen' pk=especimen.num_registro %}" target="_blank"><img src="{% get_media_prefix  %}{{especimen.imagen}}"alt=""/></a>
                                     </td>
                                 {% else %}
-                                <td><img src="/media/fotografias/vacio.jpg" alt="">
-                                    <br> 
-                                    <a href="{% url 'especimen:vistaEspecimen' pk=especimen.num_registro %}" target="_blank"><span class="fa fa-eye">Ver</a>
-                                </td>
+                                    <td>
+                                        <a href="{% url 'especimen:vistaEspecimen' pk=especimen.num_registro %}" target="_blank"><img src="/media/fotografias/vacio.jpg" alt=""></a>
+                                    </td>
                                 {% endif %}
                                 <td>
                                     <div class="container" >
@@ -90,7 +88,7 @@
                                                 <strong><i>País:</i></strong> 
                                             </div>
                                             <div class="col-5">
-                                                {{especimen.num_registro}}
+                                                 <a href="{% url 'especimen:vistaEspecimen' pk=especimen.num_registro %}" target="_blank"><span style="color:#28a745;text-decoration: underline;">{{especimen.num_registro}}</span></a>
                                                 <br>
                                                 {{especimen.genero}}
                                                 <br>
@@ -158,17 +156,14 @@
                     var imagen=''
                     url='/especimen/detalle/'+especimenes[i].num_registro
                     if( especimenes[i].imagen !=""){
-                        imagen= `<td>
-                                    <img src="{% get_media_prefix  %}`+especimen.especimenes[i].imagen`"alt="" />
-                                    <br>
-                                    <a href=${url}  target="_blank"><span class="fa fa-eye">Ver</a>
-                                </td>`
+                        imagen= 
+                            `<td>
+                                <a href=${url} target="_blank"><img src="{% get_media_prefix  %}`+especimen.especimenes[i].imagen`"alt="" /></a>
+                            </td>`
                     }
                     else{
                         imagen=`<td>
-                                    <img src="/media/fotografias/vacio.jpg" alt="">
-                                    <br> 
-                                    <a href=${url}  target="_blank"><span class="fa fa-eye">Ver</a>
+                                    <a href=${url}  target="_blank"><img src="/media/fotografias/vacio.jpg" alt=""></a>
                                 </td>`
                     }
                     info=`<td>
@@ -177,8 +172,9 @@
                                     <div class="col-5">
                                         <strong><i>Número de Registro:</i></strong> 
                                     </div>
-                                    <div class="col-5">`
-                                        + especimenes[i].num_registro+`
+                                    <div class="col-5"> <a href="${url}" target="_blank"><span style="color:#28a745;text-decoration: underline;">`+
+                                        especimenes[i].num_registro+ `</a>
+                                        
                                     </div>
                                     <br>
                                     <div class="col-5">

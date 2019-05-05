@@ -474,16 +474,38 @@ def sql_select(sql):
         list.append(dict) 
     return list  
 
+#ver detalle del especimen, usuario externo
 def vistaEspecimen(request, pk):
     
-    especimen = Especimen.objects.get(num_registro=pk)
-    categoriaTaxo=CategoriaTaxonomica.objects.get(pk=especimen.categoria.pk)
-    coleccionObje= Coleccion.objects.get(pk=especimen.coleccion.pk)
-    ubicacionObje=Ubicacion.objects.get(pk=especimen.ubicacion.pk)
-    colectorppal=Cientifico.objects.get(pk=especimen.coleccion.colector_ppal.pk)
-    determinadorObje=Cientifico.objects.get(pk=especimen.determinador.pk)
-    colecoresSecun= coleccionObje.colectores_secu.all()
-    contexto={'especimen':especimen, 'taxonomia':categoriaTaxo,'coleccion':coleccionObje,'ubicacion':ubicacionObje,
-                'colectorPpal':colectorppal,'determinador':determinadorObje,'colecoresSecun':colecoresSecun}
+    try:
+        especimen = Especimen.objects.get(num_registro=pk)
+        if especimen.categoria:
+            categoriaTaxo=CategoriaTaxonomica.objects.get(pk=especimen.categoria.pk)
+        else:
+            categoriaTaxo = None
+        if(especimen.coleccion):
+            coleccionObje = Coleccion.objects.get(pk=especimen.coleccion.pk)
+            colecoresSecun = coleccionObje.colectores_secu.all()
+
+        else:
+            coleccionObje = None
+            colecoresSecun = None
+        if(especimen.ubicacion):
+            ubicacionObje = Ubicacion.objects.get(pk=especimen.ubicacion.pk)
+        else:
+            ubicacionObje = None
+        if(especimen.coleccion and especimen.coleccion.colector_ppal):
+            colectorppal = Cientifico.objects.get(pk=especimen.coleccion.colector_ppal.pk)
+        else:
+            colectorppal = None
+        if especimen.determinador:
+            determinadorObje = Cientifico.objects.get(pk=especimen.determinador.pk)
+        else:
+            determinadorObje = None
+
+        contexto={'especimen':especimen, 'taxonomia':categoriaTaxo,'coleccion':coleccionObje,'ubicacion':ubicacionObje,
+                    'colectorPpal':colectorppal,'determinador':determinadorObje,'colecoresSecun':colecoresSecun}
+    except Especimen.DoesNotExist:
+        contexto = None
 
     return render(request,'detalleEspecimen.html',contexto)

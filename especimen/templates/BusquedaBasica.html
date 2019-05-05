@@ -36,9 +36,8 @@
                                     <a href="{% url 'especimen:vistaEspecimen' pk=especimen.num_registro %}"><span class="fa fa-eye">Ver</a>
                                 </td>
                             {% else %}
-                            <td><img src="/media/fotografias/vacio.jpg" alt="">
-                                <br>
-                                <a href="{% url 'especimen:vistaEspecimen' pk=especimen.num_registro %}" target="_blank"><span class="fa fa-eye"></a>
+                            <td>
+                                <a href="{% url 'especimen:vistaEspecimen' pk=especimen.num_registro %}" target="_blank"><img src="/media/fotografias/vacio.jpg" alt=""></a>
                             </td>
                             {% endif %}
                             <td>
@@ -58,7 +57,9 @@
                                             <strong><i>País:</i></strong> 
                                         </div>
                                         <div class="col-5">
-                                        <span style="color:red;">{{especimen.num_registro}}</span>
+                                            <a href="{% url 'especimen:vistaEspecimen' pk=especimen.num_registro %}" target="_blank"><span style="color:#28a745;text-decoration: underline;">{{especimen.num_registro}}</span></a>
+
+                                        
                                         <br>
                                         {{especimen.categoria.genero}}
                                         <br>
@@ -79,57 +80,6 @@
                 {% endif %}
             </tbody>
             </tbody>
-        <!--     <thead>
-                <tr>
-                <th>Imagen</th>
-                <th>Número de catálogo</th>
-                <th>Género</th>
-                <th>Familia</th>
-                <th>Colector Principal</th>
-                <th>Tipo</th>
-                <th>País</th>
-                <th>Detalle</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% if especimenes %}
-                    {% for especimen in especimenes %}
-                    <tr>
-                        {% if especimen.imagen %}
-                            <td><img src="{% get_media_prefix  %}{{especimen.imagen}}"alt="" /></td>
-                        {% else %}
-                        <td>
-                            <img src="/media/fotografias/vacio.jpg"alt="" />
-                            
-                        </td>
-                        {% endif %}
-                        <td>{{especimen.num_registro}}</td>
-                        <td>{{especimen.categoria.genero}}</td>
-                        <td>{{especimen.categoria.familia}}</td>
-                        <td>{{especimen.coleccion.colector_ppal.nombre_completo}}</td>
-                        <td>{{especimen.tipo}}</td>
-                        <td>{{especimen.ubicacion.pais}}</td>
-                        
-                        <td>
-                        <a href="{% url 'especimen:editar_especimen' pk=especimen.pk %}"><span class="fa fa-eye">Ver</a>
-                        
-                        </td>
-                        
-                    </tr>
-                    {% endfor %}
-                {% endif %}
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th>Imagen</th>
-                    <th>Familia</th>
-                    <th>Género</th>
-                    <th>Epíteto Específico</th>
-                    <th>Determinador</th>
-                    <th>Colector Principal</th>
-                    <th>Detalle</th>
-                </tr>
-            </tfoot> -->
         </table>
     </div>
 </div>
@@ -141,7 +91,7 @@
     <script type="text/javascript" >
         $(document).ready(function() {
             $('#example').DataTable({
-                pageLength: 20,
+                pageLength: 25,
                 responsive: true,
                 ordering:  false,
                 "order": [1,'asc'],

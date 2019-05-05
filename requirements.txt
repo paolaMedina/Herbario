@@ -1,7 +1,7 @@
 django==2.2
 django-datetime-widget
 django-bootstrap3
-django-floppyforms
+# django-floppyforms
 django-crispy-forms
 easy-thumbnails
 django-role-permissions 

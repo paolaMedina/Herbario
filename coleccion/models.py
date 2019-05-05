@@ -6,6 +6,7 @@ from cientifico.models import Cientifico
 
 # Create your models here.
 class Coleccion(models.Model):
+    numero= models.CharField(max_length=200, null=True,blank=True,default=None)
     colector_ppal = models.ForeignKey(Cientifico, null=True, blank=True, on_delete=models.CASCADE,related_name="principal")
     fecha = models.CharField(max_length=10, null=True, blank=True)
     descripcion = models.TextField(null=True, blank=True)
