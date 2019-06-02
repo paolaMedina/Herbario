@@ -47,8 +47,8 @@ class RegistroUsuario(CreateView):
         email_subject = 'Account confirmation'
         email_body = "Buenas acabas de ser registrado en la pagina del Herbario CUVC de la Universidad del valle. Tus datos de registro son: \n Usuario:%s \n contrasena es %s \n puedes ingresar al siguiente link para loguearte: https://herbario1-paolamedina.c9users.io/usuario/" % (usuario.username,usuario.password1)
         
-        send_mail(email_subject, email_body, 'angiepmc93@gmail.com',
-            [email], fail_silently=False)
+        # send_mail(email_subject, email_body, 'angiepmc93@gmail.com',
+        #     [email], fail_silently=False)
         
         self.object = form.save(commit=False)
         self.object.set_password(contra)

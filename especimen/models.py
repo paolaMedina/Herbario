@@ -30,7 +30,7 @@ class Especimen (models.Model):
     categoria = models.ForeignKey(CategoriaTaxonomica, null=True, blank=True, on_delete=models.CASCADE, default=None)
     coleccion = models.ForeignKey(Coleccion, null=True, blank=True, on_delete=models.CASCADE, default=None)
     determinador = models.ForeignKey(Cientifico, null=True, blank=True, on_delete=models.CASCADE, default=None)
-    lugar_duplicado = models.CharField(max_length=200)
+    lugar_duplicado = models.CharField(max_length=30)
     peligro = models.CharField(max_length=2, choices=DANGER_CHOICES, default='LC')
     imagen = models.ImageField(upload_to='fotografias/', null=True, blank=True)
     visible= models.BooleanField(default=True)
