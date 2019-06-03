@@ -55,7 +55,7 @@ $(document).ready(function() {
       var calendarEl = document.getElementById('calendar');
 
       var calendar = new FullCalendar.Calendar(calendarEl, {
-        plugins: [ 'bootstrap' ],
+        plugins: [ 'dayGrid','bootstrap' ],
         timeZone: 'UTC',
         themeSystem: 'bootstrap',
         header: {
