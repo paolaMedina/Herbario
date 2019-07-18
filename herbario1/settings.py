@@ -186,3 +186,5 @@ DEFAULT_FROM_EMAIL = 'Herbario CUVC  <noreply@example.com>'
 #reconozca el archivo roles.py
 ROLEPERMISSIONS_MODULE = 'herbario1.roles' 
 ROLEPERMISSIONS_REDIRECT_TO_LOGIN = True
+
+DATE_INPUT_FORMATS = ['%d-%m-%Y']

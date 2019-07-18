@@ -10,7 +10,7 @@ class Visita (models.Model):
     hora = models.TimeField()
     nombre = models.CharField(max_length=200)
     correo = models.EmailField()
-    telefono = models.IntegerField()
+    telefono = models.CharField(max_length=20)
     numPersonas = models.IntegerField()
     motivo = models.TextField()
     aprobada = models.BooleanField(default=False)
