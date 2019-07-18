@@ -27,7 +27,7 @@ from django.contrib.auth.views import LoginView
 
 
 urlpatterns = [
-    path(r'admin', admin.site.urls),
+    # path(r'admin', admin.site.urls),
     path(r'', Home, name='inicio'),  
     path(r'dashboard', Dashboard, name = 'dashboard'),
     path(r'especimen/', include('especimen.urls')), 
