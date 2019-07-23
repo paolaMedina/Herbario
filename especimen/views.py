@@ -218,7 +218,7 @@ def ListarEspecimenesPersonales(request):
     
 #funcion que elimina un especimen dado    
 @login_required
-@verificar_rol(roles_permitidos=['monitor', 'curador','investigador'])
+@verificar_rol(roles_permitidos=['monitor', 'curador','investigador', 'director'])
 def EliminarEspecimen(request, pk):
     especimen= Especimen.objects.get(pk=pk)
     especimen.visible=False
