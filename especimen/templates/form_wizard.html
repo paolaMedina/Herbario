@@ -14,6 +14,9 @@ Crear Especimen
 <link href="{% static 'plantilla-backend/css/plugins/datapicker/datepicker3.css' %}" rel="stylesheet">
 <link href="{% static 'plantilla-backend/css/plugins/iCheck/custom.css' %}" rel="stylesheet">
 <link href="{% static 'style.css' %}" rel="stylesheet">
+<!-- Krajee plugin-upload file -->
+<link href="{% static 'plugins/krajee/css/fileinput.min.css' %}" media="all" rel="stylesheet">
+<link href="{% static 'plugins/krajee/themes/explorer/theme.css' %}" media="all" rel="stylesheet">
 <!-- Toastr style -->
 <link href="{% static 'plantilla-backend/css/plugins/toastr/toastr.min.css' %}" rel="stylesheet">
 <!-- query-ui style -->
@@ -36,7 +39,7 @@ Crear Especimen
             </div>
             <div class="ibox-content">
 
-                <form id="form"  enctype="multipart/form-data" class="wizard-big  form-big" method="post">
+                <form id="form"  enctype="multipart/form-data" class="wizard-big form-big" method="post">
                     {% csrf_token %}
                     <h1>Colección</h1>
                     <fieldset >
@@ -122,8 +125,8 @@ Crear Especimen
                         </div>
                     </fieldset >
                     
-                   <h1>Espécimen</h1>
-                   <fieldset>
+                    <h1>Espécimen</h1>
+                    <fieldset>
                         <div class="row">
                             <div class="col-lg-6">
                                 <!-- numero registro -->
@@ -140,28 +143,25 @@ Crear Especimen
                                 </div>
                                 <!-- tipo -->
                                 <div class="form-group">
-                                        <label for={{formEspecimen.tipo.name}}>{{formEspecimen.tipo.label}} </label>
-                                        {{formEspecimen.tipo}}
-                                    </div>
+                                    <label for={{formEspecimen.tipo.name}}>{{formEspecimen.tipo.label}} </label>
+                                    {{formEspecimen.tipo}}
+                                </div>
                                 <!-- categoria de amenaza -->
                                 <div class="form-group">
                                     <label for={{formEspecimen.peligro.name}}>{{formEspecimen.peligro.label}} </label>
                                     {{formEspecimen.peligro}}
                                 </div>
+                                
+                            </div>
+                        
+                            <!--imagen -->
+                            
+                            <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for={{formEspecimen.imagen.name}} >{{formEspecimen.imagen.label}}</label>
+                                    <label for={{formEspecimen.imagen.name}}>{{formEspecimen.imagen.label}}</label> 
                                     {{formEspecimen.imagen}}
                                 </div>
                             </div>
-                        
-                        <!--imagen -->
-                        
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                
-                                <img id="imgSalida" width="50%" height="40%" src="" />
-                            </div>
-                        </div>
                         </div>
                     </fieldset>
                     
@@ -321,6 +321,7 @@ Crear Especimen
                                     
                                 </div>  
                             </div>
+                        </div>
                     </fieldset>
                     
                 </form>
@@ -349,12 +350,17 @@ Crear Especimen
 <script src="{% static 'plantilla-backend/js/plugins/jquery-ui/jquery-ui.min.js' %}"></script>
 <!-- Data picker -->
 <script src="{% static 'plantilla-backend/js/plugins/datapicker/bootstrap-datepicker.js'%}"></script>
+<!-- Krajee plugin-upload file -->
+<script src="{% static 'plugins/krajee/js/fileinput.js' %}" ></script>
+<script src="{% static 'plugins/krajee/js/locales/es.js' %}" ></script>
+<script src="{% static 'plugins/krajee/themes/explorer/theme.js' %}" ></script>
+<!-- iCheck -->
+<script src="{% static 'plantilla-backend/js/plugins/iCheck/icheck.min.js'%}"></script>
 
 
 <!-- validar solo numeros en el campo de numero de registro -->
 <script language=Javascript>
-      function isNumberKey(evt)
-      {
+      function isNumberKey(evt){
          var charCode = (evt.which) ? evt.which : event.keyCode
          if (charCode > 31 && (charCode < 48 || charCode > 57))
             return false;
@@ -392,10 +398,10 @@ Crear Especimen
     }
 </script>
 
-<!-- Manejo del wizard -->
 <script>
     $(document).ready(function(){
-       
+        
+        // Manejo del wizard 
         $("#wizard").steps();
         $("#form").steps({
             bodyTag: "fieldset",
@@ -444,7 +450,7 @@ Crear Especimen
             }
         });
         //dinamico tabla colectores secundarios
-          $('.formset_row').formset({
+        $('.formset_row').formset({
             addText: 'add colector secundario',
             deleteText: 'remove'
         });
@@ -475,43 +481,35 @@ Crear Especimen
             }});  
         });
         
-        $(function() {
-          $('#id_imagen').change(function(e) {
-              addImage(e); 
-             });
-        
-             function addImage(e){
-              var file = e.target.files[0],
-              imageType = /image.*/;
-            
-              if (!file.type.match(imageType))
-               return;
-          
-              var reader = new FileReader();
-              reader.onload = fileOnload;
-              reader.readAsDataURL(file);
-             }
-          
-             function fileOnload(e) {
-              var result=e.target.result;
-              $('#imgSalida').attr("src",result);
-             }
-            });
-        
-        
-        
-
-   });
-</script>
-
-<!-- iCheck -->
-<script src="{% static 'plantilla-backend/js/plugins/iCheck/icheck.min.js'%}"></script>
-<script>
-    $(document).ready(function () {
-        $('.i-checks').iCheck({
-            checkboxClass: 'icheckbox_square-green',
+        savedImage='{{formEspecimen.imagen.value}}'
+        if(savedImage =='None' || savedImage ==''){
+            imagenPrev=''        
+        }
+        else{
+            imagenPrev=['/media/'+savedImage]
+        }
+  
+        $('#id_imagen').fileinput({
+            theme: "explorer",
+            allowedFileExtensions: ['jpg', 'png', 'gif'],
+            language: 'es', 
+            maxFilesNum: 1,  
+            showUpload: false, 
+            initialPreviewAsData: true, 
+            initialPreview:imagenPrev,
+            fileActionSettings: {
+                showUpload: false,
+                showRemove:false
+                }, 
         });
-    });
+
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+            });
+        });
+        
+   });
 </script>
 {% endblock %}
 

@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'usuario',
     'noticia',
     'visita',
+    'cliente',
+    'servicios',
     'cargarArchivo',
     'easy_thumbnails',#para permitir que aparezca imagen en el formulario de especimen
     'crispy_forms',#para permitir que aparezca imagen ene l formulario de especimen
@@ -93,16 +95,16 @@ WSGI_APPLICATION = 'herbario1.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 
-# DATABASES = {  
-#       'default': {  
-#          'ENGINE': 'django.db.backends.postgresql_psycopg2',  
-#          'NAME': 'dyhwnexd',  
-#          'USER': 'dyhwnexd',  
-#          'PASSWORD': 'BNJfs1RMOY6hpEm7s9HH3bDNxvM56QR_',  
-#          'HOST': 'elmer.db.elephantsql.com',  
-#          'PORT': '5432',  
-#       }  
-#      }  
+""" DATABASES = {  
+    'default': {  
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',  
+        'NAME': 'abodsovk',  
+        'USER': 'abodsovk',  
+        'PASSWORD': 'LXUfCnIKGTHOuE8UqUj4s80eYGJZ49X1',  
+        'HOST': 'hard-plum.db.elephantsql.com',  
+        'PORT': '5432',  
+    }  
+} """ 
 
 # DATABASES = {  
 #       'default': { 
@@ -184,3 +186,5 @@ DEFAULT_FROM_EMAIL = 'Herbario CUVC  <noreply@example.com>'
 #reconozca el archivo roles.py
 ROLEPERMISSIONS_MODULE = 'herbario1.roles' 
 ROLEPERMISSIONS_REDIRECT_TO_LOGIN = True
+
+DATE_INPUT_FORMATS = ['%d-%m-%Y']

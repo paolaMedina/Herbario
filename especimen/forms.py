@@ -3,10 +3,10 @@
 from django import forms
 from .models import Especimen
 
-from floppyforms import ClearableFileInput
+# from floppyforms import ClearableFileInput
 
-class ImageThumbnailFileInput(ClearableFileInput):
-    template_name = 'image_thumbnail.html'
+# class ImageThumbnailFileInput(ClearableFileInput):
+#     template_name = 'image_thumbnail.html'
 
 class EspecimenForm(forms.ModelForm):
         def __init__(self, *args, **kwargs):
@@ -18,7 +18,6 @@ class EspecimenForm(forms.ModelForm):
                 model = Especimen
                 fields = [
                         'num_registro',
-                        #'duplicado',
                         'lugar_duplicado',
                         'peligro',
                         'tipo',
@@ -29,7 +28,6 @@ class EspecimenForm(forms.ModelForm):
                 labels = {
                 
                         'num_registro' : 'Número de registro',
-                        #'duplicado': 'Duplicado',
                         'lugar_duplicado' : 'Lugar de duplicado',
                         'peligro' : "Categoria de amenaza",
                         'tipo' : 'Tipo',
@@ -38,11 +36,11 @@ class EspecimenForm(forms.ModelForm):
                 }
                 widgets = {
                         'num_registro': forms.TextInput(attrs={ 'onkeypress':'return isNumberKey(event)','required':'required', 'class':'form-control col-md-7 col-xs-12', 'placeholder':'numero de registro'}),
-                        #'duplicado': forms.TextInput(attrs={'required':'required', 'class':'form-control col-md-7 col-xs-12', 'placeholder':'duplicado'}),
                         'lugar_duplicado': forms.TextInput(attrs={'required':'required', 'class':'form-control col-md-7 col-xs-12', 'placeholder':'lugar de duplicado', 'value':'CUVC'}),
                         'peligro' : forms.Select(attrs={'class': 'form-control col-sm-2'}),
                         'tipo' : forms.Select(attrs={'class': 'form-control col-sm-2'}),
-                        'imagen' : ImageThumbnailFileInput,
+                        'imagen' : forms.ClearableFileInput(attrs={'value':'','class':'form-control col-md-7 col-xs-12'}),
+
                 } 
 
         

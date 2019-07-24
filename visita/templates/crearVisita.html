@@ -1,53 +1,43 @@
-{% extends "base_front2.html" %}
-{% load static %}
+{% extends "base_front2.html" %} {% load static %} {% block head %}
+<!--FullCalendar-->
+<link href="{% static 'plugins/fullcalendar/packages/core/main.css'%}" rel='stylesheet' />
+<link href="{% static 'plugins/fullcalendar/packages/daygrid/main.css'%}" rel='stylesheet' />
+<link href="{% static 'plugins/fullcalendar/packages/bootstrap/main.css'%}" rel='stylesheet' />
+<!--Tempusdominus-->
+<link href="{% static 'plugins/TempusDominus/tempusdominus-bootstrap-4.min.css'%}" rel='stylesheet' />
+<!--SmartWizard-->
+<link href="{% static 'plugins/SmartWizard-master/dist/css/smart_wizard.css" rel="stylesheet'%}" type="text/css" />
+<link href="{% static 'plugins/SmartWizard-master/dist/css/smart_wizard_theme_dots.css'%}" rel="stylesheet" type="text/css" /> {% endblock %} {% block titulo %} Solicitar Visita {% endblock %} {% block guia %}
+<p class="breadcrumbs">
+    <span class="mr-2"><a href="{% url 'inicio' %}" style="color:aliceblue !important;">Inicio<i class="ion-ios-arrow-forward"></a></span>
+    <span class="mr-2">></span>
+    <span><u>Solicitar visita</u> <i class="ion-ios-arrow-forward"></span>
+</p>
+{% endblock %} {% block content %}
 
-{% block head %} 
-    <!--FullCalendar-->
-    <link href="{% static 'plugins/fullcalendar/packages/core/main.css'%}" rel='stylesheet' />
-    <link href="{% static 'plugins/fullcalendar/packages/daygrid/main.css'%}" rel='stylesheet' />
-    <link href="{% static 'plugins/fullcalendar/packages/bootstrap/main.css'%}" rel='stylesheet' />
-    <!--Tempusdominus-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
-    <!--SmartWizard-->
-    <link href="{% static 'plugins/SmartWizard-master/dist/css/smart_wizard.css" rel="stylesheet'%}" type="text/css" /> 
-    <link href="{% static 'plugins/SmartWizard-master/dist/css/smart_wizard_theme_dots.css'%}" rel="stylesheet" type="text/css" />
-
-
-{% endblock %}
-
-{% block titulo %}  Solicitar Visita  {% endblock %}
-
-{% block guia %}
-    <p class="breadcrumbs" >
-        <span class="mr-2" ><a href="{% url 'inicio' %}" style="color:aliceblue !important;">Inicio<i class="ion-ios-arrow-forward"></a></span> 
-        <span class="mr-2">></span> 
-        <span><u>Solicitar visita</u> <i class="ion-ios-arrow-forward"></span>
-    </p>
-{% endblock %}
-
-{% block content %}
-
-    <div class="container" >
+<div class="container">
+    <div class="row">
         <h1>Solicitud de visita</h1>
         <br>
-        <div id="smartwizard">
+        <div id="smartwizard" class="col-lg-9">
             <ul>
                 <li><a href="#step-1">Calendario<br /></a></li>
-                <li><a href="#step-2">Solicitud<br /></a></li>
+                <li><a href="#step-2">Formulario<br /></a></li>
             </ul>
-        
+
             <div>
-                <div id="step-1" class="">
-                    <div class=>
-                        <div id='calendar'></div>
+                <div id="step-1">
+                    <div class="ibox float-e-margins">
+                        <div id='calendar' style="margin-top: 20px;"></div>
                     </div>
+
                 </div>
                 <div id="step-2" class="col-lg-12">
-                    
-                    <form  method="post" enctype="multipart/form-data"  class="form-horizontal" >
+
+                    <form method="post" enctype="multipart/form-data" class="form-horizontal">
                         {% csrf_token %}
                         <div class="form-group">
-                            <label for={{form.fecha.name}}>{{form.fecha.label}}</label> 
+                            <label for={{form.fecha.name}}>{{form.fecha.label}}</label>
                             <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
                                 {{form.fecha}}
                                 <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
@@ -57,7 +47,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for={{form.hora.name}}>{{form.hora.label}}</label> 
+                            <label for={{form.hora.name}}>{{form.hora.label}}</label>
                             <div class="input-group date" id="datetimepicker3" data-target-input="nearest">
                                 {{form.hora}}
                                 <div class="input-group-append" data-target="#datetimepicker3" data-toggle="datetimepicker">
@@ -67,53 +57,85 @@
                         </div>
 
                         <div class="form-group">
-                            <label for={{form.nombre.name}}>{{form.nombre.label}}</label> 
-                            {{form.nombre}}
+                            <label for={{form.nombre.name}}>{{form.nombre.label}}</label> {{form.nombre}}
                         </div>
                         <div class="form-group">
-                            <label for={{form.correo.name}}>{{form.correo.label}}</label> 
-                            {{form.correo}}
+                            <label for={{form.correo.name}}>{{form.correo.label}}</label> {{form.correo}}
                         </div>
                         <div class="form-group">
-                            <label for={{form.telefono.name}}>{{form.telefono.label}}</label> 
-                            {{form.telefono}}
+                            <label for={{form.telefono.name}}>{{form.telefono.label}}</label> {{form.telefono}}
                         </div>
                         <div class="form-group">
-                            <label for={{form.numPersonas.name}}>{{form.numPersonas.label}}</label> 
-                            {{form.numPersonas}}
+                            <label for={{form.numPersonas.name}}>{{form.numPersonas.label}}</label> {{form.numPersonas}}
                         </div>
                         <div class="form-group">
-                            <label for={{form.motivo.name}}>{{form.motivo.label}}</label> 
-                            {{form.motivo}}
-                        </div>                     
+                            <label for={{form.motivo.name}}>{{form.motivo.label}}</label> {{form.motivo}}
+                        </div>
                         <div class="text-center">
-                            <input type="submit"  value="Solicitar" class="btn btn-success btn-lg">
+                            <input type="submit" value="Solicitar" class="btn btn-success btn-lg">
                         </div>
                     </form>
-                    
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <h2>Proceso</h2>
+                    Si tienes un grupo de mas de cinco personas y deseas realizar una visita al Herbario CUVC, puedes verificar en el calendario los días disponibles y diligenciar el formulario que encontraras en la siguiente pestaña. Realizado este proceso un funcionario
+                    se contactara contigo para confirmar la visita.
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+{% endblock %} {% block javascript %}
+
+<!-- Full Calendar -->
+<script src="{% static 'plugins/fullcalendar/packages/core/main.js'%}"></script>
+<script src="{% static 'plugins/fullcalendar/packages/daygrid/main.js'%}"></script>
+<script src="{% static 'plugins/fullcalendar/packages/bootstrap/main.js'%}"></script>
+<!--SmartWizard-->
+<script type="text/javascript" src="{% static 'plugins/SmartWizard-master/dist/js/jquery.smartWizard.min.js'%}"></script>
+<!--Tempusdominus-->
+<script src="{% static 'plugins/moments/moment.js'%}"></script>
+<!-- <script src="{% static 'plugins/moments/moment-locale-es.js'%}"></script> -->
+<script src="{% static 'plugins/TempusDominus/tempusdominus-bootstrap-4.min.js'%}"></script>
+
+<script src="{% static 'js/crearVisita.js' %}"></script>
+<script language=Javascript>
+    function isNumberKey(evt) {
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    }
+
+    $(function() {
+        $('#datetimepicker3').datetimepicker({
+            format: 'HH:mm'
+        });
+    });
+    $(function() {
+        var dateFormat = "DD-MM-YYYY";
+        var MinDate = new Date();
+
+        dateMin = moment(MinDate, dateFormat);
+
+        $("#datetimepicker4").datetimepicker({
+            format: dateFormat,
+            minDate: dateMin
+        });
+    });
+
+    // $(function() {
+    //     $('#datetimepicker4').datetimepicker({
+    //         format: 'L',
+    //         daysOfWeekDisabled: [0, 6]
+    //     });
+    // });
+</script>
 
 {% endblock %}
-
-{% block javascript %}
-    <!-- Full Calendar -->
-    <script src="{% static 'plugins/fullcalendar/packages/core/main.js'%}"></script>
-    <script src="{% static 'plugins/fullcalendar/packages/daygrid/main.js'%}"></script>
-    <script src="{% static 'plugins/fullcalendar/packages/bootstrap/main.js'%}"></script>
-    <!--SmartWizard-->
-    <script type="text/javascript" src="{% static 'plugins/SmartWizard-master/dist/js/jquery.smartWizard.min.js'%}"></script>
-    <!--Tempusdominus-->
-    <script src="{% static 'plugins/moments/moment.js'%}"></script>
-    <script src="{% static 'plugins/moments/moment-locale-es.js'%}"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
-
-    <script src="{% static 'js/crearVisita.js' %}"></script>
-
-
-{% endblock %}
-
-

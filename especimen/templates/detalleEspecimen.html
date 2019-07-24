@@ -21,7 +21,10 @@
     }
     .card-body{
         padding-top: 0.35rem;
-        padding-bottom: 0.35rem;
+        padding-bottom: 0.35rem;   
+    }
+    .card-body .val {
+        font-style: normal;
     }
     #map { 
           width: 100%;
@@ -45,160 +48,231 @@
 {% endblock %}
 
 {% block content %}
-
-    <div class="container" >
-        <h1>{{taxonomia.genero}} {{taxonomia.epiteto_especifico}} {{taxonomia.autor1}} </h1>
-        <br>
-        <div class="row">
-            <div class="col-6">
-                <!-- <div class="container" >
-                    <div class="row"> -->
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="fa fa-barcode"></i>
-                                <b>General</b>
+    {% if especimen %}
+        <div class="container" >
+            <h1>{{taxonomia.genero}} {{taxonomia.epiteto_especifico}} {{taxonomia.autor1}} </h1>
+            <br>
+            <div class="row">
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-barcode"></i>
+                            <b>General</b>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <b>Número de Registro CUVC:</b>
+                                </div>
+                                <div class="col-6 val">
+                                    {{especimen.num_registro}}
+                                </div>
                             </div>
-                            <div class="card-body">
+                            {% if especimen.tipo != 'NoTipo' %}
                                 <div class="row">
                                     <div class="col-6">
-                                            <strong>Número de Registro:</strong> 
-                                            <br>
-                                            <strong>Tipo:</strong> 
-                                            <br>
-                                            <strong>Determinador:</strong> 
+                                        <strong>Tipo:</strong> 
                                     </div>
-                                    <div class="col-6">
-                                        {{especimen.num_registro}}
-                                        <br>
-                                        {% if especimen.tipo %}
-                                            {{especimen.tipo}}
-                                        {% else %}
-                                            ----
-                                        {% endif %}
-                                        <br>
-                                        {% if determinador.nombre_completo %}
-                                            {{determinador.nombre_completo}}  {{determinador.nombre_abreviado}}
-                                        {% else %}
-                                            ----
-                                        {% endif %}
-                                        <br>
-                                        
+                                    <div class="col-6 val">
+                                        {{especimen.tipo}}
                                     </div>
+                                </div>
+                            {% endif %}
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>Determinador:</strong> 
+                                </div>
+                                <div class="col-6 val">
+                                    {% if determinador.nombre_completo %}
+                                        {{determinador.nombre_completo}}  {{determinador.nombre_abreviado}}
+                                    {% else %}
+                                        ----
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="fa fa-pagelines"></i>
-                                <b>Taxonomia</b>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-6">
-                                    <strong>Genero: </strong> 
-                                    <br>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-pagelines"></i>
+                            <b>Taxonomía</b>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
                                     <strong>Familia: </strong> 
-                                    <br>
-                                    <strong>Epiteto Especifico: </strong> 
-                                    <br>
-                                    </div>
-                                    <div class="col-6">
-                                        {{taxonomia.genero}}
-                                        <br>
+                                </div>
+                                <div class="col-6 val">
+                                    {% if taxonomia.familia %}
                                         {{taxonomia.familia}}
-                                        <br>
-                                        {{taxonomia.epiteto_especifico}}
-                                        <br>
-                                    </div>
+                                    {% else %}
+                                        ----
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>Genero: </strong> 
+                                </div>
+                                <div class="col-6 val">
+                                    {% if taxonomia.genero %}
+                                        <em>{{taxonomia.genero}}</em>
+                                    {% else %}
+                                        ----
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>Especie: </strong>
+                                </div>
+                                <div class="col-6 val">
+                                    {% if taxonomia.epiteto_especifico %}
+                                        <em>{{taxonomia.genero}} {{taxonomia.epiteto_especifico}}</em> {{taxonomia.autor1}}
+                                    {% else %}
+                                        ----
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="fa fa-book"></i>
-                                <b>Colección</b> 
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <strong>Fecha de Colección: </strong> 
-                                        <br>
-                                        <strong>Número de Colección: </strong> 
-                                        <br>
-                                        <strong>Colector principal </strong> 
-                                        <br>
-                                    </div>
-                                    <div class="col-6">
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-book"></i>
+                            <b>Colección</b> 
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>Fecha de Colección: </strong> 
+                                </div>
+                                <div class="col-6 val">
+                                    {% if coleccion.fecha %}
                                         {{coleccion.fecha}}
-                                        <br>
-                                        NUMERO
-                                        <br>
-                                        {% if colectorPpal.nombre_completo %}
+                                    {% else %}
+                                        ----
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>Número de Colección: </strong> 
+                                 </div>
+                                <div class="col-6 val">
+                                    {% if coleccion.numero %}
+                                        {{coleccion.numero}}
+                                    {% else %}
+                                        ----
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>Colector principal </strong>
+                                </div>
+                                <div class="col-6 val">
+                                    {% if colectorPpal.nombre_completo %}
                                         {{ colectorPpal.nombre_completo}} {{colectorPpal.nombre_abreviado}}
+                                    {% else %}
+                                        ----
+                                    {% endif %}
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-map-marker"></i>
+                            <b>Ubicación</b>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6"><strong>Pais: </strong></div>
+                                <div class="col-6 val">
+                                    {% if ubicacion.pais%}
+                                        {{ubicacion.pais}}
+                                    {% else %}
+                                        ----
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% if especimen.peligro == "EX"  or especimen.peligro == "LC" or especimen.peligro == "DD" or especimen.peligro == "NE" %}
+
+                                <div class="row">
+                                    <div class="col-6"><strong>Departamento: </strong></div>
+                                    <div class="col-6 val">
+                                    {% if ubicacion.departamento%}
+                                        {{ubicacion.departamento}}
+                                    {% else %}
+                                        ----
+                                    {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6"><strong>Municipio: </strong></div>
+                                    <div class="col-6 val">
+                                        {% if ubicacion.municipio %}
+                                            {{ubicacion.municipio}}
                                         {% else %}
                                             ----
                                         {% endif %}
-                                        <br>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header">
-                                <i class="fa fa-map-marker"></i>
-                                <b>Ubicación</b>
-                            </div>
-                            <div class="card-body">
                                 <div class="row">
-                                    <div class="col-6">
-                                            <strong>Pais: </strong> 
-                                            <br>
-                                            <strong>Departamento: </strong>
-                                            <br> 
-                                            <strong>Municipio: </strong> 
-                                            <br>                            
-                                            <strong>Localidad: </strong> 
-                                            <br>
-                                            <strong>Especificación Locacion: </strong> 
-                                            <br>
-                                            <strong>Latitud: </strong> 
-                                            <br>
-                                            <strong>Longitud: </strong> 
-                                            <br>
-                                            <strong>Altura </strong> 
-                                            <br>
-                                    </div>
-                                    <div class="col-6">
-                                        {{ubicacion.pais}}
-                                        <br>
-                                        {% if especimen.peligro == "EX"  or especimen.peligro == "LC" or especimen.peligro == "DD" or especimen.peligro == "NE" %}
-                                            
-                                            {{ubicacion.departamento}}
-                                            <br>
-                                            {{ubicacion.municipio}}
-                                            <br>
-                                            {{ubicacion.divisionPolitica}} {{ubicacion.especificacionLocacion}}
-                                            <br>
-                                            {{ubicacion.longitud}}
-                                            <br>
-                                            {{ubicacion.latitud}}
+                                    <div class="col-6"><strong>Localidad: </strong></div>
+                                    <div class="col-6 val">
+                                        {% if ubicacion.divisionPolitica and ubicacion.especificacionLocacion %}
+                                            {{ubicacion.divisionPolitica}}, {{ubicacion.especificacionLocacion}}
+                                        {% elif ubicacion.divisionPolitica or ubicacion.especificacionLocacion %}
+                                            {{ubicacion.divisionPolitica}} 
+                                            {{ubicacion.especificacionLocacion}}
+                                        {% else %}
+                                            ----
                                         {% endif %}
                                     </div>
                                 </div>
-                            </div>
-                          </div>
-                        
-                        
-                    <!-- </div>
+                                <div class="row">
+                                    <div class="col-6"><strong>Latitud: </strong></div>
+                                    <div class="col-6 val">
+                                        {% if ubicacion.latitud %}
+                                            {{ubicacion.latitud}}
+                                        {% else %}
+                                            ----
+                                        {% endif %}
+                                    </div>
+                                </div>
 
-                </div> -->
+                                <div class="row">
+                                    <div class="col-6"><strong>Longitud: </strong></div>
+                                    <div class="col-6 val">
+                                        {% if ubicacion.longitud%}
+                                            {{ubicacion.longitud}}
+                                        {% else %}
+                                            ----
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-5" >
+                    <div id="seadragon-viewer" style="width:600px; height:600px;"></div>
+                </div>
             </div>
-            <div class="col-5">
-                <div id="seadragon-viewer" style="width:600px; height:600px;"></div>
+            <div id="map" class="map" style="height:400px; display: none"></div>
+        </div>
+    {% else %}
+        <div class="container" >
+            <div class="alert alert-danger" role="alert">
+                Lo sentimos no tenemos resultado para su busqueda
             </div>
         </div>
-        <div id="map" class="map" style="height:400px;"></div>
-    </div>
+    {% endif %}
 
 {% endblock %}
 
@@ -220,14 +294,32 @@
 </script>
 
 <script>
-    var latlong=[3.41667,-76.53333];//lt, long
-    var map = L.map('map').setView(latlong,12);
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-    maxZoom: 18
-    }).addTo(map);
-    L.control.scale().addTo(map);
-    L.marker(latlong,{draggable: true}).addTo(map);
+    if('{{ubicacion.latitud}}' != '' && '{{ubicacion.longitud}}' != ''){
+        document.getElementById('map').style.display='block'
+        let lat = {{ubicacion.latitud}}
+        let long = {{ubicacion.longitud}}
+        const ns = '{{ubicacion.posicionLat}}'
+        const ew = '{{ubicacion.posicionLong}}'
+        if( ew != null){
+            if(ew =='W'){
+                long= -long
+            }
+        }
+        {% comment %} if( ns != null){
+            if(ns =='S'){
+                long= lat
+            }
+        } {% endcomment %}
+        {% comment %} var latlong=[3.41667,76.53333];//lt, long {% endcomment %}
+        var latlong=[lat,long];//lt, long
+        var map = L.map('map').setView(latlong,12);
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+        maxZoom: 18
+        }).addTo(map);
+        L.control.scale().addTo(map);
+        L.marker(latlong,{draggable: true}).addTo(map);
+    }   
 </script>
 
 
