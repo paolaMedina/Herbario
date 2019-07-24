@@ -86,18 +86,6 @@ $(document).ready(function() {
 
     calendar.render();
 
-    $(function() {
-        $('#datetimepicker3').datetimepicker({
-            format: 'LT'
-        });
-    });
-
-    $(function() {
-        $('#datetimepicker4').datetimepicker({
-            // format: 'L'
-            format: 'MM/DD/YYYY',
-        });
-    });
 
     $('#smartwizard').smartWizard({
         theme: 'dots'

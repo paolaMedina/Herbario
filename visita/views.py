@@ -34,7 +34,7 @@ class RegistroVisita(CreateView):
         return super(RegistroVisita, self).form_valid(form)
 
     def form_invalid(self, form):
-        print(form['fecha'])
+        print(form['hora'])
         error = 'hay uno o mas campos invalidos. Por favor verifique de nuevo'
         errorDjango = form.errors
         messages.error(self.request, error)
