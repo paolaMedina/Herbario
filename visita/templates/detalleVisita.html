@@ -1,23 +1,13 @@
-{% extends "baseBackend.html" %}
-{% load static %}
-
-{% block titulo %}
-Visita
-{% endblock %}
-
-{% block extrahead %}
+{% extends "baseBackend.html" %} {% load static %} {% block titulo %} Visita {% endblock %} {% block extrahead %}
 <style>
-    .ans{
+    .ans {
         color: #5d6b6a;
         font-weight: normal
     }
-
 </style>
-{% endblock %}
+{% endblock %} {% block content %}
 
-{% block content %} 
-
- <div class="wrapper wrapper-content animated fadeInRight">
+<div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox float-e-margins ">
@@ -27,56 +17,57 @@ Visita
                 <div class="ibox-content">
 
                     <div class="form-group row">
-                        <label class= 'col-sm-3 col-form-label'>Solicitante: </label> 
+                        <label class='col-sm-3 col-form-label'>Solicitante: </label>
                         <div class="col-sm-9">
                             <label class="form-control  ans">{{visita.nombre}}</label>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class= 'col-sm-3 col-form-label'>Fecha: </label> 
+                        <label class='col-sm-3 col-form-label'>Fecha: </label>
                         <div class="col-sm-9">
                             <label class="form-control  ans">{{visita.fecha}}</label>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class= 'col-sm-3 col-form-label'>Hora: </label> 
+                        <label class='col-sm-3 col-form-label'>Hora: </label>
                         <div class="col-sm-9">
                             <label class="form-control  ans">{{visita.hora}}</label>
                         </div>
                     </div>
-                    
+
                     <div class="form-group row">
-                        <label class= 'col-sm-3 col-form-label'>Correo: </label> 
+                        <label class='col-sm-3 col-form-label'>Correo: </label>
                         <div class="col-sm-9">
                             <label class="form-control  ans">{{visita.correo}}</label>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class= 'col-sm-3 col-form-label'>Contacto: </label> 
+                        <label class='col-sm-3 col-form-label'>Contacto: </label>
                         <div class="col-sm-9">
                             <label class="form-control  ans">{{visita.telefono}}</label>
                         </div>
                     </div>
 
-                   <div class="form-group row">
-                        <label class= 'col-sm-3 col-form-label'>Número de personas: </label> 
+                    <div class="form-group row">
+                        <label class='col-sm-3 col-form-label'>Número de personas: </label>
                         <div class="col-sm-9">
                             <label class="form-control  ans">{{visita.numPersonas}}</label>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class= 'col-sm-3 col-form-label'>Motivo: </label> 
+                        <label class='col-sm-3 col-form-label'>Motivo: </label>
                         <div class="col-sm-9">
                             <label class="form-control  ans">{{visita.motivo}}</label>
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
 
-                    {% comment %} <div class="text-right">
+                    {% comment %}
+                    <div class="text-right">
                         <button type="button" class="btn btn-info btn-sm"> 
                             <span class="fa fa-send"></span>
                             Enviar correo
@@ -84,37 +75,40 @@ Visita
                     </div>
                 </div>
                 <div class="ibox-content">
-                            <div class="text-center">
-                            <a data-toggle="modal" class="btn btn-info" href="#modal-form"> <span class="fa fa-send"></span>Enviar correo</a>
-                            </div>
-                            <div id="modal-form" class="modal fade" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-body">
-                                            <div class="row">
-                                                <div class=""><h3 class="m-t-none m-b">Enviar correo</h3>
+                    <div class="text-center">
+                        <a class="btn btn-primary" href="{% url 'visita:aprobar_visita' pk=visita.pk %}"><span class="fa fa-check"></span> Aprobar visita</a>
+                        <a data-toggle="modal" class="btn btn-info" href="#modal-form"> <span class="fa fa-send"></span> Enviar correo</a>
+                    </div>
+                    <div id="modal-form" class="modal fade" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="">
+                                            <h3 class="m-t-none m-b">Enviar correo</h3>
 
-                                                    <p>Envia un correo a <strong>{{visita.nombre}}</strong>, indicando un posible cambio de fecha en la visita.</p>
+                                            <p>Envia un correo a <strong>{{visita.nombre}}</strong>, indicando un posible cambio de fecha en la visita.</p>
 
-                                                    <form role="form">
-                                                        <div class="form-group"><label>Mensaje</label> <textarea type="text" class="form-control" rows='5'></textarea></div>
-                                                        <div>
-                                                            <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>Enviar</strong></button>
-                                                        </div>
-                                                    </form>
+                                            <form method="post" action='/visita/envioCorreo'>
+                                                {% csrf_token %}
+                                                <input class="hide" name='correo' value={{visita.correo}}>
+                                                <input class="hide" name='nombre' value={{visita.nombre}}>
+                                                <input class="hide" name='fecha' value={{visita.fecha}}>
+                                                <input class="hide" name='hora' value={{visita.hora}}>
+                                                <div class="form-group"><label>Mensaje</label> <textarea type="text" name='mensaje' class="form-control" rows='5'></textarea></div>
+                                                <div>
+                                                    <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>Enviar</strong></button>
                                                 </div>
-                                            </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-{% endblock %}
-
-{% block plugins %}
-    
-{% endblock %}
+    {% endblock %} {% block plugins %} {% endblock %}
