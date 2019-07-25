@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
 from django.http.response import HttpResponseRedirect
+from smtplib import SMTPException
 from datetime import datetime
 from herbario1.utilities import *
 import config
@@ -22,7 +23,6 @@ class RegistroVisita(CreateView):
 
         form.save()
         email_subject = 'Solicitud de visita'
-        print(config.email_herbario)
         url = config.url+'/visita/listar '
         email_body = "El usuario %s acaba de realizar una solicitud de visita al herbario para el día  %s. \n por favor realiza la confirmación de este evento lo mas pronto posible aqui: %s." % (
             form.cleaned_data['nombre'], form.cleaned_data['fecha'], url)
@@ -34,7 +34,7 @@ class RegistroVisita(CreateView):
         return super(RegistroVisita, self).form_valid(form)
 
     def form_invalid(self, form):
-        print(form['fecha'])
+        print(form['hora'])
         error = 'hay uno o mas campos invalidos. Por favor verifique de nuevo'
         errorDjango = form.errors
         messages.error(self.request, error)
@@ -77,3 +77,23 @@ def view(request, pk):
     except Visita.DoesNotExist:
         messages.error(request, 'No existe visita')
         return HttpResponseRedirect(reverse_lazy("visita:listar_visita"))
+
+
+def envioCorreo(request):
+    print(request.POST.get('mensaje', None))
+    print(request.POST.get('nombre', None))
+    print(request.POST.get('fecha', None))
+    print(request.POST.get('hora', None))
+    print(request.POST.get('correo', None))
+    email_body = request.POST.get('mensaje', None)
+    email_subject = 'Agendamiento de visita Herbario CUVC'
+
+    try:
+        send_mail(email_subject, email_body, config.email_herbario,
+                  [request.POST.get('correo', None)], fail_silently=False)
+        messages.success(request, 'Se envio el correo satisfactoriamente')
+    except SMTPException as e:
+        messages.ERROR(request, 'error al enviar el correo')
+        print('There was an error sending an email: ', e)
+
+    return HttpResponseRedirect(reverse_lazy("visita:listar_visita"))

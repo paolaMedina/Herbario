@@ -4,7 +4,7 @@
 <link href="{% static 'plugins/fullcalendar/packages/daygrid/main.css'%}" rel='stylesheet' />
 <link href="{% static 'plugins/fullcalendar/packages/bootstrap/main.css'%}" rel='stylesheet' />
 <!--Tempusdominus-->
-<link href="{% static 'plugins/TempusDominus/packages/bootstrap/tempusdominus-bootstrap-4.min.css'%}" rel='stylesheet' />
+<link href="{% static 'plugins/TempusDominus/tempusdominus-bootstrap-4.min.css'%}" rel='stylesheet' />
 <!--SmartWizard-->
 <link href="{% static 'plugins/SmartWizard-master/dist/css/smart_wizard.css" rel="stylesheet'%}" type="text/css" />
 <link href="{% static 'plugins/SmartWizard-master/dist/css/smart_wizard_theme_dots.css'%}" rel="stylesheet" type="text/css" /> {% endblock %} {% block titulo %} Solicitar Visita {% endblock %} {% block guia %}
@@ -91,8 +91,8 @@
     </div>
 </div>
 
-
 {% endblock %} {% block javascript %}
+
 <!-- Full Calendar -->
 <script src="{% static 'plugins/fullcalendar/packages/core/main.js'%}"></script>
 <script src="{% static 'plugins/fullcalendar/packages/daygrid/main.js'%}"></script>
@@ -101,7 +101,7 @@
 <script type="text/javascript" src="{% static 'plugins/SmartWizard-master/dist/js/jquery.smartWizard.min.js'%}"></script>
 <!--Tempusdominus-->
 <script src="{% static 'plugins/moments/moment.js'%}"></script>
-<script src="{% static 'plugins/moments/moment-locale-es.js'%}"></script>
+<!-- <script src="{% static 'plugins/moments/moment-locale-es.js'%}"></script> -->
 <script src="{% static 'plugins/TempusDominus/tempusdominus-bootstrap-4.min.js'%}"></script>
 
 <script src="{% static 'js/crearVisita.js' %}"></script>
@@ -112,6 +112,30 @@
             return false;
         return true;
     }
+
+    $(function() {
+        $('#datetimepicker3').datetimepicker({
+            format: 'HH:mm'
+        });
+    });
+    $(function() {
+        var dateFormat = "DD-MM-YYYY";
+        var MinDate = new Date();
+
+        dateMin = moment(MinDate, dateFormat);
+
+        $("#datetimepicker4").datetimepicker({
+            format: dateFormat,
+            minDate: dateMin
+        });
+    });
+
+    // $(function() {
+    //     $('#datetimepicker4').datetimepicker({
+    //         format: 'L',
+    //         daysOfWeekDisabled: [0, 6]
+    //     });
+    // });
 </script>
 
 {% endblock %}
