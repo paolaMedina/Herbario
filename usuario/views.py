@@ -91,12 +91,34 @@ class RegistroUsuario(CreateView):
 
 class ListarUsuarios(ListView):
     # @verificar_rol(roles_permitidos=["director"])
-    def dispatch(self, request, *args, **kwargs):
-        return super(ListarUsuarios, self).dispatch(request, *args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(ListarUsuarios,
+                        self).get_context_data(**kwargs)
+        context['id'] = self.kwargs.get('id')
+        context['type'] = u'activos'
+        return context
 
     model = Usuario
     template_name = 'listar.html'
-    # queryset = Usuario.objects.filter(is_active=True)
+    queryset = Usuario.objects.filter(is_active=True)
+
+
+class ListarUsuariosInactivos(ListView):
+    # @verificar_rol(roles_permitidos=["director"])
+
+    # def dispatch(self, request, *args, **kwargs):
+    #     return super(ListarUsuariosInactivos, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(ListarUsuariosInactivos,
+                        self).get_context_data(**kwargs)
+        context['id'] = self.kwargs.get('id')
+        context['type'] = u'inactivos'
+        return context
+
+    model = Usuario
+    template_name = 'listar.html'
+    queryset = Usuario.objects.filter(is_active=False)
 
 
 @login_required
@@ -150,8 +172,15 @@ def EliminarUsuario(request, pk):
     usuario = Usuario.objects.get(pk=pk)
     usuario.is_active = False
     usuario.save()
-    messages.success(request, 'Se elimino el usuario con EXITO')
+    messages.success(request, 'Se inactivo el usuario')
     return HttpResponseRedirect(reverse_lazy("usuario:listar_usuario"))
+
+def ActivarUsuario(request, pk):
+    usuario = Usuario.objects.get(pk=pk)
+    usuario.is_active = True
+    usuario.save()
+    messages.success(request, 'Se inactivo el usuario')
+    return HttpResponseRedirect(reverse_lazy("usuario:listar_usuario_inactivos"))
 
 # class Login(FormView):
 #     # Establecemos la plantilla a utilizar

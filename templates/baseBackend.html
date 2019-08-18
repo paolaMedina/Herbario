@@ -97,7 +97,8 @@
                             <a href="#"><i class="fa fa-user-circle"></i> <span class="nav-label">Usuarios</span><span class="fa arrow"></span></a>
                                     <ul class="nav nav-second-level collapse">
                                         <li><a href="{% url 'usuario:registrar_usuario' %}">Registrar Usuario</a></li>
-                                        <li><a href="{% url 'usuario:listar_usuario' %}">Listar Usuarios</a></li>
+                                        <li><a href="{% url 'usuario:listar_usuario' %}">Listar Usuarios Activos</a></li>
+                                        <li><a href="{% url 'usuario:listar_usuario_inactivos' %}">Listar Usuarios Inactivos</a></li>
                                     </ul>
                                 </li>
                                 <li>
@@ -197,25 +198,24 @@
                         <!-- <li>
                                 <span class="m-r-sm text-muted welcome-message">Welcome to INSPINIA+ Admin Theme.</span>
                             </li> -->
+                        <!-- <li class="dropdown">
+                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                                <i class="fa fa-envelope"></i> <span class="label label-warning">16</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-messages">
 
-                        <!-- <li class="dropdown">
-                                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                    <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-messages">
-                                    
-                                    
-                                    <li class="divider"></li>
-                                    <li>
-                                        <div class="text-center link-block">
-                                            <a href="#">
-                                                <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
-                                            </a>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li> -->
-                        <!-- <li class="dropdown">
+
+                                <li class="divider"></li>
+                                <li>
+                                    <div class="text-center link-block">
+                                        <a href="#">
+                                            <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                                 <i class="fa fa-bell"></i> <span class="label label-primary">8</span>
                             </a>
