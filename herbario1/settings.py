@@ -46,17 +46,19 @@ INSTALLED_APPS = [
     'usuario',
     'noticia',
     'visita',
+    'cliente',
+    'servicios',
     'cargarArchivo',
-    'easy_thumbnails',#para permitir que aparezca imagen en el formulario de especimen
-    'crispy_forms',#para permitir que aparezca imagen ene l formulario de especimen
-    'bootstrap3',#permite tags de boostrap
-    'rolepermissions',#librerias para el manejo de permisos 
+    'easy_thumbnails',  # para permitir que aparezca imagen en el formulario de especimen
+    'crispy_forms',  # para permitir que aparezca imagen ene l formulario de especimen
+    'bootstrap3',  # permite tags de boostrap
+    'rolepermissions',  # librerias para el manejo de permisos
     # 'channels', #webservices
-    
+
 
 ]
 
-MIDDLEWARE  = [
+MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -102,26 +104,26 @@ WSGI_APPLICATION = 'herbario1.wsgi.application'
         'HOST': 'hard-plum.db.elephantsql.com',  
         'PORT': '5432',  
     }  
-} """ 
+} """
 
-# DATABASES = {  
-#       'default': { 
+# DATABASES = {
+#       'default': {
 #           'ENGINE': 'django.db.backends.sqlite3',
 #           'NAME': 'mydatabase',
-#       }  
-#       }  
+#       }
+#       }
 
 
-DATABASES = {  
-      'default': {  
-         'ENGINE': 'django.db.backends.postgresql',  
-         'NAME': 'herbario', 
-         'USER': 'django',
-         'PASSWORD':'django',
-         'HOST': 'localhost',
-         'PORT': '5432',  
-      }  
-     }  
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'herbario',
+        'USER': 'django',
+        'PASSWORD': 'django',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 
 
 # Password validation
@@ -162,17 +164,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'staticbase'),]
-#para el manejo de las imagenes
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'staticbase'), ]
+# para el manejo de las imagenes
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
-#permite enviar mensajes de alerta al usuario
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# permite enviar mensajes de alerta al usuario
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
-#redirecciona a la pantalla de principal en caso que un usuario queira acceder a una url portegida sin estar logueado
+# redirecciona a la pantalla de principal en caso que un usuario queira acceder a una url portegida sin estar logueado
 LOGIN_URL = '/'
 
-#para el envio de mensajes
+# para el envio de mensajes
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -181,6 +183,9 @@ EMAIL_HOST_PASSWORD = 'A.P.Medina1208'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DEFAULT_FROM_EMAIL = 'Herbario CUVC  <noreply@example.com>'
 
-#reconozca el archivo roles.py
-ROLEPERMISSIONS_MODULE = 'herbario1.roles' 
+# reconozca el archivo roles.py
+ROLEPERMISSIONS_MODULE = 'herbario1.roles'
 ROLEPERMISSIONS_REDIRECT_TO_LOGIN = True
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_AGE = 5 * 60  # 5 minutes

@@ -239,6 +239,7 @@
                                     <div class="col-6 val">
                                         {% if ubicacion.latitud %}
                                             {{ubicacion.latitud}}
+                                            <small>{{ubicacion.posicionLat}}</small>
                                         {% else %}
                                             ----
                                         {% endif %}
@@ -250,6 +251,7 @@
                                     <div class="col-6 val">
                                         {% if ubicacion.longitud%}
                                             {{ubicacion.longitud}}
+                                            <small>{{ubicacion.posicionLong}}</small> 
                                         {% else %}
                                             ----
                                         {% endif %}
@@ -294,22 +296,18 @@
 </script>
 
 <script>
-    if('{{ubicacion.latitud}}' != '' && '{{ubicacion.longitud}}' != ''){
+    if('{{ubicacion.latitud}}' != 'None' && '{{ubicacion.longitud}}' != 'None'){
         document.getElementById('map').style.display='block'
         let lat = {{ubicacion.latitud}}
         let long = {{ubicacion.longitud}}
         const ns = '{{ubicacion.posicionLat}}'
         const ew = '{{ubicacion.posicionLong}}'
-        if( ew != null){
-            if(ew =='W'){
-                long= -long
-            }
+        if(ew =='W'){
+            long= -long
         }
-        {% comment %} if( ns != null){
-            if(ns =='S'){
-                long= lat
-            }
-        } {% endcomment %}
+        if(ns =='S'){
+            lat= -lat
+        }
         {% comment %} var latlong=[3.41667,76.53333];//lt, long {% endcomment %}
         var latlong=[lat,long];//lt, long
         var map = L.map('map').setView(latlong,12);
