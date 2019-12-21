@@ -245,7 +245,6 @@
                                         {% endif %}
                                     </div>
                                 </div>
-
                                 <div class="row">
                                     <div class="col-6"><strong>Longitud: </strong></div>
                                     <div class="col-6 val">
@@ -257,6 +256,8 @@
                                         {% endif %}
                                     </div>
                                 </div>
+                                {% else %}
+                                    <mark> Este especimen se encuentra amanezado, el Herbario se reserva el derecho de guardar su ubicación</mark>
                             {% endif %}
                         </div>
                     </div>
@@ -266,7 +267,10 @@
                     <div id="seadragon-viewer" style="width:600px; height:600px;"></div>
                 </div>
             </div>
-            <div id="map" class="map" style="height:400px; display: none"></div>
+            {% if especimen.peligro == "EX"  or especimen.peligro == "LC" or especimen.peligro == "DD" or especimen.peligro == "NE" %}
+                <div id="map" class="map" style="height:400px; display: none"></div>
+            {% endif %}
+
         </div>
     {% else %}
         <div class="container" >
