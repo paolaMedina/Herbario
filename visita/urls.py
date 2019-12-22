@@ -9,5 +9,6 @@ urlpatterns = [
     path(r'listar', ListarVisitas.as_view(), name='listar_visita'),
     path(r'aprobar/<int:pk>', views.aprobar, name='aprobar_visita'),
     path(r'envioCorreo', views.envioCorreo, name='envio_correo'),
+    path(r'visitasAgendadas', views.getEvents, name='visitasAgendadas'),
     # path(r'deleteFile', views.EliminarArchivo, name='eliminar_archivo'),
 ]

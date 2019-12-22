@@ -11,7 +11,21 @@ from herbario1.utilities import *
 import config
 from .models import Visita
 from .forms import VisitaForm
+import json  
+from django.http import JsonResponse
 
+
+
+def getEvents(request):
+    queryset = Visita.objects.filter(aprobada=True)
+    # print  (queryset)
+    lista = []       
+    for i in queryset:
+        lista.append({'nombre' : i.nombre, 'fecha' : i.fecha, ' hora' : i.hora})
+    data = {
+        'lista': lista,
+    }
+    return JsonResponse(data) 	
 
 class RegistroVisita(CreateView):
     template_name = "crearVisita.html"
