@@ -2,7 +2,8 @@ $(document).ready(function() {
 
     $(function () {
         $('#datetimepicker3').datetimepicker({
-            format: 'LT'
+            use24hours: true,
+            format: 'HH:mm'
         });
     });
 
