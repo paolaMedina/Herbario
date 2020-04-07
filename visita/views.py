@@ -11,7 +11,21 @@ from herbario1.utilities import *
 import config
 from .models import Visita
 from .forms import VisitaForm
+import json  
+from django.http import JsonResponse
 
+
+
+def getEvents(request):
+    queryset = Visita.objects.filter(aprobada=True)
+    # print  (queryset)
+    lista = []       
+    for i in queryset:
+        lista.append({'nombre' : i.nombre, 'fecha' : i.fecha, ' hora' : i.hora, 'id': i.id, 'descripcion': i.motivo})
+    data = {
+        'lista': lista,
+    }
+    return JsonResponse(data) 	
 
 class RegistroVisita(CreateView):
     template_name = "crearVisita.html"
@@ -58,7 +72,6 @@ def aprobar(request, pk):
     try:
         visita = Visita.objects.get(pk=pk)
         visita.aprobada = True
-        print(visita)
         visita.save()
         messages.success(request, 'Visita agendada')
     except Visita.DoesNotExist:
@@ -66,6 +79,46 @@ def aprobar(request, pk):
 
     return HttpResponseRedirect(reverse_lazy("visita:listar_visita"))
 
+
+def actualizarVisita(request):
+    if request.is_ajax():
+        id_visita = request.GET.get('id', None)
+        try:
+            visita = Visita.objects.get(pk=id_visita)
+            hora_request = request.GET.get('hora', None)
+            fecha_request = request.GET.get('fecha', None)
+            # print(visita.hora != hora_request)
+            # print(visita.hora.strftime("%H:%M"))
+            visita.fecha = visita.fecha.strftime("%Y-%m-%d")
+            visita.hora = visita.hora.strftime("%H:%M")
+            # print (visita.fecha == fecha_request)
+            if(visita.hora != hora_request or visita.fecha != fecha_request):
+                # print ('diferente')
+                visita.hora = request.GET.get('hora', None)
+                visita.fecha = request.GET.get('fecha', None)
+
+                #envio de correo notificando cambio
+                email = {
+                    'body' : 'Hemos reagendado tu visita al herbario CUVC, te esperamos para que aprendas mas de nostros',
+                    'subject' : 'Reagendamiento de visita',
+                    'address' : visita.correo
+                }
+            else:
+                # print('igual')
+                email = {
+                    'body' : 'Te esperamos para que aprendas mas de nostros',
+                    'subject' : 'Aceptación de visita',
+                    'address' : visita.correo
+                }
+            correo(email)
+            visita.aprobada = True
+            visita.save()
+            output = {'type':'200', 'message':'Se modifico el horario de la visita y se le notifico al solicitante'}
+        except Visita.DoesNotExist:
+            output = {'type':'404', 'message':'visita no encontrada'}
+
+    return JsonResponse(output) 	
+    
 
 @verificar_rol(roles_permitidos=["curador", "director"])
 def view(request, pk):
@@ -79,12 +132,13 @@ def view(request, pk):
         return HttpResponseRedirect(reverse_lazy("visita:listar_visita"))
 
 
+@verificar_rol(roles_permitidos=["curador", "director","investigador"])
+def viewCalendar(request):
+
+    return render(request, 'calendario.html')
+
+
 def envioCorreo(request):
-    print(request.POST.get('mensaje', None))
-    print(request.POST.get('nombre', None))
-    print(request.POST.get('fecha', None))
-    print(request.POST.get('hora', None))
-    print(request.POST.get('correo', None))
     email_body = request.POST.get('mensaje', None)
     email_subject = 'Agendamiento de visita Herbario CUVC'
 
@@ -93,7 +147,24 @@ def envioCorreo(request):
                   [request.POST.get('correo', None)], fail_silently=False)
         messages.success(request, 'Se envio el correo satisfactoriamente')
     except SMTPException as e:
-        messages.ERROR(request, 'error al enviar el correo')
+        messages.error(request, 'error al enviar el correo')
         print('There was an error sending an email: ', e)
 
     return HttpResponseRedirect(reverse_lazy("visita:listar_visita"))
+
+
+def correo(input):
+    email_body = input['body']
+    email_subject = input['subject']
+    email_address = input['address']
+
+    try:
+        send_mail(email_subject, email_body, config.email_herbario, [email_address], fail_silently=False)
+        output = {'type':'200', 'message':'Se envio el correo satisfactoriamente'}
+        print('correo enviado')
+
+    except SMTPException as e:
+        output = {'type':'404', 'message':'error al enviar el correo'}
+        print('There was an error sending an email: ', e)
+
+    return JsonResponse(output) 

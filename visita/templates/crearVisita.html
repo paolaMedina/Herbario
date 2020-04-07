@@ -30,10 +30,8 @@
                     <div class="ibox float-e-margins">
                         <div id='calendar' style="margin-top: 20px;"></div>
                     </div>
-
                 </div>
                 <div id="step-2" class="col-lg-12">
-
                     <form method="post" enctype="multipart/form-data" class="form-horizontal">
                         {% csrf_token %}
                         <div class="form-group">
@@ -75,7 +73,6 @@
                             <input type="submit" value="Solicitar" class="btn btn-success btn-lg">
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
@@ -103,40 +100,59 @@
 <script src="{% static 'plugins/moments/moment.js'%}"></script>
 <!-- <script src="{% static 'plugins/moments/moment-locale-es.js'%}"></script> -->
 <script src="{% static 'plugins/TempusDominus/tempusdominus-bootstrap-4.min.js'%}"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-<script src="{% static 'js/crearVisita.js' %}"></script>
-<script language=Javascript>
-    function isNumberKey(evt) {
-        var charCode = (evt.which) ? evt.which : event.keyCode
-        if (charCode > 31 && (charCode < 48 || charCode > 57))
-            return false;
-        return true;
-    }
 
-    $(function() {
-        $('#datetimepicker3').datetimepicker({
-            format: 'HH:mm'
+<script>
+
+let eventos = []
+
+const loadCalendar = () => axios.get("{% url 'visita:visitasAgendadas' %}")
+    .then(function (response) {
+        // handle success
+        const visitas = response.data.lista
+        //console.log(visitas)
+        //console.log(typeof(visitas))
+        for (index in visitas) {
+            eventos.push({
+                    title: visitas[index].nombre,
+                    start: visitas[index].fecha
+                })
+        }
+        /* initialize the calendar
+     -----------------------------------------------------------------*/
+        const date = new Date();
+        const d = date.getDate();
+        const m = date.getMonth();
+        const y = date.getFullYear();
+
+
+        const calendarEl = document.getElementById('calendar');
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: [ 'dayGrid','bootstrap' ],
+            timeZone: 'UTC',
+            themeSystem: 'bootstrap',
+            header: {
+                left: 'prev,next',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            editable: false,
+            events: eventos
         });
-    });
-    $(function() {
-        var dateFormat = "MM/DD/YYYY";
-        var MinDate = new Date();
 
-        dateMin = moment(MinDate, dateFormat);
+        calendar.setOption('locale', 'es')
 
-        $("#datetimepicker4").datetimepicker({
-            format: dateFormat,
-            minDate: dateMin,
-            daysOfWeekDisabled: [0, 6]
-        });
-    });
+        calendar.render();
+    })
+    .catch(function (error) {
+        // handle error
+        console.log(error);
+    })
 
-    // $(function() {
-    //     $('#datetimepicker4').datetimepicker({
-    //         format: 'L',
-    //         daysOfWeekDisabled: [0, 6]
-    //     });
-    // });
+    
+    loadCalendar()
 </script>
+<script src="{% static 'js/crearVisita.js' %}"></script>
 
 {% endblock %}
