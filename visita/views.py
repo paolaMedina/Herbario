@@ -21,7 +21,7 @@ def getEvents(request):
     # print  (queryset)
     lista = []       
     for i in queryset:
-        lista.append({'nombre' : i.nombre, 'fecha' : i.fecha, ' hora' : i.hora})
+        lista.append({'nombre' : i.nombre, 'fecha' : i.fecha, ' hora' : i.hora, 'id': i.id, 'descripcion': i.motivo})
     data = {
         'lista': lista,
     }
