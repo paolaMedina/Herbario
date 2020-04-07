@@ -5,6 +5,11 @@
         font-weight: normal
     }
 </style>
+<!-- <link href="{% static 'plugins/TempusDominus/tempusdominus-bootstrap-4.min.css'%}" rel='stylesheet' /> -->
+<link href="{% static 'plantilla-backend/css/plugins/datapicker/datepicker3.css'%}"  rel="stylesheet">
+<link href="{% static 'plantilla-backend/css/plugins/clockpicker/clockpicker.css'%}" rel="stylesheet">
+
+
 {% endblock %} {% block content %}
 
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -15,7 +20,7 @@
                     <h5>Detalle Visita</h5>
                 </div>
                 <div class="ibox-content">
-
+                    <input type="text"  id= "id_visita" value="{{visita.pk}}" hidden>
                     <div class="form-group row">
                         <label class='col-sm-3 col-form-label'>Solicitante: </label>
                         <div class="col-sm-9">
@@ -26,14 +31,27 @@
                     <div class="form-group row">
                         <label class='col-sm-3 col-form-label'>Fecha: </label>
                         <div class="col-sm-9">
-                            <label class="form-control  ans">{{visita.fecha}}</label>
+                            <div class="form-group" id="data_1" >
+                                <input type="text"  id= "fechaInicial" value="{{visita.fecha}}" hidden>
+                                <div class="input-group date">
+                                    <input type="text" class="form-control" value="{{visita.fecha}}" id="fecha" disabled>
+                                    <span class="input-group-addon" Style="visibility: hidden"  id="icon_fecha" ><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label class='col-sm-3 col-form-label'>Hora: </label>
                         <div class="col-sm-9">
-                            <label class="form-control  ans">{{visita.hora}}</label>
+                            <input type="text"  id= "horaInicial" value="{{visita.hora}}" hidden>
+                            <div class="input-group clockpicker" data-autoclose="true">
+                                <input type="text" class="form-control" value="{{visita.hora}}"  disabled id='hora'>
+                                <span class="input-group-addon" id='icon_hora' style="visibility: hidden;" >
+                                    <span class="fa fa-clock-o"></span>
+                                </span>
+                            </div>
                         </div>
                     </div>
 
@@ -64,21 +82,18 @@
                             <label class="form-control  ans">{{visita.motivo}}</label>
                         </div>
                     </div>
-                    <div class="hr-line-dashed"></div>
-
-                    {% comment %}
-                    <div class="text-right">
-                        <button type="button" class="btn btn-info btn-sm"> 
-                            <span class="fa fa-send"></span>
-                            Enviar correo
-                        </button> {% endcomment %}
+                    <div class="text-center" id = "primaryButtons">
+                        <a class="btn btn-primary" href="{% url 'visita:aprobar_visita' pk=visita.pk %}"><span class="fa fa-check"></span> Aprobar visita</a>
+                        <a data-toggle="modal" class="btn btn-info" href="#modal-form"> <span class="fa fa-send"></span> Enviar correo</a>
+                        <button onclick="habilitarCampos()"class="btn btn-warning"> <span class="fa fa-pencil"></span> Cambiar fecha y hora</button>
+                    </div>
+                    <div class="text-center" id = "secondButtons" style="display: none;">
+                        <button class="btn btn-primary" onclick="guardarCambios()"><span class="fa fa-save"></span> Guardar Cambios</button>
+                        <button onclick="cancelarCambios()"  class="btn btn-danger"> <span class="fa fa-times-circle"></span> Cancelar</button>
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <div class="text-center">
-                        <a class="btn btn-primary" href="{% url 'visita:aprobar_visita' pk=visita.pk %}"><span class="fa fa-check"></span> Aprobar visita</a>
-                        <a data-toggle="modal" class="btn btn-info" href="#modal-form"> <span class="fa fa-send"></span> Enviar correo</a>
-                    </div>
+                    
                     <div id="modal-form" class="modal fade" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -111,4 +126,86 @@
         </div>
     </div>
 
-    {% endblock %} {% block plugins %} {% endblock %}
+    {% endblock %} 
+    {% block plugins %}
+      <!-- Data picker -->
+    <script src="{% static 'plantilla-backend/js/plugins/datapicker/bootstrap-datepicker.js'%}"></script>
+    <script src="{% static 'plantilla-backend/js/plugins/clockpicker/clockpicker.js'%}"></script>
+    <script src="{% static 'plugins/moments/moment.js'%}"></script>
+    
+
+    <script>
+        const horaInicial= document.getElementById('horaInicial').value
+        const fechaInicial= document.getElementById('fechaInicial').value
+        const id_visita= document.getElementById('id_visita').value
+
+        const fecha= document.getElementById('fecha');
+        const icon_fecha= document.getElementById('icon_fecha');
+        const input_hora=document.getElementById('hora');
+        const icon_hora=document.getElementById('icon_hora');
+        const primaryButtons = document.getElementById('primaryButtons');
+        const secondButtons = document.getElementById('secondButtons');
+
+        deshabilitarCampos= ()=>{
+            input_hora.disabled = true;
+            icon_hora.style.visibility='hidden';
+            fecha.disabled = true;
+            icon_fecha.style.visibility='hidden';
+            primaryButtons.style.display='block';
+            secondButtons.style.display='none'
+        }
+        habilitarCampos=()=>{
+            input_hora.disabled = false;
+            icon_hora.style.visibility='visible';
+            fecha.disabled = false;
+            icon_fecha.style.visibility='visible';
+            primaryButtons.style.display='none';
+            secondButtons.style.display='block'
+
+        }
+
+        cancelarCambios=()=>{   
+            input_hora.value= horaInicial
+            fecha.value=fechaInicial
+            deshabilitarCampos()
+        }
+
+        guardarCambios = ()=>{
+            //Ingresamos un mensaje a mostrar
+            var mensaje = confirm("¿Deseas reprogramar la visita?");
+            //Detectamos si el usuario acepto el mensaje
+            console.log(moment(fecha.value).format('YYYY-MM-DD'))
+            if (mensaje) {
+                $.ajax({
+                url: "{% url 'visita:actualizar_visita' %}",
+                data: {
+                'id': id_visita,
+                'fecha':moment(fecha.value).format('YYYY-MM-DD'),
+                'hora':hora.value
+                },
+                dataType: 'json',
+                success: function (data) {
+                    // window.location.href = '/visita/listar';
+                    toastr.success(data.message);  
+                }}); 
+            }
+            //Detectamos si el usuario denegó el mensaje
+            else {
+                alert('Ha cancelado el cambio')
+                deshabilitarCampos()
+            }
+        }
+        
+        $('#data_1 .input-group.date').datepicker({
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true
+        });
+        $('.clockpicker').clockpicker();
+
+    
+    
+    </script>
+    {% endblock %}

@@ -31,6 +31,19 @@
           height: 580px;
           box-shadow: 5px 5px 5px #888;
        }
+    @media print {
+        body * {
+            visibility: visible; // part to hide at the time of print
+            -webkit-print-color-adjust: exact !important; // not necessary use         
+               if colors not visible
+        }
+
+        #printBtn {
+            visibility: hidden !important; // To hide 
+        }
+    }
+
+
 
 </style>
     <!-- <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css">
@@ -239,32 +252,38 @@
                                     <div class="col-6 val">
                                         {% if ubicacion.latitud %}
                                             {{ubicacion.latitud}}
+                                            <small>{{ubicacion.posicionLat}}</small>
                                         {% else %}
                                             ----
                                         {% endif %}
                                     </div>
                                 </div>
-
                                 <div class="row">
                                     <div class="col-6"><strong>Longitud: </strong></div>
                                     <div class="col-6 val">
                                         {% if ubicacion.longitud%}
                                             {{ubicacion.longitud}}
+                                            <small>{{ubicacion.posicionLong}}</small> 
                                         {% else %}
                                             ----
                                         {% endif %}
                                     </div>
                                 </div>
+                                {% else %}
+                                    <mark> Este especimen se encuentra amanezado, el Herbario se reserva el derecho de guardar su ubicación</mark>
                             {% endif %}
                         </div>
                     </div>
-
                 </div>
                 <div class="col-5" >
                     <div id="seadragon-viewer" style="width:600px; height:600px;"></div>
                 </div>
             </div>
-            <div id="map" class="map" style="height:400px; display: none"></div>
+            {% if especimen.peligro == "EX"  or especimen.peligro == "LC" or especimen.peligro == "DD" or especimen.peligro == "NE" %}
+                <div id="map" class="map" style="height:400px; display: none"></div>
+            {% endif %}
+
+            <button id='printBtn'>Imprimir</button>
         </div>
     {% else %}
         <div class="container" >
@@ -278,51 +297,52 @@
 
 {% block javascript %}
 
-<script src="/static/plugins/openseadragon/openseadragon.min.js"></script>
- <script src="/static/plugins/leaflet/leaflet.js "></script>
- <script>
-    var viewer = OpenSeadragon({
-        id: "seadragon-viewer",
-        prefixUrl: "//openseadragon.github.io/openseadragon/images/",
-        tileSources: {
-        type: 'image',
-        url:  '/media/test.jpg',
-        },
-        showNavigator:  true, 
-    });
-    document.getElementById('seadragon-viewer').querySelector('.openseadragon-canvas').focus();
-</script>
+    <script src="/static/plugins/openseadragon/openseadragon.min.js"></script>
+    <script src="/static/plugins/leaflet/leaflet.js "></script>
+    <script>
+        var viewer = OpenSeadragon({
+            id: "seadragon-viewer",
+            prefixUrl: "//openseadragon.github.io/openseadragon/images/",
+            tileSources: {
+            type: 'image',
+            url:  '/media/test.jpg',
+            },
+            showNavigator:  true, 
+        });
+        document.getElementById('seadragon-viewer').querySelector('.openseadragon-canvas').focus();
+    </script>
 
-<script>
-    if('{{ubicacion.latitud}}' != '' && '{{ubicacion.longitud}}' != ''){
-        document.getElementById('map').style.display='block'
-        let lat = {{ubicacion.latitud}}
-        let long = {{ubicacion.longitud}}
-        const ns = '{{ubicacion.posicionLat}}'
-        const ew = '{{ubicacion.posicionLong}}'
-        if( ew != null){
+    <script>
+        if('{{ubicacion.latitud}}' != 'None' && '{{ubicacion.longitud}}' != 'None'){
+            document.getElementById('map').style.display='block'
+            let lat = {{ubicacion.latitud}}
+            let long = {{ubicacion.longitud}}
+            const ns = '{{ubicacion.posicionLat}}'
+            const ew = '{{ubicacion.posicionLong}}'
             if(ew =='W'){
                 long= -long
             }
-        }
-        {% comment %} if( ns != null){
             if(ns =='S'){
-                long= lat
+                lat= -lat
             }
-        } {% endcomment %}
-        {% comment %} var latlong=[3.41667,76.53333];//lt, long {% endcomment %}
-        var latlong=[lat,long];//lt, long
-        var map = L.map('map').setView(latlong,12);
-        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-        maxZoom: 18
-        }).addTo(map);
-        L.control.scale().addTo(map);
-        L.marker(latlong,{draggable: true}).addTo(map);
-    }   
+            {% comment %} var latlong=[3.41667,76.53333];//lt, long {% endcomment %}
+            var latlong=[lat,long];//lt, long
+            var map = L.map('map').setView(latlong,12);
+            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+            maxZoom: 18
+            }).addTo(map);
+            L.control.scale().addTo(map);
+            L.marker(latlong,{draggable: true}).addTo(map);
+        }   
+    </script>
+
+    <script>
+    const $scope= document.getElementById('printBtn')
+    $scope.printWindow = function () {
+        window.print()
+    }
 </script>
-
-
 
 {% endblock %}
 

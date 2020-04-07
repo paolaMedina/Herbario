@@ -52,10 +52,10 @@ $(document).ready(function() {
     // });
 
 
-    var calendarEl = document.getElementById('calendar');
+      var calendarEl = document.getElementById('calendar');
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-        plugins: ['bootstrap'],
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        plugins: [ 'dayGrid','bootstrap' ],
         timeZone: 'UTC',
         themeSystem: 'bootstrap',
         header: {
@@ -64,9 +64,10 @@ $(document).ready(function() {
             right: 'month,agendaWeek,agendaDay'
         },
         editable: false,
-        events: [{
+        events: [
+            {
                 title: 'All Day Event',
-                start: new Date(y, m, 1, 8, 00)
+                start: new Date(y, m, 1,8,00)
             },
             {
                 title: 'Click for Google',
@@ -80,24 +81,61 @@ $(document).ready(function() {
                 // end: new Date(y, m, 28),
             }
         ]
+      });
+
+      calendar.setOption('locale', 'es')
+
+      calendar.render();
+
+    //   $('#data').datepicker({
+    //     startView: 2,
+    //     // todayBtn: "linked",
+    //     gotoCurrent: true,
+    //     keyboardNavigation: false,
+    //     forceParse: false,
+    //     autoclose: true
+    // });
+
+    $(function () {
+        $('#datetimepicker3').datetimepicker({
+            format: 'LT'
+        });
     });
 
-    calendar.setOption('locale', 'es')
-
-    calendar.render();
-
+    $(function () {
+        $('#datetimepicker4').datetimepicker({
+            format: 'L'
+        });
+    });
 
     $('#smartwizard').smartWizard({
         theme: 'dots'
     });
 
-    //  validar solo numeros en el campo de numero de registro 
+
     function isNumberKey(evt) {
         var charCode = (evt.which) ? evt.which : event.keyCode
         if (charCode > 31 && (charCode < 48 || charCode > 57))
             return false;
         return true;
     }
+
+    $(function() {
+        $('#datetimepicker3').datetimepicker({
+            format: 'HH:mm'
+        });
+    });
+    $(function() {
+        var dateFormat = "DD-MM-YYYY";
+        var MinDate = new Date();
+
+        dateMin = moment(MinDate, dateFormat);
+
+        $("#datetimepicker4").datetimepicker({
+            format: dateFormat,
+            minDate: dateMin
+        });
+    });
 
 
 });
