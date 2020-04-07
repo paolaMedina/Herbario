@@ -7,7 +7,6 @@ urlpatterns = [
     path(r'crear', views.RegistrarServicio, name='crear_servicio'),
     path(r'editar/<int:pk>', views.RegistrarServicio, name='editar_servicio'),
     path(r'listar', views.ListarServicio, name='listar_servicio'),
-    path(r'consultar', views.ConsultarServicio, name='consultar_servicio'),
     # path(r'listar', ServiciosList.as_view(), name='listar_servicio'),
 
 ]
