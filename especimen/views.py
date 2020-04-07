@@ -104,7 +104,7 @@ def RegistrarEspecimen(request, pk=None):
         
         colectorPpal=None
         determinador=None
-
+        
         if formEspecimen.is_valid() and formCateTaxonomica.is_valid() and formColector.is_valid() and formColeccion.is_valid() and formUbicacion.is_valid(): 
             print("valido")
             if(formColector['nombre_completo'].value() != ""):
@@ -208,7 +208,7 @@ def ListarEspecimen(request):
 
 #funcion que lista los especimenes creado por el monitor logueado de la base de datos
 @login_required
-@verificar_rol(roles_permitidos=['monitor'])
+@verificar_rol(roles_permitidos=['monitor', 'curador','investigador', 'director'])
 def ListarEspecimenesPersonales(request):
     print (request.user.id)
     especimen= Especimen.objects.filter(visible=True,usuario=request.user) #si no esta visible es por que se ha eliminado
@@ -218,7 +218,7 @@ def ListarEspecimenesPersonales(request):
     
 #funcion que elimina un especimen dado    
 @login_required
-@verificar_rol(roles_permitidos=['monitor', 'curador','investigador'])
+@verificar_rol(roles_permitidos=['monitor', 'curador','investigador', 'director'])
 def EliminarEspecimen(request, pk):
     especimen= Especimen.objects.get(pk=pk)
     especimen.visible=False

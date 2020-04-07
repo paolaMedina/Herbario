@@ -10,5 +10,7 @@ urlpatterns = [
     path(r'aprobar/<int:pk>', views.aprobar, name='aprobar_visita'),
     path(r'envioCorreo', views.envioCorreo, name='envio_correo'),
     path(r'visitasAgendadas', views.getEvents, name='visitasAgendadas'),
+    path(r'actualizar', views.actualizarVisita, name='actualizar_visita'),
+    path(r'calendario', views.viewCalendar, name='viewCalendar'),
     # path(r'deleteFile', views.EliminarArchivo, name='eliminar_archivo'),
 ]

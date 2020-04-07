@@ -23,8 +23,8 @@ class CientificoForm(forms.ModelForm):
                         
                 }
                 widgets = {
-                        'nombre_completo': forms.TextInput(attrs={ 'class':'form-control nombre-complete ignored', 'placeholder':'Nombre completo'}),
-                        'nombre_abreviado': forms.TextInput(attrs={'class':'form-control ignored,'}),
+                        'nombre_completo': forms.TextInput(attrs={ 'class':'form-control nombre-complete', 'placeholder':'Nombre completo'}),
+                        'nombre_abreviado': forms.TextInput(attrs={'class':'form-control','maxlength':30}),
 
 
                 }

@@ -155,7 +155,6 @@ Crear Especimen
                             </div>
                         
                             <!--imagen -->
-                            
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for={{formEspecimen.imagen.name}}>{{formEspecimen.imagen.label}}</label> 
@@ -488,7 +487,7 @@ Crear Especimen
         else{
             imagenPrev=['/media/'+savedImage]
         }
-  
+        console.log(imagenPrev)
         $('#id_imagen').fileinput({
             theme: "explorer",
             allowedFileExtensions: ['jpg', 'png', 'gif'],
