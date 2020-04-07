@@ -77,6 +77,9 @@ def ListarServicio(request) :
     contexto = {'servicios':servicios}
     return render(request,'listar_servicio.html', contexto )
 
+def ConsultarServicio(request) : 
+    return render(request, 'consultar_servicio.html' )
+
 
 # class ServiciosList(ListView):
 #     def dispatch(self, request, *args, **kwargs):

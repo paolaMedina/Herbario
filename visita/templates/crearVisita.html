@@ -7,13 +7,16 @@
 <link href="{% static 'plugins/TempusDominus/packages/bootstrap/tempusdominus-bootstrap-4.min.css'%}" rel='stylesheet' />
 <!--SmartWizard-->
 <link href="{% static 'plugins/SmartWizard-master/dist/css/smart_wizard.css" rel="stylesheet'%}" type="text/css" />
-<link href="{% static 'plugins/SmartWizard-master/dist/css/smart_wizard_theme_dots.css'%}" rel="stylesheet" type="text/css" /> {% endblock %} {% block titulo %} Solicitar Visita {% endblock %} {% block guia %}
+<link href="{% static 'plugins/SmartWizard-master/dist/css/smart_wizard_theme_dots.css'%}" rel="stylesheet" type="text/css" /> {% endblock %} 
+{% block titulo %} Solicitar Visita {% endblock %} 
+{% block guia %}
 <p class="breadcrumbs">
     <span class="mr-2"><a href="{% url 'inicio' %}" style="color:aliceblue !important;">Inicio<i class="ion-ios-arrow-forward"></a></span>
     <span class="mr-2">></span>
     <span><u>Solicitar visita</u> <i class="ion-ios-arrow-forward"></span>
 </p>
-{% endblock %} {% block content %}
+{% endblock %} 
+{% block content %}
 
 <div class="container">
     <div class="row">
