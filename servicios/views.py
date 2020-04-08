@@ -122,7 +122,7 @@ def TerminarServicio (request, pk):
     try:
         servicio = Servicios.objects.get(pk=pk)
         servicio.estado = 'terminado'
-        servicio.save()
+        
 
         email = servicio.cliente.correo
         
@@ -130,10 +130,9 @@ def TerminarServicio (request, pk):
 
         email_body = "Buen día, \n el proceo  con Número de ticket: %s se ha marcado como terminado" % (servicio.ticket)
 
-        send_mail(email_subject, email_body, 'angiepmc93@gmail.com',
-                  [email], fail_silently=False)
+        send_mail(email_subject, email_body, 'angiepmc93@gmail.com', [email], fail_silently=False)
 
-
+        servicio.save()
         messages.error(request, 'Se ha actualizado el estado a terminado')
     except Servicios.DoesNotExist:
         messages.error(request, 'No existe el servicio en consulta')
