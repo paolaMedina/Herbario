@@ -35,7 +35,7 @@ urlpatterns = [
     path(r'archivo/', include('cargarArchivo.urls')),
     path(r'noticia/', include('noticia.urls')),
     path(r'visita/', include('visita.urls')),
-    path(r'servicios/', include('servicios.urls')),
+    path(r'servicios/', include('servicios.urls', namespace='servicios')),
     path(r'password_reset',auth_views.PasswordResetView.as_view(template_name = 'password_reset.html',
     email_template_name ='password_reset_email.html'),name="password_reset"),
     

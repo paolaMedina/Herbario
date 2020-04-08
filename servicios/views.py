@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.auth.decorators  import  login_required
 from django.shortcuts import render, HttpResponseRedirect
+from django.core.mail import send_mail
 from servicios.models import Servicios
 from servicios.forms import ServiciosForm
 from cliente.models import Cliente
@@ -77,7 +78,68 @@ def ListarServicio(request) :
     contexto = {'servicios':servicios}
     return render(request,'listar_servicio.html', contexto )
 
+@login_required
+def ProcesarServicio (request, pk):
+    try:
+        servicio = Servicios.objects.get(pk=pk)
+        servicio.estado = 'proceso'
+        servicio.save()
+        messages.success(request, 'Se ha actualizado el estado a proceso')
+    except Servicios.DoesNotExist:
+        messages.error(request, 'No existe el servicio en consulta')
+        
+    return HttpResponseRedirect(reverse_lazy('servicios:listar_servicio'))
 
+@login_required
+def CancelarServicio (request, pk):
+    try:
+        servicio = Servicios.objects.get(pk=pk)
+        servicio.estado = 'cancelado'
+        servicio.save()
+        messages.success(request, 'Se ha actualizado el estado a cancelado')
+    except Servicios.DoesNotExist:
+        messages.error(request, 'No existe el servicio en consulta')
+        
+    return HttpResponseRedirect(reverse_lazy('servicios:listar_servicio'))
+    
+
+@login_required
+def EntregarServicio (request, pk):
+    try:
+        servicio = Servicios.objects.get(pk=pk)
+        servicio.estado = 'entregado'
+        servicio.save()
+        messages.success(request, 'Se ha actualizado el estado a entregado')
+    except Servicios.DoesNotExist:
+        messages.error(request, 'No existe el servicio en consulta')
+        
+    return HttpResponseRedirect(reverse_lazy('servicios:listar_servicio'))
+    
+
+
+@login_required
+def TerminarServicio (request, pk):
+    try:
+        servicio = Servicios.objects.get(pk=pk)
+        servicio.estado = 'terminado'
+        servicio.save()
+
+        email = servicio.cliente.correo
+        
+        email_subject = 'Terminó servicio con Número de ticket ' + servicio.ticket
+
+        email_body = "Buen día, \n el proceo  con Número de ticket: %s se ha marcado como terminado" % (servicio.ticket)
+
+        send_mail(email_subject, email_body, 'angiepmc93@gmail.com',
+                  [email], fail_silently=False)
+
+
+        messages.error(request, 'Se ha actualizado el estado a terminado')
+    except Servicios.DoesNotExist:
+        messages.error(request, 'No existe el servicio en consulta')
+        
+    return HttpResponseRedirect(reverse_lazy('servicios:listar_servicio'))
+    
 # class ServiciosList(ListView):
 #     def dispatch(self, request, *args, **kwargs):
 #         return super(ServiciosList, self).dispatch(request, *args, **kwargs)

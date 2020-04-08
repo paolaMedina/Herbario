@@ -29,6 +29,7 @@ Listar Servicios
                                 <th>Tipo</th>
                                 <th>Valor del servicio</th>
                                 <th>Cliente</th>
+                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
@@ -40,11 +41,23 @@ Listar Servicios
                                         <td>{{ servicio.tipo }}</td>
                                         <td>{{ servicio.precio }}</td>
                                         <td>{{ servicio.cliente.nombre_completo }}</td>
+                                        <td>{{ servicio.estado }}</td>
                                         <td>
-                                            <a class="btn btn-primary" ><span class="fa fa-cog" aria-hidden="true"></a>
-                                            <a class="btn btn-primary" ><span class="fa fa-flag-checkered" aria-hidden="true"></a>
-                                            <a class="btn btn-success" ><span class="fa fa-flag-checkered" aria-hidden="true"></a>
-                                            <a class="btn btn-danger" ><span class="fa fa-exclamation-triangle" aria-hidden="true"></a>
+                                            <a class="btn btn-primary" href="{% url 'servicios:editar_servicio' servicio.id %}" title="Editar servicio"><span class="fa fa-edit" aria-hidden="true"></a>
+
+                                            {% if servicio.estado == 'solicitud' %}
+                                                <a class="btn btn-success" href="{% url 'servicios:procesar_servicio' servicio.id %}" title="Proceso servicio"><span class="fa fa-cog" aria-hidden="true"></a>
+
+                                                <a class="btn btn-danger" href="{% url 'servicios:cancelar_servicio' servicio.id %}" title="Cancelar servicio"><span class="fa fa-stop" aria-hidden="true"></a>
+                                            {% elif servicio.estado == 'proceso' %}
+                                                <a class="btn btn-warning" href="{% url 'servicios:terminar_servicio' servicio.id %}" title="Terminar servicio"><span class="fa fa-exclamation-triangle" aria-hidden="true"></a>
+
+                                                <a class="btn btn-danger" href="{% url 'servicios:cancelar_servicio' servicio.id %}" title="Cancelar servicio"><span class="fa fa-stop" aria-hidden="true"></a>
+
+                                            {% elif servicio.estado == 'entregado' %}
+                                                <a class="btn btn-info" href="{% url 'servicios:entregar_servicio' servicio.id %}" title="Entregar servicio"><span class="fa fa-flag-checkered" aria-hidden="true"></a>
+
+                                            {% endif %}
                                         </td>
                                     </tr>
                                     {% endfor %}
