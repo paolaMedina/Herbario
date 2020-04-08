@@ -14,6 +14,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 import hashlib
 import datetime
 import random
+from django.http import HttpResponseNotFound
 from django.utils import timezone
 from .forms import RegistroForm, FormularioLogin
 from .models import Usuario
@@ -91,12 +92,34 @@ class RegistroUsuario(CreateView):
 
 class ListarUsuarios(ListView):
     # @verificar_rol(roles_permitidos=["director"])
-    def dispatch(self, request, *args, **kwargs):
-        return super(ListarUsuarios, self).dispatch(request, *args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(ListarUsuarios,
+                        self).get_context_data(**kwargs)
+        context['id'] = self.kwargs.get('id')
+        context['type'] = u'activos'
+        return context
 
     model = Usuario
     template_name = 'listar.html'
-    # queryset = Usuario.objects.filter(is_active=True)
+    queryset = Usuario.objects.filter(is_active=True)
+
+
+class ListarUsuariosInactivos(ListView):
+    # @verificar_rol(roles_permitidos=["director"])
+
+    # def dispatch(self, request, *args, **kwargs):
+    #     return super(ListarUsuariosInactivos, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(ListarUsuariosInactivos,
+                        self).get_context_data(**kwargs)
+        context['id'] = self.kwargs.get('id')
+        context['type'] = u'inactivos'
+        return context
+
+    model = Usuario
+    template_name = 'listar.html'
+    queryset = Usuario.objects.filter(is_active=False)
 
 
 @login_required
@@ -118,9 +141,14 @@ class EditarUsuario(SuccessMessageMixin, UpdateView):
     # se envia el grupo del usuario al formulario, para poder verificar si es un curador y hacer el respectivo cambio
 
     def get_form_kwargs(self):
-        kwargs = super(EditarUsuario, self).get_form_kwargs()
-        groupUser = self.request.user.groups.values_list('name', flat=True)
-        return dict(kwargs, groups=groupUser)
+        print('u')
+        print(self.object.is_active)
+        if(self.object.is_active):
+            kwargs = super(EditarUsuario, self).get_form_kwargs()
+            groupUser = self.request.user.groups.values_list('name', flat=True)
+            return dict(kwargs, groups=groupUser)
+        else:
+            return None
     model = Usuario
     form_class = RegistroForm
     success_message = 'Usuario actualizado'
@@ -148,10 +176,23 @@ class EditarUsuario(SuccessMessageMixin, UpdateView):
 
 def EliminarUsuario(request, pk):
     usuario = Usuario.objects.get(pk=pk)
-    usuario.is_active = False
-    usuario.save()
-    messages.success(request, 'Se elimino el usuario con EXITO')
+    if(usuario.is_active):
+        usuario.is_active = False
+        usuario.save()
+        messages.success(request, 'Se inactivo el usuario')
+    else:
+        print('paila')
+        messages.error(request, 'El usuario no esta activo')
+
     return HttpResponseRedirect(reverse_lazy("usuario:listar_usuario"))
+
+
+def ActivarUsuario(request, pk):
+    usuario = Usuario.objects.get(pk=pk)
+    usuario.is_active = True
+    usuario.save()
+    messages.success(request, 'Se inactivo el usuario')
+    return HttpResponseRedirect(reverse_lazy("usuario:listar_usuario_inactivos"))
 
 # class Login(FormView):
 #     # Establecemos la plantilla a utilizar
