@@ -1,0 +1,102 @@
+{% extends "base_front2.html" %} {% load static %} 
+{% block titulo %} Solicitud de prestamo de especimenes {% endblock %} 
+{% block guia %}
+<p class="breadcrumbs">
+    <span class="mr-2"><a href="{% url 'inicio' %}" style="color:aliceblue !important;">Inicio<i class="ion-ios-arrow-forward"></a></span>
+    <span class="mr-2">></span>
+    <span><u>Solicitud prestamo</u> <i class="ion-ios-arrow-forward"></span>
+</p>
+{% endblock %} 
+{% block content %}
+<div class="container">
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <form id="form"  enctype="multipart/form-data" class="form-horizontal" method="post">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label" for={{formCliente.nombre_completo.name}}>{{formCliente.nombre_completo.label}}</label>
+                    <div class="col-sm-10">{{formCliente.nombre_completo}}</div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label" for={{formCliente.tipo_identificacion.name}}>{{formCliente.tipo_identificacion.label}}</label>
+                    <div class="col-sm-10">{{formCliente.tipo_identificacion}}</div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label" for={{formCliente.identificacion.name}}>{{formCliente.identificacion.label}}</label>
+                    <div class="col-sm-10">{{formCliente.identificacion}}</div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label" for={{formCliente.correo.name}}>{{formCliente.correo.label}}</label>
+                    <div class="col-sm-10">{{formCliente.correo}}</div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label" for={{formCliente.num_contacto.name}}>{{formCliente.num_contacto.label}}</label>
+                    <div class="col-sm-10">{{formCliente.num_contacto}}</div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label" for={{formCliente.institucion.name}}>{{formCliente.institucion.label}}</label>
+                    <div class="col-sm-10">{{formCliente.institucion}}</div>
+                </div>
+                
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label" for={{solicitudForm.solicitud.name}}>{{solicitudForm.solicitud.label}}</label>
+                    <div class="col-sm-10">{{solicitudForm.solicitud}}</div>
+                </div>
+                
+                
+                <div class="form-group">
+                    <div class="col-sm-10 col-sm-offset-7">
+                        <button class="btn btn-white" type="reset">Cancel</button>
+                        <button  id="guardar" class="btn btn-primary" type="submit">enviar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block plugins %}
+<!-- Jquery Validate -->
+<script src="{% static 'plantilla-backend/js/plugins/validate/jquery.validate.min.js' %}"></script>
+
+<!-- jquery-ui -->
+<script src="{% static 'plantilla-backend/js/plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+
+
+<!-- validar solo numeros en el campo de numero de registro -->
+<script language=Javascript>
+    function isNumberKey(evt){
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+        return true;
+    }
+
+    function isDecimalKey(e,obj){
+        if ([e.keyCode||e.which]==8){ //this is to allow backspace
+            return true;
+        }
+        if ([e.keyCode||e.which]==44 ) {//this is to allow decimal comma
+            var val = obj.value;      
+            if(val.indexOf(",") > -1 )
+            {
+                e.returnValue = false;
+                return false;
+            }
+            
+            return true;
+        }
+        if ([e.keyCode||e.which] < 48 || [e.keyCode||e.which] > 57){
+            e.preventDefault? e.preventDefault() : e.returnValue = false; 
+        }
+    }
+</script>
+
+
+{% endblock %}
+
+
+
+
