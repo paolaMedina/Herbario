@@ -17,7 +17,6 @@ from django.views.generic import ListView
 def RegistrarServicio(request, pk=None):
 
     if pk:
-        print(pk)
         try:
             servicio = Servicios.objects.get(pk=pk)
             cliente = Cliente.objects.get(pk=servicio.cliente.pk)
@@ -45,35 +44,35 @@ def RegistrarServicio(request, pk=None):
             except Cliente.DoesNotExist:
                 cliente_obj = formCliente.save()
 
-            print(request.user.username)
             servicio = formServicio.save(commit=False)
             servicio.cliente = cliente_obj
-            servicio.encargado = request.user
-            servicio.ticket = genTicket()
+            if pk== None:
+                servicio.encargado = request.user
+                servicio.ticket = genTicket()
             servicio.save()
             messages.success(request, mensaje_exito)
-            # return HttpResponseRedirect(reverse_lazy(viewsRedirect))
             print("se envio")
+            return HttpResponseRedirect(reverse_lazy('servicios:listar_servicio'))
+
 
         else: 
             print ('algun formulario esta invalido')
             print(formServicio.errors)
             print(formCliente.errors)
+        contexto = {'formServicio': formServicio, 'formCliente': formCliente}
+        
 
     else:
         formServicio = ServiciosForm(instance=servicio)
         formCliente = ClienteForm(instance=cliente)
         contexto = {'formServicio': formServicio, 'formCliente': formCliente}
-
-    return render(request, 'registrar_servicio.html', contexto)
+        return render(request, 'registrar_servicio.html', contexto)
 
 
 @login_required
 @verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def ListarServicio(request) : 
     servicios = Servicios.objects.all()
-    print ('hi')
-    print (servicios)
     contexto = {'servicios':servicios}
     return render(request,'listar_servicio.html', contexto )
 
