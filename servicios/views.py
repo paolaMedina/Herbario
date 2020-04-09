@@ -59,13 +59,13 @@ def RegistrarServicio(request, pk=None):
             print ('algun formulario esta invalido')
             print(formServicio.errors)
             print(formCliente.errors)
-        contexto = {'formServicio': formServicio, 'formCliente': formCliente}
+        contexto = {'formServicio': formServicio, 'formCliente': formCliente, 'submit':True}
         
 
     else:
         formServicio = ServiciosForm(instance=servicio)
         formCliente = ClienteForm(instance=cliente)
-        contexto = {'formServicio': formServicio, 'formCliente': formCliente}
+        contexto = {'formServicio': formServicio, 'formCliente': formCliente, 'submit':True}
         return render(request, 'registrar_servicio.html', contexto)
 
 
@@ -131,7 +131,7 @@ def VisualizarServicio (request, pk):
     for field in formCliente.fields.items():
         field[1].widget.attrs['readonly'] = True
 
-    contexto = {'formServicio':formServicio, 'formCliente':formCliente}
+    contexto = {'formServicio':formServicio, 'formCliente':formCliente, 'submit':False}
 
     return render(request, 'registrar_servicio.html', contexto)
 

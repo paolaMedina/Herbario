@@ -46,20 +46,20 @@ Listar Servicios
                                             
 
                                             {% if servicio.estado == 'solicitud' %}
-                                                <a class="btn btn-primary" href="{% url 'servicios:editar_servicio' servicio.id %}" title="Editar servicio"><span class="fa fa-edit" aria-hidden="true"></a>
+                                                <a class="btn btn-primary" href="{% url 'servicios:editar_servicio' pk=servicio.id %}" title="Editar servicio"><span class="fa fa-edit" aria-hidden="true"></a>
 
-                                                <a class="btn btn-success" href="{% url 'servicios:procesar_servicio' servicio.id %}" title="Proceso servicio"><span class="fa fa-cog" aria-hidden="true"></a>
+                                                <a class="btn btn-success" href="{% url 'servicios:procesar_servicio' pk=servicio.id %}" title="Proceso servicio"><span class="fa fa-cog" aria-hidden="true"></a>
 
-                                                <a class="btn btn-danger" href="{% url 'servicios:cancelar_servicio' servicio.id %}" title="Cancelar servicio"><span class="fa fa-stop" aria-hidden="true"></a>
+                                                <a class="btn btn-danger" href="{% url 'servicios:cancelar_servicio' pk=servicio.id %}" title="Cancelar servicio"><span class="fa fa-stop" aria-hidden="true"></a>
                                             {% elif servicio.estado == 'proceso' %}
-                                                <a class="btn btn-primary" href="{% url 'servicios:editar_servicio' servicio.id %}" title="Editar servicio"><span class="fa fa-edit" aria-hidden="true"></a>
+                                                <a class="btn btn-primary" href="{% url 'servicios:editar_servicio' pk=servicio.id %}" title="Editar servicio"><span class="fa fa-edit" aria-hidden="true"></a>
                                                     
-                                                <a class="btn btn-warning" href="{% url 'servicios:terminar_servicio' servicio.id %}" title="Terminar servicio"><span class="fa fa-exclamation-triangle" aria-hidden="true"></a>
+                                                <a class="btn btn-warning" href="{% url 'servicios:terminar_servicio' pk=servicio.id %}" title="Terminar servicio"><span class="fa fa-exclamation-triangle" aria-hidden="true"></a>
 
-                                                <a class="btn btn-danger" href="{% url 'servicios:cancelar_servicio' servicio.id %}" title="Cancelar servicio"><span class="fa fa-stop" aria-hidden="true"></a>
+                                                <a class="btn btn-danger" href="{% url 'servicios:cancelar_servicio' pk=servicio.id %}" title="Cancelar servicio"><span class="fa fa-stop" aria-hidden="true"></a>
 
                                             {% elif servicio.estado == 'terminado' or servicio.estado == 'entregado' %}
-                                                <a class="btn btn-success" href="{% url 'servicios:visualizar_servicio' servicios.id %}" title="Visualizar servicio"><span class="fa fa-eye" aria-hidden="true"></a>
+                                                <a class="btn btn-success" href="{% url 'servicios:visualizar_servicio' pk=servicio.id %}" title="Visualizar servicio"><span class="fa fa-eye" aria-hidden="true"></a>
                                             {% endif %}
                                         </td>
                                     </tr>
