@@ -8,7 +8,7 @@ state = (('solicitud', 'Solicitud'),('prestamo','Prestamo'),('entregado','Entreg
 class Prestamo (models.Model):
     solicitud = models.TextField()
     num_registro = models.PositiveIntegerField()
-    fecha_entrega= models.DateField(auto_now=True)
+    fecha_entrega= models.DateField(null=True, blank=True, default=None)
     fecha_devolucion = models.DateField(null=True, blank=True, default=None)
     estado = models.CharField(max_length=20, choices=state, default='solicitud')
     observaciones_entrega = models.TextField()
