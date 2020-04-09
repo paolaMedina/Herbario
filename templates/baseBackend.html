@@ -110,6 +110,17 @@
                         </li>
 
                         <li>
+                            <a href="#"><i class="fa fa-calendar"></i> <span class="nav-label">Noticias</span><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li><a href="{% url 'noticia:crear_noticia' %}">Crear noticias</a></li>
+                                <li><a href="{% url 'noticia:listar_noticia' %}">Listar las noticias</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    
+                    <!-- menu curador-->
+                    {% if request.user.groups.all.0.name  == 'curador' %}
+                        <li>
                             <a href="#"><i class="fa fa-calendar"></i> <span class="nav-label">Visitas</span><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
                                 <li><a href="{% url 'visita:listar_visita' %}">Visitas Pendientes</a></li>
