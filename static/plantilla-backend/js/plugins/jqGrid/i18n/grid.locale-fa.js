@@ -5,8 +5,8 @@
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
 **/
-	$.jgrid = $.jgrid || {};
-	$.extend($.jgrid,{
+    $.jgrid = $.jgrid || {};
+    $.extend($.jgrid,{
         defaults: {
             recordtext: "نمابش {0} - {1} از {2}",
             emptyrecords: "رکوردی یافت نشد",
@@ -26,8 +26,8 @@
                 op: "OR",
                 text: "مجموع"
             }],
-			operandTitle : "Click to select search operation.",
-			resetTitle : "Reset Search Value"
+            operandTitle : "Click to select search operation.",
+            resetTitle : "Reset Search Value"
         },
         edit: {
             addCaption: "اضافه کردن رکورد",
@@ -119,7 +119,7 @@
                 },
                 srcformat: "Y-m-d",
                 newformat: "d/m/Y",
-				parseRe : /[#%\\\/:_;.,\t\s-]/,
+                parseRe : /[#%\\\/:_;.,\t\s-]/,
                 masks: {
                     ISO8601Long: "Y-m-d H:i:s",
                     ISO8601Short: "Y-m-d",

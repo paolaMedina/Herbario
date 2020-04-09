@@ -16,7 +16,7 @@
     "resizable",
     "zoomable",
     "image-gallery",
-	"photoviewer"
+    "photoviewer"
   ],
   "homepage": "https://github.com/nzbin/magnify#readme",
   "ignore": [

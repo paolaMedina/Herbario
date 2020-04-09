@@ -58,7 +58,7 @@
                                             {% if listaprestamo %}
                                                 <a class="btn btn-primary" href="{% url 'prestamo:renovar_prestamo' prestamo.id %}" title="Renovar prestamo"><span class="fa fa-flag-checkered" aria-hidden="true"></a>
 
-                                                <a class="btn btn-danger" href="{% url 'prestamo:cancelar_solicitud' prestamo.id %}" title="Visualizar prestamo"><span class="fa fa-stop" aria-hidden="true"></a>
+                                                <a class="btn btn-success" href="{% url 'prestamo:visualizar_prestamo' prestamo.id %}" title="Visualizar prestamo"><span class="fa fa-eye" aria-hidden="true"></a>
 
                                                 <a class="btn btn-danger" href="{% url 'prestamo:regresar_prestamo' prestamo.id %}" title="Regrasar prestamo"><span class="fa fa-stop" aria-hidden="true"></a>
                                             {% else %}

@@ -11,18 +11,18 @@ tags:
 ---
 
 <div class="owl-carousel owl-theme">
-	<div class="item"><h4>1</h4></div>
-	<div class="item"><h4>2</h4></div>
-	<div class="item"><h4>3</h4></div>
-	<div class="item"><h4>4</h4></div>
-	<div class="item"><h4>5</h4></div>
-	<div class="item"><h4>6</h4></div>
-	<div class="item"><h4>7</h4></div>
-	<div class="item"><h4>8</h4></div>
-	<div class="item"><h4>9</h4></div>
-	<div class="item"><h4>10</h4></div>
-	<div class="item"><h4>11</h4></div>
-	<div class="item"><h4>12</h4></div>
+    <div class="item"><h4>1</h4></div>
+    <div class="item"><h4>2</h4></div>
+    <div class="item"><h4>3</h4></div>
+    <div class="item"><h4>4</h4></div>
+    <div class="item"><h4>5</h4></div>
+    <div class="item"><h4>6</h4></div>
+    <div class="item"><h4>7</h4></div>
+    <div class="item"><h4>8</h4></div>
+    <div class="item"><h4>9</h4></div>
+    <div class="item"><h4>10</h4></div>
+    <div class="item"><h4>11</h4></div>
+    <div class="item"><h4>12</h4></div>
 </div>
 
 {{#markdown }}
@@ -38,26 +38,26 @@ Setting of the responsive is very simple. Structure of responsive option:
 ```
 responsive : {
 
-	// breakpoint from 0 up
-	0 : {
-		option1 : value,
-		option2 : value,
-		...
-	},
+    // breakpoint from 0 up
+    0 : {
+        option1 : value,
+        option2 : value,
+        ...
+    },
 
-	// breakpoint from 480 up
-	480 : {
-		option1 : value,
-		option2 : value,
-		...
-	},
+    // breakpoint from 480 up
+    480 : {
+        option1 : value,
+        option2 : value,
+        ...
+    },
 
-	// breakpoint from 768 up
-	768 : {
-		option1 : value,
-		option2 : value,
-		...
-	}
+    // breakpoint from 768 up
+    768 : {
+        option1 : value,
+        option2 : value,
+        ...
+    }
 }
 
 ```
@@ -74,25 +74,25 @@ responsive : {
 ### Live Example
 ```
 $('.owl-carousel').owlCarousel({
-	loop:true,
-	margin:10,
-	responsiveClass:true,
+    loop:true,
+    margin:10,
+    responsiveClass:true,
 
-	responsive:{
-		0:{
-			items:1,
-			nav:true
-		},
-		600:{
-			items:3,
-			nav:false
-		},
-		1000:{
-			items:5,
-			nav:true,
-			loop:false
-		}
-	}
+    responsive:{
+        0:{
+            items:1,
+            nav:true
+        },
+        600:{
+            items:3,
+            nav:false
+        },
+        1000:{
+            items:5,
+            nav:true,
+            loop:false
+        }
+    }
 })
 ```
 
@@ -188,27 +188,27 @@ As not every option is able to use responsive abilities, here’s a full list of
 
 <script>
 $(document).ready(function(){
-	$('.owl-carousel').owlCarousel({
-		loop:true,
-		margin:10,
-		responsiveClass:true,
+    $('.owl-carousel').owlCarousel({
+        loop:true,
+        margin:10,
+        responsiveClass:true,
 
-		responsive:{
-			0:{
-				items:1,
-				nav:true
-			},
-			600:{
-				items:3,
-				nav:false
-			},
-			1000:{
-				items:5,
-				nav:true,
-				loop:false,
-				margin:20
-			}
-		}
-	})
+        responsive:{
+            0:{
+                items:1,
+                nav:true
+            },
+            600:{
+                items:3,
+                nav:false
+            },
+            1000:{
+                items:5,
+                nav:true,
+                loop:false,
+                margin:20
+            }
+        }
+    })
 })
 </script>

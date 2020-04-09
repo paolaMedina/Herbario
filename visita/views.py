@@ -25,7 +25,7 @@ def getEvents(request):
     data = {
         'lista': lista,
     }
-    return JsonResponse(data) 	
+    return JsonResponse(data)     
 
 class RegistroVisita(CreateView):
     template_name = "crearVisita.html"
@@ -117,7 +117,7 @@ def actualizarVisita(request):
         except Visita.DoesNotExist:
             output = {'type':'404', 'message':'visita no encontrada'}
 
-    return JsonResponse(output) 	
+    return JsonResponse(output)     
     
 
 @verificar_rol(roles_permitidos=["curador", "director"])

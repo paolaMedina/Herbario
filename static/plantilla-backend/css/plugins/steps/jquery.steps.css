@@ -206,8 +206,8 @@
 {
     display: inline-block;
     margin-bottom: 0.5em;
-	margin: 10px 0 2px 0;
-		
+    margin: 10px 0 2px 0;
+        
 }
 
 .wizard > .content > .body label.error
@@ -381,4 +381,4 @@
     display: list-item;
 }
 
-		
+        

@@ -72,7 +72,7 @@ def RegistrarServicio(request, pk=None):
 @login_required
 @verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def ListarServicio(request) : 
-    servicios = Servicios.objects.all().order_by('estado')
+    servicios = Servicios.objects.all()
     contexto = {'servicios':servicios}
     return render(request,'listar_servicio.html', contexto )
 
@@ -113,7 +113,27 @@ def EntregarServicio (request, pk):
         
     return HttpResponseRedirect(reverse_lazy('servicios:listar_servicio'))
     
+@login_required
+def VisualizarServicio (request, pk):
+    try:
+        servicio = Servicios.objects.get(pk=pk)
+        cliente = servicio.cliente
+    except Servicios.DoesNotExist:
+        messages.error(request, 'No existe el servicio en consulta')
+        return HttpResponseRedirect(reverse_lazy('servicios:listar_servicio'))
 
+    formServicio = ServiciosForm(instance=servicio)
+    formCliente = ClienteForm(instance=cliente)
+
+    for field in formServicio.fields.items():
+        field[1].widget.attrs['readonly'] = True
+
+    for field in formCliente.fields.items():
+        field[1].widget.attrs['readonly'] = True
+
+    contexto = {'formServicio':formServicio, 'formCliente':formCliente}
+
+    return render(request, 'registrar_servicio.html', contexto)
 
 @login_required
 def TerminarServicio (request, pk):
