@@ -32,3 +32,16 @@ class ServiciosForm(forms.ModelForm):
                     'class':'form-control col-md-7 col-xs-12'
                 }),
         }
+
+class ConsultarServicoForm(forms.ModelForm):
+    class Meta:
+        model = Servicios
+        fields = [
+            'ticket'
+        ]
+        labels = {
+            'ticket': 'Número de ticket'
+        }
+        widgets = {
+            'ticket': forms.TextInput(attrs={'class':'form-control col-md-7 col-xs-12'})
+        }

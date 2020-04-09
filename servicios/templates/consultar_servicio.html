@@ -32,9 +32,25 @@
 
 <div class = "container d-flex justify-content-center" >
     <divs class= 'box' align='center' >
-        <input style="width: 100%" id="ticket_servicio" name="ticket_servicio" type="text" class=" col-12">
-        <br>
-        <button class="btn btn_buscar" type="submit">Buscar</button>
+        <form id="form"  enctype="multipart/form-data" class="form-horizontal" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="col-sm-6 control-label" for={{form.ticket.name}}>{{form.ticket.label}}</label>
+                <div class="col-mm-20" align="center">{{form.ticket}}</div>
+            </div>
+            <div class="form-group" align="right">
+                <div class="col-sm-6 col-sm-offset-7">
+                    <button class="btn btn-white" type="reset">Cancel</button>
+                    <button  id="btn_buscar" class="btn btn-primary" type="submit">Buscar</button>
+                </div>
+            </div>
+        </form>
+        {% if mensaje %}
+        <div >
+            <span>{{ mensaje }}</span>
+        </div>
+            
+        {% endif %}
     </div>
 </div>
 

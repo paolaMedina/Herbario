@@ -6,7 +6,7 @@ from django.contrib.auth.decorators  import  login_required
 from django.shortcuts import render, HttpResponseRedirect
 from django.core.mail import send_mail
 from servicios.models import Servicios
-from servicios.forms import ServiciosForm
+from servicios.forms import ServiciosForm, ConsultarServicoForm
 from cliente.models import Cliente
 from cliente.forms import ClienteForm
 from uuid import uuid4
@@ -133,7 +133,7 @@ def TerminarServicio (request, pk):
         send_mail(email_subject, email_body, 'angiepmc93@gmail.com', [email], fail_silently=False)
 
         servicio.save()
-        messages.error(request, 'Se ha actualizado el estado a terminado')
+        messages.success(request, 'Se ha actualizado el estado a terminado')
     except Servicios.DoesNotExist:
         messages.error(request, 'No existe el servicio en consulta')
         
@@ -147,8 +147,44 @@ def TerminarServicio (request, pk):
 #     template_name = 'listar_servicio.html'
 
 def consultarTicket(request):
-    return render(request, 'consultar_servicio.html')
-    
+    if request.method == 'GET':
+        form = ConsultarServicoForm()
+        contexto = {'form': form}
+        return render(request, 'consultar_servicio.html', contexto)
+    # e5ec846 - id servico
+    elif request.method == 'POST':
+        
+        form = ConsultarServicoForm(request.POST, request.FILES)
+        if form.is_valid():
+            
+            noTicket = form['ticket'].value() 
+            print (noTicket)      
+            try:
+                servicio = Servicios.objects.get(ticket= noTicket)
+                estado = servicio.estado
+
+                if estado == 'solicitud':
+                    mensaje = 'Estimado usuario le pedimos excusas en estos momentos no hemos empezado a trabajar en su solicitud, prometemos hacerlo pronto.'
+                elif estado == 'proceso':
+                    email = servicio.cliente.correo
+                    mensaje = 'Estimado usuario en estos momentos estamos trabajando en su solicitud, una vez termine el proceso se le notificará al correo ' + email
+                elif estado == 'terminado':
+                    mensaje = 'Estimado usuario ya puede dirigirse a nuestras instalaciones, para hacerle entrega de su trabajo. Gracias por confiar en nosotros'
+                elif estado == 'entregado':
+                    mensaje = 'Estimado usuario, el trabajo solicitado ya ha sido entregado'
+                else:
+                    mensaje = 'Estimado usuario, el trabajo solicitado ha sido cancelado'
+
+                form = ConsultarServicoForm(request.POST, request.FILES,instance=servicio)
+                contexto = {'form': form, 'mensaje': mensaje}
+
+                return render(request, 'consultar_servicio.html', contexto)
+            except Servicios.DoesNotExist:
+                messages.error(request, 'No existe el servicio en consulta')
+                return HttpResponseRedirect(reverse_lazy('servicios:consultar_servicio'))
+        else:
+            messages.error(request, 'Por favor ingrese el número del ticket')
+            return HttpResponseRedirect(reverse_lazy('servicios:consultar_servicio'))
 
 def genTicket(len=7):
     x = uuid4()
