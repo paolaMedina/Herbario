@@ -195,7 +195,7 @@ def autocomplete(request):
         data = {
             'list': list,
         }
-    return JsonResponse(data) 	
+    return JsonResponse(data)     
 
 
 #funcion que lista los especimenes de la base de datos

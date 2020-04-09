@@ -82,7 +82,7 @@ Crear Especimen
                                 <label  class  = "col-sm-2"for={{prestamoForm.fecha_devolucion.name}}>{{prestamoForm.fecha_devolucion.label}}</label>
                                 <div class="form-group col-sm-6" id="data_3">
                                     <div class="input-group date">
-                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>{{prestamoForm.fecha_devolucion}}
+                                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>{{prestamoForm.fecha_devolucion }}
                                     </div>
                                 </div>
                             </div>
@@ -113,12 +113,6 @@ Crear Especimen
 
 
 <script language=Javascript>
-    
-    document.getElementById('id_nombre_completo').setAttribute('value', 'Jose Enrique Gaviria')
-    document.getElementById('id_identificacion').setAttribute('value',1144856935)
-    document.getElementById('id_correo').setAttribute('value', 'jose.gaviria@gmail.com')
-    document.getElementById('id_num_contacto').setAttribute('value', 3217895614)
-    document.getElementById('id_solicitud').innerHTML ='jkkjkj'
    
 //  validar solo numeros en el campo de numero de registro 
     function isNumberKey(evt){
@@ -182,7 +176,8 @@ Crear Especimen
         todayBtn: "linked",
         keyboardNavigation: false,
         forceParse: false,
-        autoclose: true
+        autoclose: true,
+        format: 'yyyy-mm-dd'
     });
 
 </script>

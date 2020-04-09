@@ -59,13 +59,13 @@ def RegistrarServicio(request, pk=None):
             print ('algun formulario esta invalido')
             print(formServicio.errors)
             print(formCliente.errors)
-        contexto = {'formServicio': formServicio, 'formCliente': formCliente}
+        contexto = {'formServicio': formServicio, 'formCliente': formCliente, 'submit':True}
         
 
     else:
         formServicio = ServiciosForm(instance=servicio)
         formCliente = ClienteForm(instance=cliente)
-        contexto = {'formServicio': formServicio, 'formCliente': formCliente}
+        contexto = {'formServicio': formServicio, 'formCliente': formCliente, 'submit':True}
         return render(request, 'registrar_servicio.html', contexto)
 
 
@@ -113,7 +113,27 @@ def EntregarServicio (request, pk):
         
     return HttpResponseRedirect(reverse_lazy('servicios:listar_servicio'))
     
+@login_required
+def VisualizarServicio (request, pk):
+    try:
+        servicio = Servicios.objects.get(pk=pk)
+        cliente = servicio.cliente
+    except Servicios.DoesNotExist:
+        messages.error(request, 'No existe el servicio en consulta')
+        return HttpResponseRedirect(reverse_lazy('servicios:listar_servicio'))
 
+    formServicio = ServiciosForm(instance=servicio)
+    formCliente = ClienteForm(instance=cliente)
+
+    for field in formServicio.fields.items():
+        field[1].widget.attrs['readonly'] = True
+
+    for field in formCliente.fields.items():
+        field[1].widget.attrs['readonly'] = True
+
+    contexto = {'formServicio':formServicio, 'formCliente':formCliente, 'submit':False}
+
+    return render(request, 'registrar_servicio.html', contexto)
 
 @login_required
 def TerminarServicio (request, pk):

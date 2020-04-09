@@ -56,19 +56,15 @@
                                         {% endif %}
                                         <td>
                                             {% if listaprestamo %}
+                                                <a class="btn btn-primary" href="{% url 'prestamo:renovar_prestamo' prestamo.id %}" title="Renovar prestamo"><span class="fa fa-flag-checkered" aria-hidden="true"></a>
 
+                                                <a class="btn btn-success" href="{% url 'prestamo:visualizar_prestamo' prestamo.id %}" title="Visualizar prestamo"><span class="fa fa-eye" aria-hidden="true"></a>
+
+                                                <a class="btn btn-danger" href="{% url 'prestamo:regresar_prestamo' prestamo.id %}" title="Regrasar prestamo"><span class="fa fa-stop" aria-hidden="true"></a>
                                             {% else %}
+                                                <a class="btn btn-primary" href="{% url 'prestamo:realizar_prestamo' prestamo.id %}" title="Aceptar solicitud"><span class="fa fa-flag-checkered" aria-hidden="true"></a>
 
-                                            {% endif %}
-                                            
-                                            {% if prestamo.estado == 'proceso' %}
-                                                <a class="btn btn-warning" href="{% url 'prestamo:terminar_prestamo' prestamo.id %}" title="Terminar prestamo"><span class="fa fa-exclamation-triangle" aria-hidden="true"></a>
-
-                                                <a class="btn btn-danger" href="{% url 'prestamo:cancelar_prestamo' prestamo.id %}" title="Cancelar prestamo"><span class="fa fa-stop" aria-hidden="true"></a>
-
-                                            {% elif prestamo.estado == 'entregado' %}
-                                                <a class="btn btn-info" href="{% url 'prestamo:entregar_prestamo' prestamo.id %}" title="Entregar prestamo"><span class="fa fa-flag-checkered" aria-hidden="true"></a>
-
+                                                <a class="btn btn-danger" href="{% url 'prestamo:cancelar_solicitud' prestamo.id %}" title="Cancelar solicitud"><span class="fa fa-stop" aria-hidden="true"></a>
                                             {% endif %}
                                         </td>
                                     </tr>
