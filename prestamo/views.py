@@ -57,21 +57,18 @@ def solicitudPrestamo(request) :
 
 #@login_required
 def realizarPrestamo(request):
-
-    prestamoForm = PrestamoForm()
-    formCliente = ClienteForm()
-    return render(request, 'prestamo.html', { 'prestamoForm':prestamoForm, 'formCliente':formCliente})
+	prestamoForm = PrestamoForm()
+	formCliente = ClienteForm()
+	return render(request, 'prestamo.html', { 'prestamoForm':prestamoForm, 'formCliente':formCliente})
 
 #@login_required
 def listarSolicitudes(request):
 	prestamo = Prestamo.objects.filter(estado='solicitud')
-    
-    contexto = {'prestamos':prestamo, 'nombre': 'Lista de solicitudes', 'prestamo': false}
-    return render(request,'listar.html', contexto )
+	contexto = {'prestamos':prestamo, 'nombre': 'Lista de solicitudes', 'prestamo': False}
+	return render(request,'listar_prestamos.html', contexto )
 
 #@login_required
 def listarPrestamos(request):
 	prestamo = Prestamo.objects.filter(estado='prestamo')
-    
-    contexto = {'prestamos':prestamo, 'nombre': 'Lista de solicitudes', 'prestamo': true}
-    return render(request,'listar.html', contexto )
+	contexto = {'prestamos':prestamo, 'nombre': 'Lista de solicitudes', 'prestamo': True}
+	return render(request,'listar_prestamos.html', contexto )

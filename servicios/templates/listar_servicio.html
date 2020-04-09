@@ -54,7 +54,7 @@ Listar Servicios
 
                                                 <a class="btn btn-danger" href="{% url 'servicios:cancelar_servicio' servicio.id %}" title="Cancelar servicio"><span class="fa fa-stop" aria-hidden="true"></a>
 
-                                            {% elif servicio.estado == 'entregado' %}
+                                            {% elif servicio.estado == 'terminado' %}
                                                 <a class="btn btn-info" href="{% url 'servicios:entregar_servicio' servicio.id %}" title="Entregar servicio"><span class="fa fa-flag-checkered" aria-hidden="true"></a>
 
                                             {% endif %}
