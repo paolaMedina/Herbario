@@ -13,4 +13,4 @@ class Prestamo (models.Model):
     estado = models.CharField(max_length=20, choices=state, default='solicitud')
     observaciones_entrega = models.TextField()
     encargado = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, default=None)
+    cliente = models.ForeignKey( Cliente, on_delete=models.CASCADE, default=None)

@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -158,7 +157,6 @@ def consultarTicket(request):
         if form.is_valid():
             
             noTicket = form['ticket'].value() 
-            print (noTicket)      
             try:
                 servicio = Servicios.objects.get(ticket= noTicket)
                 estado = servicio.estado
