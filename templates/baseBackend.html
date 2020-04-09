@@ -110,6 +110,21 @@
                         </li>
 
                         <li>
+                            <a href="#"><i class="fa fa-calendar"></i> <span class="nav-label">Visitas</span><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li><a href="{% url 'visita:listar_visita' %}">Visitas Pendientes</a></li>
+                                <li><a href="{% url 'visita:viewCalendar' %}">Calendario de Visitas</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-book"></i> <span class="nav-label">Prestamos Especimenes</span><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li><a href="{% url 'prestamo:listar_solicitud' %}">listar solicitudes prestamo</a></li>
+                                <li><a href="{% url 'prestamo:listar_prestamo' %}">listar solicitudes prestamo</a></li>
+                            </ul>
+                        </li>
+
+                        <li>
                             <a href="#"><i class="fa fa-calendar"></i> <span class="nav-label">Noticias</span><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
                                 <li><a href="{% url 'noticia:crear_noticia' %}">Crear noticias</a></li>
@@ -121,6 +136,14 @@
                     <!-- menu curador-->
                     {% if request.user.groups.all.0.name  == 'curador' %}
                         <li>
+                            <a href="#"><i class="fa fa-tags"></i> <span class="nav-label">Servicios</span><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li><a href="{% url 'servicios:crear_servicio' %}">Registrar Servicio</a></li>
+                                <li><a href="{% url 'servicios:listar_servicio' %}">listar Servicio</a></li>
+                            </ul>
+                        </li>
+
+                        <li>
                             <a href="#"><i class="fa fa-calendar"></i> <span class="nav-label">Visitas</span><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
                                 <li><a href="{% url 'visita:listar_visita' %}">Visitas Pendientes</a></li>
@@ -130,15 +153,23 @@
                         <li>
                             <a href="#"><i class="fa fa-book"></i> <span class="nav-label">Prestamos Especimenes</span><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
-                                <li><a href="{% url 'servicios:listar_servicio' %}">listar Servicio</a></li>
-
+                                <li><a href="{% url 'prestamo:listar_solicitud' %}">listar solicitudes prestamo</a></li>
+                                <li><a href="{% url 'prestamo:listar_prestamo' %}">listar solicitudes prestamo</a></li>
                             </ul>
                         </li>
-                        {% endif %}
+
+                        <li>
+                            <a href="#"><i class="fa fa-calendar"></i> <span class="nav-label">Noticias</span><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li><a href="{% url 'noticia:crear_noticia' %}">Crear noticias</a></li>
+                                <li><a href="{% url 'noticia:listar_noticia' %}">Listar las noticias</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
 
 
-                        <!-- menu investigador-->
-                        {% if request.user.groups.all.0.name == 'investigador' %}
+                    <!-- menu investigador-->
+                    {% if request.user.groups.all.0.name == 'investigador' %}
                         <li>
                             <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboards</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
@@ -162,7 +193,30 @@
                             </ul>
                         </li>
 
-                        {% endif %}
+                        <li>
+                            <a href="#"><i class="fa fa-calendar"></i> <span class="nav-label">Visitas</span><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li><a href="{% url 'visita:listar_visita' %}">Visitas Pendientes</a></li>
+                                <li><a href="{% url 'visita:viewCalendar' %}">Calendario de Visitas</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-book"></i> <span class="nav-label">Prestamos Especimenes</span><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li><a href="{% url 'prestamo:listar_solicitud' %}">listar solicitudes prestamo</a></li>
+                                <li><a href="{% url 'prestamo:listar_prestamo' %}">listar solicitudes prestamo</a></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#"><i class="fa fa-calendar"></i> <span class="nav-label">Noticias</span><span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li><a href="{% url 'noticia:crear_noticia' %}">Crear noticias</a></li>
+                                <li><a href="{% url 'noticia:listar_noticia' %}">Listar las noticias</a></li>
+                            </ul>
+                        </li>
+
+                    {% endif %}
 
                     </ul>
 
