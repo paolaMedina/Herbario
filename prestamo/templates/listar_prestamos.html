@@ -58,17 +58,9 @@
                                             {% if listaprestamo %}
 
                                             {% else %}
+                                                <a class="btn btn-primary" href="{% url 'servicios:cancelar_servicio' prestamo.id %}" title="Aceptar servicio"><span class="fa fa-flag-checkered" aria-hidden="true"></a>
 
-                                            {% endif %}
-                                            
-                                            {% if prestamo.estado == 'proceso' %}
-                                                <a class="btn btn-warning" href="{% url 'prestamo:terminar_prestamo' prestamo.id %}" title="Terminar prestamo"><span class="fa fa-exclamation-triangle" aria-hidden="true"></a>
-
-                                                <a class="btn btn-danger" href="{% url 'prestamo:cancelar_prestamo' prestamo.id %}" title="Cancelar prestamo"><span class="fa fa-stop" aria-hidden="true"></a>
-
-                                            {% elif prestamo.estado == 'entregado' %}
-                                                <a class="btn btn-info" href="{% url 'prestamo:entregar_prestamo' prestamo.id %}" title="Entregar prestamo"><span class="fa fa-flag-checkered" aria-hidden="true"></a>
-
+                                                <a class="btn btn-danger" href="{% url 'servicios:cancelar_servicio' prestamo.id %}" title="Cancelar servicio"><span class="fa fa-stop" aria-hidden="true"></a>
                                             {% endif %}
                                         </td>
                                     </tr>

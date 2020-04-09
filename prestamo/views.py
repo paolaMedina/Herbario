@@ -40,7 +40,7 @@ def solicitudPrestamo(request) :
 
 			emails.append(cliente_obj.correo)
        
-			email_subject = 'Terminó servicio con Número de ticket'
+			email_subject = 'Solicitud prestamo'
 			email_body = "Buen día, \n Se ha realizado la solicitud de prestamo exitosamente"
 			send_mail(email_subject, email_body, 'angiepmc93@gmail.com', emails, fail_silently=False)
 
@@ -54,6 +54,19 @@ def solicitudPrestamo(request) :
 			formCliente = ClienteForm(request.POST, request.FILES, instance=cliente)
 			messages.error(request, 'Por favor verifique los campos del formulario')
 			return render(request, 'solicitud.html', { 'solicitudForm':solicitudForm, 'formCliente':formCliente})
+
+#@login_required
+def aceptarSolicitud (request, pk):
+	try:
+		solicitud = Prestamo.objects.get(pk = pk)
+	except Prestamo.DoesNotExist:
+		messages.error(request, 'No existe la solicitud en consulta')
+
+	return HttpResponseRedirect(reverse_lazy('prestamo:listar_solicitud'))
+
+#@login_required
+def cancelarSolicitud (request, pk):
+	pass
 
 #@login_required
 def realizarPrestamo(request):
