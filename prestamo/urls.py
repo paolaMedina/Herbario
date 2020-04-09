@@ -11,6 +11,7 @@ urlpatterns = [
     path(r'solicitudes/cancelar/<int:pk>', views.cancelarSolicitud, name='cancelar_solicitud'),
     path(r'renovar/<int:pk>', views.renovar_prestamo, name='renovar_prestamo'),
     path(r'regresar/<int:pk>', views.entregar_prestamo, name='regresar_prestamo'),
+    path(r'visualizar/<int:pk>', views.visualizar_prestamo, name='visualizar_prestamo'),
     # path(r'listar', ServiciosList.as_view(), name='listar_servicio'),
 
 ]

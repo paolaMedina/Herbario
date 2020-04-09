@@ -110,7 +110,7 @@ def realizarPrestamo(request, pk):
 
 		if prestamoForm.is_valid() and formCliente.is_valid():
 			prestamo.solicitud = prestamoForm['solicitud'].value()
-			prestamo.prenum_registro = prestamoForm['num_registro'].value()
+			prestamo.num_registro = prestamoForm['num_registro'].value()
 			prestamo.fecha_entrega = datetime.now()
 			prestamo.fecha_devolucion = prestamoForm['fecha_devolucion'].value()
 			prestamo.observaciones_entrega = prestamoForm['observaciones_entrega'].value()
@@ -156,6 +156,7 @@ def renovar_prestamo (request, pk):
 	
 	return HttpResponseRedirect(reverse_lazy('prestamo:listar_prestamo'))
 
+@login_required
 def entregar_prestamo (request, pk):
 	try:
 		prestamo = Prestamo.objects.get(pk = pk)
@@ -166,6 +167,28 @@ def entregar_prestamo (request, pk):
 		messages.error("El prestamo en consulta no existe")
 	
 	return HttpResponseRedirect(reverse_lazy('prestamo:listar_prestamo'))
+
+@login_required
+def visualizar_prestamo (request, pk):
+	try:
+		prestamo = Prestamo.objects.get(pk=pk)
+		cliente = prestamo.cliente
+	except Prestamo.DoesNotExist:
+		messages.error("El prestamo en consulta no existe")
+		return HttpResponseRedirect(reverse_lazy('prestamo:listar_prestamo'))
+
+	prestamoForm = PrestamoForm(instance=prestamo)
+	formCliente = ClienteForm(instance=cliente)
+
+	for field in prestamoForm.fields.items():
+		field[1].widget.attrs['readonly'] = True
+
+	for field in formCliente.fields.items():
+		field[1].widget.attrs['readonly'] = True
+
+	contexto = {'prestamoForm':prestamoForm, 'formCliente':formCliente}
+
+	return render(request, 'prestamo.html', contexto)
 
 @login_required
 def listarSolicitudes(request):
