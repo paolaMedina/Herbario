@@ -1,4 +1,14 @@
 {% extends "base_front.html" %} {% load static %} {% block extrahead %}
+
+<style>
+
+.responsive-image {
+  width: 100%;
+  max-width: 80%;
+  height: auto;
+}
+</style>
+
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 <link rel="stylesheet" href="{% static 'plugins/OwlCarousel2/dist/assets/owl.carousel.min.css' %}" />
 <link rel="stylesheet" href="{% static 'plugins/OwlCarousel2/dist/assets/owl.theme.default.min.css' %}" />
@@ -146,16 +156,16 @@
                 <div class="section-header">
                     <h3 class="section-title">Noticias</h3>
                 </div>
-                {% for noticia in noticias %}
-                <div class="row" style='width: 60rem; align-content: center'>
+                <div class="row" style='width: 55rem; align-content: center'>
                     <div class="owl-carousel owl-theme">
-                        <figure class="item">
+                    {% for noticia in noticias %}
+                        <figure class="item responsive-image ">
                             <img src="/media/{{noticia.imagen}}">
                             <figcaption>{{noticia.resumen}}</figcaption>
                         </figure>
+                    {% endfor %}
                     </div>
                 </div>
-                {% endfor %}
             </div>
         </div>
     </section>
