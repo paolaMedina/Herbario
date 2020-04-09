@@ -1,10 +1,11 @@
-django==2.2
-django-datetime-widget
-django-bootstrap3
+Django==2.2
+django-bootstrap3==11.0.0
+django-crispy-forms==1.7.2
+django-datetime-widget==0.9.3
+django-floppyforms==1.7.0
+django-role-permissions==2.2.1
+easy-thumbnails==2.6
+psycopg2==2.8.2
 # django-floppyforms
-django-crispy-forms
-easy-thumbnails
-django-role-permissions 
-psycopg2
 #pathlib==1.0.1
 #channels
