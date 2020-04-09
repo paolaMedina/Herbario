@@ -44,3 +44,15 @@ def verificar_rol(roles_permitidos):
 			return view_method(request_inicial, *args, **kwargs)
 		return _arguments_wrapper
 	return _method_wrapper
+
+def ocultar_email (email):
+	email_separado = email.split('@')
+	print (email)
+	usuario = list(email_separado[0])
+	for i in range(1, len(usuario)-1):
+		usuario[i] = "*"
+
+	email = ''.join(usuario) + '@' + email_separado[1]
+
+	return email
+	

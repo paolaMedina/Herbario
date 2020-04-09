@@ -1,0 +1,61 @@
+{% extends "base_front2.html" %} {% load static %} 
+{% block titulo %} Consultar estado del servicio {% endblock %} 
+{% block guia %}
+<p class="breadcrumbs">
+    <span class="mr-2"><a href="{% url 'inicio' %}" style="color:aliceblue !important;">Inicio<i class="ion-ios-arrow-forward"></a></span>
+    <span class="mr-2">></span>
+    <span><u>Consulta servicio</u> <i class="ion-ios-arrow-forward"></span>
+</p>
+{% endblock %} 
+{% block content %}
+<style>
+    body {
+      background-image: url("{% static 'plantilla-frontend/img/especimenes.jpg' %}");
+    }
+    .box {
+        width:50%; 
+        background-color:rgba(255,255,255,0.7); 
+        border-radius: 5px; 
+        padding: 15px; 
+        transform: translateY(50%);
+        justify-content: center;
+    }
+    .btn_buscar{
+        margin: 10px 6px 6px 6px ;
+        color: #fff;
+        background-color: #2dc997;
+        border-color: #2dc997;
+    }
+
+</style>
+  
+
+<div class = "container d-flex justify-content-center" >
+    <divs class= 'box' align='center' >
+        <form id="form"  enctype="multipart/form-data" class="form-horizontal" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="col-sm-6 control-label" for={{form.ticket.name}}>{{form.ticket.label}}</label>
+                <div class="col-mm-20" align="center">{{form.ticket}}</div>
+            </div>
+            <div class="form-group" align="right">
+                <div class="col-sm-6 col-sm-offset-7">
+                    <button class="btn btn-white" type="reset">Cancel</button>
+                    <button  id="btn_buscar" class="btn btn-primary" type="submit">Buscar</button>
+                </div>
+            </div>
+        </form>
+        {% if mensaje %}
+        <div >
+            <span>{{ mensaje }}</span>
+        </div>
+            
+        {% endif %}
+    </div>
+</div>
+
+
+{% endblock %} {% block javascript %}
+
+
+{% endblock %}
