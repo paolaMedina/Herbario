@@ -146,6 +146,10 @@ def TerminarServicio (request, pk):
 #     model = Servicios
 #     template_name = 'listar_servicio.html'
 
+def consultarTicket(request):
+    return render(request, 'consultar_servicio.html')
+    
+
 def genTicket(len=7):
     x = uuid4()
     return str(x)[:len]

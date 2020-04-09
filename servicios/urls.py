@@ -11,6 +11,7 @@ urlpatterns = [
     path(r'entregar/<int:pk>', views.EntregarServicio, name='entregar_servicio'),
     path(r'terminar/<int:pk>', views.TerminarServicio, name='terminar_servicio'),
     path(r'listar', views.ListarServicio, name='listar_servicio'),
+    path(r'consultar', views.consultarTicket, name='consultar_servicio'),
     # path(r'listar', ServiciosList.as_view(), name='listar_servicio'),
 
 ]
