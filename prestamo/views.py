@@ -64,11 +64,11 @@ def realizarPrestamo(request):
 #@login_required
 def listarSolicitudes(request):
 	prestamo = Prestamo.objects.filter(estado='solicitud')
-	contexto = {'prestamos':prestamo, 'nombre': 'Lista de solicitudes', 'prestamo': False}
+	contexto = {'prestamos':prestamo, 'nombre': 'Lista de solicitudes', 'listaprestamo': False}
 	return render(request,'listar_prestamos.html', contexto )
 
 #@login_required
 def listarPrestamos(request):
 	prestamo = Prestamo.objects.filter(estado='prestamo')
-	contexto = {'prestamos':prestamo, 'nombre': 'Lista de solicitudes', 'prestamo': True}
+	contexto = {'prestamos':prestamo, 'nombre': 'Lista de solicitudes', 'listaprestamo': True}
 	return render(request,'listar_prestamos.html', contexto )

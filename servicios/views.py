@@ -164,7 +164,7 @@ def consultarTicket(request):
                 if estado == 'solicitud':
                     mensaje = 'Estimado usuario le pedimos excusas en estos momentos no hemos empezado a trabajar en su solicitud, prometemos hacerlo pronto.'
                 elif estado == 'proceso':
-                    email = servicio.cliente.correo
+                    email = ocultar_email (servicio.cliente.correo)
                     mensaje = 'Estimado usuario en estos momentos estamos trabajando en su solicitud, una vez termine el proceso se le notificará al correo ' + email
                 elif estado == 'terminado':
                     mensaje = 'Estimado usuario ya puede dirigirse a nuestras instalaciones, para hacerle entrega de su trabajo. Gracias por confiar en nosotros'
