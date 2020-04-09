@@ -58,9 +58,9 @@
                                             {% if listaprestamo %}
 
                                             {% else %}
-                                                <a class="btn btn-primary" href="{% url 'servicios:cancelar_servicio' prestamo.id %}" title="Aceptar servicio"><span class="fa fa-flag-checkered" aria-hidden="true"></a>
+                                                <a class="btn btn-primary" href="{% url 'prestamo:realizar_prestamo' prestamo.id %}" title="Aceptar solicitud"><span class="fa fa-flag-checkered" aria-hidden="true"></a>
 
-                                                <a class="btn btn-danger" href="{% url 'servicios:cancelar_servicio' prestamo.id %}" title="Cancelar servicio"><span class="fa fa-stop" aria-hidden="true"></a>
+                                                <a class="btn btn-danger" href="{% url 'prestamo:cancelar_solicitud' prestamo.id %}" title="Cancelar solicitud"><span class="fa fa-stop" aria-hidden="true"></a>
                                             {% endif %}
                                         </td>
                                     </tr>

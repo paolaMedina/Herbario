@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.core.mail import send_mail
+from datetime import datetime
 
 from .models import Prestamo
 from .forms import SolicitudForm, PrestamoForm
@@ -55,24 +56,84 @@ def solicitudPrestamo(request) :
 			messages.error(request, 'Por favor verifique los campos del formulario')
 			return render(request, 'solicitud.html', { 'solicitudForm':solicitudForm, 'formCliente':formCliente})
 
+
 #@login_required
-def aceptarSolicitud (request, pk):
+def cancelarSolicitud (request, pk):
 	try:
-		solicitud = Prestamo.objects.get(pk = pk)
+		prestamo = Prestamo.objects.get(pk = pk)
+		prestamo.estado = 'cancelado'
+
+		email = prestamo.cliente.correo
+
+		email_subject = 'Cancelación solicitud de prestamo '
+
+		email_body = "Buen día, \n" 
+		email_body += "Su solicitud %s ha sido cancelada" % (prestamo.solicitud)
+
+		send_mail(email_subject, email_body, 'angiepmc93@gmail.com', [email], fail_silently=False)
+
+		prestamo.save()
+		messages.success(request, 'La solicitud se ha cancelado exitosamente')
 	except Prestamo.DoesNotExist:
 		messages.error(request, 'No existe la solicitud en consulta')
 
 	return HttpResponseRedirect(reverse_lazy('prestamo:listar_solicitud'))
 
 #@login_required
-def cancelarSolicitud (request, pk):
-	pass
+def realizarPrestamo(request, pk):
+	if request.method == 'GET':
+		prestamo = Prestamo()
+		cliente = Cliente()
+		try:
+			prestamo = Prestamo.objects.get(pk = pk)
+			cliente = prestamo.cliente
+			prestamoForm = PrestamoForm(instance=prestamo)
+			formCliente = ClienteForm(instance=cliente)
+			
+			return render(request, 'prestamo.html', { 'prestamoForm':prestamoForm, 'formCliente':formCliente})
+		
+		except Prestamo.DoesNotExist:
+			messages.error(request, 'No existe la solicitud en consulta')
+			return HttpResponseRedirect(reverse_lazy('prestamo:listar_solicitud'))
+		
+	elif request.method == 'POST':
+		prestamoForm = PrestamoForm(request.POST, request.FILES)
+		formCliente = ClienteForm(request.POST, request.FILES)
+		
+		try:
+			prestamo = Prestamo.objects.get(pk = pk)
+			cliente = prestamo.cliente
+		except Prestamo.DoesNotExist:
+			messages.error(request, 'No existe la solicitud en consulta')
+			return HttpResponseRedirect(reverse_lazy('prestamo:listar_solicitud'))
 
-#@login_required
-def realizarPrestamo(request):
-	prestamoForm = PrestamoForm()
-	formCliente = ClienteForm()
-	return render(request, 'prestamo.html', { 'prestamoForm':prestamoForm, 'formCliente':formCliente})
+		if prestamoForm.is_valid() and formCliente.is_valid():
+			prestamo.solicitud = prestamoForm['solicitud'].value()
+			prestamo.prenum_registro = prestamoForm['num_registro'].value()
+			prestamo.fecha_entrega = datetime.now()
+			prestamo.fecha_devolucion = prestamoForm['fecha_devolucion'].value()
+			prestamo.observaciones_entrega = prestamoForm['observaciones_entrega'].value()
+			prestamo.encargado = request.user
+
+			cliente.nombre_completo = formCliente['nombre_completo'].value()
+			cliente.tipo_identificacion = formCliente['tipo_identificacion'].value()
+			cliente.identificacion = formCliente['identificacion'].value()
+			cliente.correo = formCliente['correo'].value()
+			cliente.num_contacto = formCliente['num_contacto'].value()
+			
+			prestamo.cliente = cliente
+			prestamo.estado = 'prestamo'
+			cliente.save()
+			prestamo.save()
+
+			messages.success(request, 'Se ha realizado el prestamo con éxito')
+			return HttpResponseRedirect(reverse_lazy('prestamo:listar_solicitud'))
+
+		else:
+			messages.error(request, 'Por favor verifique los datos del formulario')
+			prestamoForm = PrestamoForm(request.POST, request.FILES, instance=prestamo)
+			formCliente = ClienteForm(request.POST, request.FILES, instance=cliente)
+			return render(request, 'prestamo.html', { 'prestamoForm':prestamoForm, 'formCliente':formCliente})
 
 #@login_required
 def listarSolicitudes(request):

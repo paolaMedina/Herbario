@@ -72,7 +72,7 @@ def RegistrarServicio(request, pk=None):
 @login_required
 @verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def ListarServicio(request) : 
-    servicios = Servicios.objects.all()
+    servicios = Servicios.objects.all().order_by('estado')
     contexto = {'servicios':servicios}
     return render(request,'listar_servicio.html', contexto )
 
