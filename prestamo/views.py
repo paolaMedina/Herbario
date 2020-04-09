@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.core.mail import send_mail
+from django.contrib.auth.decorators  import  login_required
 from datetime import datetime
 
 from .models import Prestamo
@@ -79,7 +80,7 @@ def cancelarSolicitud (request, pk):
 
 	return HttpResponseRedirect(reverse_lazy('prestamo:listar_solicitud'))
 
-#@login_required
+@login_required
 def realizarPrestamo(request, pk):
 	if request.method == 'GET':
 		prestamo = Prestamo()
@@ -135,13 +136,44 @@ def realizarPrestamo(request, pk):
 			formCliente = ClienteForm(request.POST, request.FILES, instance=cliente)
 			return render(request, 'prestamo.html', { 'prestamoForm':prestamoForm, 'formCliente':formCliente})
 
-#@login_required
+@login_required
+def renovar_prestamo (request, pk):
+	try:
+		prestamo = Prestamo.objects.get(pk = pk)
+		prestamo.fecha_entrega = prestamo.fecha_entrega + datetime.timedelta(days=15)
+		
+		email_subject = 'Renovación de prestamo '
+
+		email_body = "Buen día, \n" 
+		email_body += "Su prestamo %s ha sido renovado hasta el día " % (prestamo.solicitud, prestamo.fecha_entrega)
+
+		send_mail(email_subject, email_body, 'angiepmc93@gmail.com', [email], fail_silently=False)
+
+		prestamo.save()
+		messages.success("Se ha renovado el prestamo exitosamente")
+	except Prestamo.DoesNotExist:
+		messages.error("El prestamo en consulta no existe")
+	
+	return HttpResponseRedirect(reverse_lazy('prestamo:listar_prestamo'))
+
+def entregar_prestamo (request, pk):
+	try:
+		prestamo = Prestamo.objects.get(pk = pk)
+		prestamo.estado = 'entregado'
+		prestamo.save()
+		messages.success("El prestamo se ha regresado exitosamente")
+	except Prestamo.DoesNotExist:
+		messages.error("El prestamo en consulta no existe")
+	
+	return HttpResponseRedirect(reverse_lazy('prestamo:listar_prestamo'))
+
+@login_required
 def listarSolicitudes(request):
 	prestamo = Prestamo.objects.filter(estado='solicitud')
 	contexto = {'prestamos':prestamo, 'nombre': 'Lista de solicitudes', 'listaprestamo': False}
 	return render(request,'listar_prestamos.html', contexto )
 
-#@login_required
+@login_required
 def listarPrestamos(request):
 	prestamo = Prestamo.objects.filter(estado='prestamo')
 	contexto = {'prestamos':prestamo, 'nombre': 'Lista de solicitudes', 'listaprestamo': True}
