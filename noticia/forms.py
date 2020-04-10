@@ -25,8 +25,8 @@ class NoticiaForm(forms.ModelForm):
         }
         widgets = {
             'titulo': forms.TextInput(attrs={'required':'required', 'class':'form-control'}),
-            'resumen': forms.Textarea(attrs={'required':'required','rows': '8', 'class':'form-control col-md-7 col-xs-12'}),
-            'contenido' : forms.Textarea(attrs={'required':'required','rows': '15', 'class':'form-control col-md-7 col-xs-12'}),
+            'resumen': forms.Textarea(attrs={'required':'required', 'class':'form-control col-md-7 col-xs-12'}),
+            'contenido' : forms.Textarea(attrs={'required':'required', 'class':'form-control col-md-7 col-xs-12'}),
             'imagen' : forms.ClearableFileInput(attrs={'value':'','class':'form-control col-md-7 col-xs-12'}),
         } 
 
