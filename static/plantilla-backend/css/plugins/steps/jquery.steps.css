@@ -148,7 +148,7 @@
 }
 /*tamaño del area del formulario*/
 .wizard-big.wizard > .content {
-    min-height: 320px;
+    min-height: 530px !important;
 }
 .wizard.vertical > .content
 {
@@ -162,8 +162,8 @@
 {
     float: left;
     position: absolute;
-    width: 95%;
-    height: 95%;
+    width: 100% !important;
+    height: 100% !important;
     padding: 2.5%;
 }
 
