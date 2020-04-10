@@ -23,7 +23,6 @@ from django.contrib.auth.decorators import login_required
 from rolepermissions.decorators import has_role_decorator
 from django.contrib.auth import authenticate
 
-
 class RegistroUsuario(CreateView):
     template_name = "registrar.html"
     success_url = reverse_lazy("usuario:registrar_usuario")
