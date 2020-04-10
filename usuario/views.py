@@ -14,6 +14,9 @@ from django.contrib.messages.views import SuccessMessageMixin
 import hashlib
 import datetime
 import random
+import urllib
+import urllib.request as urllib2
+import json
 from django.http import HttpResponseNotFound
 from django.utils import timezone
 from .forms import RegistroForm, FormularioLogin
@@ -22,6 +25,7 @@ from herbario1.utilities import *
 from django.contrib.auth.decorators import login_required
 from rolepermissions.decorators import has_role_decorator
 from django.contrib.auth import authenticate
+from herbario1 import settings
 
 class RegistroUsuario(CreateView):
     template_name = "registrar.html"
@@ -245,6 +249,25 @@ def Login(request):
         form = FormularioLogin(request.POST)
         username = request.POST['username']
         password = request.POST['password']
+
+        ''' Begin reCAPTCHA validation '''
+        """recaptcha_response = request.POST.get('g-recaptcha-response')
+        url = 'https://www.google.com/recaptcha/api/siteverify'
+        values = {
+            'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+            'response': recaptcha_response
+        }
+        data = urllib.urlencode(values)
+        req = urllib2.Request(url, data)
+        response = urllib2.urlopen(req)
+        result = json.load(response)
+
+        if result['success']:     
+            user = myAuthenticate(username=username, password=password)
+        else:
+            messages.error(request, 'reCAPTCHA inválido. Por favor intente nuevamente')
+            return render(request, 'login.html', {'form': form})"""
+
         user = myAuthenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
