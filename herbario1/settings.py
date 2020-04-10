@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'snowpenguin.django.recaptcha2',
     'categoriaTaxonomica',
     'cientifico',
     'coleccion',
@@ -192,5 +193,5 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 5 * 60  # 5 minutes
 
 
-PUBLIC_KEY = '6Ld6VegUAAAAAFzxQb8rka9FQWAdVCZDQTbsrP30'
-PRIVATE_KEY = '6Ld6VegUAAAAAAKPhtPOyQLiBEC_IyU6RWWhYF98'
+RECAPTCHA_PUBLIC_KEY = '6Ld6VegUAAAAAFzxQb8rka9FQWAdVCZDQTbsrP30'
+RECAPTCHA_PRIVATE_KEY = '6Ld6VegUAAAAAAKPhtPOyQLiBEC_IyU6RWWhYF98'
