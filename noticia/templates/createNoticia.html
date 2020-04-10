@@ -14,28 +14,28 @@
 
 
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-10">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Crear Noticia</h5>
+                <h5>Crear Noticia</h5> 
             </div>
             <div class="ibox-content">
                 <form method="post" class="form-horizontal" enctype="multipart/form-data"> {% csrf_token %}
                     <div class="form-group">
-                        <label for={{form.titulo.name}}>{{form.titulo.label}}</label> 
-                        {{form.titulo}}
+                        <label class="col-sm-2 control-label" for={{form.titulo.name}}>{{form.titulo.label}}</label>
+                        <div class="col-sm-6">{{form.titulo}}</div>
                     </div>
                     <div class="form-group">
-                        <label for={{form.resumen.name}}>{{form.resumen.label}}</label> 
-                        {{form.resumen}}
+                        <label class="col-sm-2 control-label" for={{form.resumen.name}}>{{form.resumen.label}}</label>
+                        <div class="col-sm-6">{{form.resumen}}</div>
                     </div>
                     <div class="form-group">
-                        <label for={{form.contenido.name}}>{{form.contenido.label}}</label> 
-                        {{form.contenido}}
+                        <label class="col-sm-2 control-label" for={{form.contenido.name}}>{{form.contenido.label}}</label>
+                        <div class="col-sm-6">{{form.contenido}}</div>
                     </div>
                     <div class="form-group">
-                        <label for={{form.imagen.name}}>{{form.imagen.label}}</label> 
-                        {{form.imagen}}
+                        <label class="col-sm-2 control-label" for={{form.imagen.name}}>{{form.imagen.label}}</label>
+                        <div class="col-sm-6">{{form.imagen}}</div>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
