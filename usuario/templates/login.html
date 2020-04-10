@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load recaptcha2 %}
 <html>
 
 <head>
@@ -26,7 +27,7 @@
         }
     
     </style>
-
+    {% recaptcha_init 'es' %}
 </head>
 
 
@@ -44,6 +45,9 @@
                 </div>
                 <div class="form-group">
                     {{ form.password }}
+                </div>
+                <div class="form-group">
+                    {{ form.captcha }}
                 </div>
                 <button type="submit" class="btn btn-primary block full-width m-b">Log in</button>
 

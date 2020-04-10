@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 #Importamos el formulario de autenticacion de django
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
+from snowpenguin.django.recaptcha2.fields import ReCaptchaField
+from snowpenguin.django.recaptcha2.widgets import ReCaptchaWidget
 from .models import Usuario
 
 
@@ -63,7 +65,8 @@ class RegistroForm(forms.ModelForm):
             raise forms.ValidationError('Este email ya se encuentra registrado')
    
 class FormularioLogin(AuthenticationForm):
-
+    captcha = ReCaptchaField(widget=ReCaptchaWidget())
+    
     def __init__(self, *args, **kwargs):
             super(FormularioLogin, self).__init__(*args, **kwargs)
             self.fields['username'].widget.attrs['class'] = 'form-control'
