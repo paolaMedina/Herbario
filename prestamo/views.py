@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.contrib.auth.decorators  import  login_required
 from datetime import datetime, timedelta
+from herbario1.utilities import *
 
 from .models import Prestamo
 from .forms import SolicitudForm, PrestamoForm
