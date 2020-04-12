@@ -9,3 +9,4 @@ psycopg2==2.8.2
 # django-floppyforms
 #pathlib==1.0.1
 #channels
+django-recaptcha2==1.4.1

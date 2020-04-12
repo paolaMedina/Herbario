@@ -247,6 +247,7 @@ def myAuthenticate(username=None, password=None):
 def Login(request):
     if request.method == 'POST':
         form = FormularioLogin(request.POST)
+
         username = request.POST['username']
         password = request.POST['password']
 
@@ -287,4 +288,6 @@ def Login(request):
         # Sino lo esta entonces nos muestra la plantilla del login simplemente
         else:
             form = FormularioLogin()
+
+    print (form.fields.items())       
     return render(request, 'login.html', {'form': form})
