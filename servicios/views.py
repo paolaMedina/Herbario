@@ -13,7 +13,8 @@ from herbario1.utilities import *
 from django.views.generic import ListView
 
 # Create your views here.
-@login_required
+#@login_required
+
 def RegistrarServicio(request, pk=None):
 
     if pk:
@@ -81,6 +82,7 @@ def ListarServicio(request) :
     return render(request,'listar_servicio.html', contexto )
 
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def ProcesarServicio (request, pk):
     try:
         servicio = Servicios.objects.get(pk=pk)
@@ -93,6 +95,7 @@ def ProcesarServicio (request, pk):
     return HttpResponseRedirect(reverse_lazy('servicios:listar_servicio'))
 
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def CancelarServicio (request, pk):
     try:
         servicio = Servicios.objects.get(pk=pk)
@@ -106,6 +109,7 @@ def CancelarServicio (request, pk):
     
 
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def EntregarServicio (request, pk):
     try:
         servicio = Servicios.objects.get(pk=pk)
@@ -140,6 +144,7 @@ def VisualizarServicio (request, pk):
     return render(request, 'registrar_servicio.html', contexto)
 
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def TerminarServicio (request, pk):
     try:
         servicio = Servicios.objects.get(pk=pk)

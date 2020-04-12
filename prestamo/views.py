@@ -59,7 +59,8 @@ def solicitudPrestamo(request) :
             return render(request, 'solicitud.html', { 'solicitudForm':solicitudForm, 'formCliente':formCliente})
 
 
-#@login_required
+@login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def cancelarSolicitud (request, pk):
     try:
         prestamo = Prestamo.objects.get(pk = pk)
@@ -82,6 +83,7 @@ def cancelarSolicitud (request, pk):
     return HttpResponseRedirect(reverse_lazy('prestamo:listar_solicitud'))
 
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def realizarPrestamo(request, pk):
     if request.method == 'GET':
         prestamo = Prestamo()
@@ -143,6 +145,7 @@ def realizarPrestamo(request, pk):
             return render(request, 'prestamo.html', { 'prestamoForm':prestamoForm, 'formCliente':formCliente})
 
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def renovar_prestamo (request, pk):
     try:
         prestamo = Prestamo.objects.get(pk = pk)
@@ -163,6 +166,7 @@ def renovar_prestamo (request, pk):
     return HttpResponseRedirect(reverse_lazy('prestamo:listar_prestamo'))
 
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def entregar_prestamo (request, pk):
     try:
         prestamo = Prestamo.objects.get(pk = pk)
@@ -175,6 +179,7 @@ def entregar_prestamo (request, pk):
     return HttpResponseRedirect(reverse_lazy('prestamo:listar_prestamo'))
 
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def visualizar_prestamo (request, pk):
     try:
         prestamo = Prestamo.objects.get(pk=pk)
@@ -197,12 +202,14 @@ def visualizar_prestamo (request, pk):
     return render(request, 'prestamo.html', contexto)
 
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def listarSolicitudes(request):
     prestamo = Prestamo.objects.filter(estado='solicitud')
     contexto = {'prestamos':prestamo, 'nombre': 'Lista de solicitudes', 'listaprestamo': False}
     return render(request,'listar_prestamos.html', contexto )
 
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def listarPrestamos(request):
     prestamo = Prestamo.objects.filter(estado='prestamo')
     contexto = {'prestamos':prestamo, 'nombre': 'Lista de solicitudes', 'listaprestamo': True}
