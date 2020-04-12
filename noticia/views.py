@@ -61,8 +61,9 @@ class EliminarNoticia(DeleteView):
         #borrar fisicamente el archivo
         noticia = Noticia.objects.get(id=kwargs['pk'])
         imagen=noticia.imagen
-        file_path = settings.MEDIA_ROOT+'/' + str(imagen)
-        os.remove(file_path)
+        if(imagen):
+            file_path = settings.MEDIA_ROOT+'/' + str(imagen)
+            os.remove(file_path)
         return super(EliminarNoticia, self).delete(request, *args, **kwargs) 
         
     #funcion para no ingresar template de confirmacion delete
