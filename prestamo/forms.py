@@ -32,7 +32,7 @@ class PrestamoForm(forms.ModelForm):
             'observaciones_entrega' : 'Obeservaciones de entrega',
         }
         widgets = {
-            'solicitud': forms.Textarea(attrs={'class': 'form-control col-sm-7'}),
+            'solicitud': forms.Textarea(attrs={'class': 'form-control col-sm-7', 'readonly':'readonly'}),
             'fecha_devolucion': forms.TextInput(attrs={'type':'text','required':'required', 'id':'data_3', 'name':'datepicker', 'class':'form-control' }),
             'num_registro': forms.TextInput(attrs={ 'onkeypress':'return isNumberKey(event)','required':'required', 'class':'form-control col-md-7 col-xs-12'}),
             'observaciones_entrega': forms.Textarea(attrs={'class': 'form-control col-sm-7'})

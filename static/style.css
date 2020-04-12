@@ -9,6 +9,18 @@
     position: relative;
 }
 
+.wizard-big.wizard > .content {
+    min-height: 530px !important; 
+}
+
+.wizard > .content > .body {
+    float: left;
+    position: absolute;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 2.5%;
+}
+
 textarea.form-control {
     width: 100%;
     height: 131px;

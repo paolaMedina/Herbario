@@ -17,6 +17,7 @@ def solicitudPrestamo(request) :
     if request.method == 'GET':
         solicitudForm = SolicitudForm()
         formCliente = ClienteForm()
+
         return render(request, 'solicitud.html', { 'solicitudForm':solicitudForm, 'formCliente':formCliente})
     elif request.method == 'POST':
         solicitudForm = SolicitudForm(request.POST, request.FILES)
@@ -91,6 +92,11 @@ def realizarPrestamo(request, pk):
             prestamoForm = PrestamoForm(instance=prestamo)
             formCliente = ClienteForm(instance=cliente)
             
+            for field in formCliente.fields.items():
+                if field[0] != 'correo' and field[0] != 'num_contacto':
+                    field[1].widget.attrs['readonly'] = True
+
+
             return render(request, 'prestamo.html', { 'prestamoForm':prestamoForm, 'formCliente':formCliente})
         
         except Prestamo.DoesNotExist:
