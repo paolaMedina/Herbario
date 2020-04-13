@@ -1,0 +1,151 @@
+
+{% extends "baseBackend.html" %}
+{% load static %}
+{% load bootstrap3 %}
+
+
+{% block titulo %}
+{% endblock %}
+
+
+{% block extrahead %}
+<!-- Text spinners style -->
+<link href="{% static 'plantilla-backend/css/plugins/textSpinners/spinners.css' %}" rel="stylesheet">
+<style>
+/* eefafb */
+.form-control[readonly], fieldset[disabled] .form-control {
+    background-color: #eefafb;
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins ">
+                <div class="ibox-title">
+                    <h5>Lista cubículos usados</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover dataTables-example">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre Estudiante</th>
+                                <th>Código</th>
+                                <th>correo electrónico</th>
+                                <th>Título Trabajo</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Pedro Alfonso Camarero</td>
+                                <td>1852699</td>
+                                <td>pedro@correounivalle.edu.co</td>
+                                <td>Europan lingues es membres sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot</td>
+                                <td>
+                                    <div class="d-flex justify-content-between">
+
+                                        <a class="btn btn-info"><span class="fa fa-eye" aria-hidden="true"></a>
+                                        <a class="btn btn-warning"><span class="fa fa-eraser" aria-hidden="true"></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Francisco Alexis Farre</td>
+                                <td>1856349</td>
+                                <td>francisco@correounivalle.edu.co</td>
+                                <td>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</td>
+                                <td>
+                                    <div class="d-flex justify-content-between">
+
+                                        <a class="btn btn-info"><span class="fa fa-eye" aria-hidden="true"></a>
+                                        <a class="btn btn-warning"><span class="fa fa-eraser" aria-hidden="true"></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Jose Mauricio Estrada</td>
+                                <td>1523485</td>
+                                <td>jose@correounivalle.edu.co</td>
+                                <td> Cum sociis natoque penatibus et.</td>
+                                <td>
+                                    <div class="d-flex justify-content-between">
+
+                                        <a class="btn btn-info"><span class="fa fa-eye" aria-hidden="true"></a>
+                                        <a class="btn btn-warning"><span class="fa fa-eraser" aria-hidden="true"></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Jesus Damian Marfil</td>
+                                <td>1753288</td>
+                                <td>jesus@correounivalle.edu.co</td>
+                                <td> Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</td>
+                                <td>
+                                    <div class="d-flex justify-content-between">
+
+                                        <a class="btn btn-info"><span class="fa fa-eye" aria-hidden="true"></a>
+                                        <a class="btn btn-warning"><span class="fa fa-eraser" aria-hidden="true"></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block plugins %}
+
+<script src="{% static 'plantilla-backend/js/plugins/dataTables/datatables.min.js' %}"></script>
+
+<script>
+    $(document).ready(function() {
+        $('.dataTables-example').DataTable({
+            responsive: true,
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: [{
+                    extend: 'copy'
+                }, {
+                    extend: 'csv'
+                }, {
+                    extend: 'excel',
+                    title: 'ExampleFile'
+                }, {
+                    extend: 'pdf',
+                    title: 'ExampleFile'
+                },
+
+                {
+                    extend: 'print',
+                    customize: function(win) {
+                        $(win.document.body).addClass('white-bg');
+                        $(win.document.body).css('font-size', '10px');
+
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    }
+                }
+            ]
+
+        });
+
+    });
+</script>
+
+
+{% endblock %}

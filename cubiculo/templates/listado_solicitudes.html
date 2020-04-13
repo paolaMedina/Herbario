@@ -1,0 +1,135 @@
+
+{% extends "baseBackend.html" %}
+{% load static %}
+{% load bootstrap3 %}
+
+
+{% block titulo %}
+{% endblock %}
+
+
+{% block extrahead %}
+<!-- Text spinners style -->
+<link href="{% static 'plantilla-backend/css/plugins/textSpinners/spinners.css' %}" rel="stylesheet">
+<style>
+/* eefafb */
+.form-control[readonly], fieldset[disabled] .form-control {
+    background-color: #eefafb;
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins ">
+                <div class="ibox-title">
+                    <h5>Lista de solicitud cubiculo</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover dataTables-example">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre Estudiante</th>
+                                <th>Programa</th>
+                                <th>Código</th>
+                                <th>Título Trabajo</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Alexandra Maria Saorin</td>
+                                <td>Maestría en Ciencias Biología</td>
+                                <td>1965844</td>
+                                <td>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto</td>
+                                <td>
+                                    <div class="d-flex justify-content-between">
+
+                                        <a class="btn btn-primary"><span class="fa fa-check" aria-hidden="true"></a>
+                                        <a class="btn btn-danger"><span class="fa fa-window-close" aria-hidden="true"></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Antonia Elena Fortes</td>
+                                <td>Maestría en Ciencias Biología</td>
+                                <td>2058333</td>
+                                <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut in ex sapien. Phasellus eu viverra risus.</td>
+                                <td>
+                                    <div class="d-flex justify-content-between">
+
+                                        <a class="btn btn-primary"><span class="fa fa-check" aria-hidden="true"></a>
+                                        <a class="btn btn-danger"><span class="fa fa-window-close" aria-hidden="true"></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Jorge Joaquin Montalvo</td>
+                                <td>Posgrado en Ciencias Biología </td>
+                                <td>2015874</td>
+                                <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ipsum diam, sagittis et ornare non.</td>
+                                <td>
+                                    <div class="d-flex justify-content-between">
+
+                                        <a class="btn btn-primary"><span class="fa fa-check" aria-hidden="true"></a>
+                                        <a class="btn btn-danger"><span class="fa fa-window-close" aria-hidden="true"></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block plugins %}
+<script src="{% static 'plantilla-backend/js/plugins/dataTables/datatables.min.js' %}"></script>
+<script>
+    $(document).ready(function() {
+        $('.dataTables-example').DataTable({
+            responsive: true,
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: [{
+                    extend: 'copy'
+                }, {
+                    extend: 'csv'
+                }, {
+                    extend: 'excel',
+                    title: 'ExampleFile'
+                }, {
+                    extend: 'pdf',
+                    title: 'ExampleFile'
+                },
+
+                {
+                    extend: 'print',
+                    customize: function(win) {
+                        $(win.document.body).addClass('white-bg');
+                        $(win.document.body).css('font-size', '10px');
+
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    }
+                }
+            ]
+
+        });
+
+    });
+</script>
+
+
+{% endblock %}

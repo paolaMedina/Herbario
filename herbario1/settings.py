@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'servicios',
     'prestamo',
     'cargarArchivo',
+    'cubiculo',
     'easy_thumbnails',  # para permitir que aparezca imagen en el formulario de especimen
     'crispy_forms',  # para permitir que aparezca imagen ene l formulario de especimen
     'bootstrap3',  # permite tags de boostrap
