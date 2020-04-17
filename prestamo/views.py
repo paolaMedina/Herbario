@@ -173,9 +173,9 @@ def entregar_prestamo (request, pk):
         prestamo = Prestamo.objects.get(pk = pk)
         prestamo.estado = 'entregado'
         prestamo.save()
-        messages.success("El prestamo se ha regresado exitosamente")
+        messages.success(request, "El prestamo se ha regresado exitosamente")
     except Prestamo.DoesNotExist:
-        messages.error("El prestamo en consulta no existe")
+        messages.error(request, "El prestamo en consulta no existe")
     
     return HttpResponseRedirect(reverse_lazy('prestamo:listar_prestamo'))
 
