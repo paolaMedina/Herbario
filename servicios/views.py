@@ -73,11 +73,11 @@ def RegistrarServicio(request, pk=None):
 @login_required
 @verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def ListarServicio(request) : 
-    solicitudes = Servicios.objects.filtter(estado='solicitud')
-    procesos = Servicios.objects.filtter(estado='proceso')
-    terminados = Servicios.objects.filtter(estado='terminado')
-    entregados = Servicios.objects.filtter(estado='entregado')
-    cancelados = Servicios.objects.filtter(estado='cancelado')
+    solicitudes = Servicios.objects.filter(estado='solicitud')
+    procesos = Servicios.objects.filter(estado='proceso')
+    terminados = Servicios.objects.filter(estado='terminado')
+    entregados = Servicios.objects.filter(estado='entregado')
+    cancelados = Servicios.objects.filter(estado='cancelado')
     contexto = {'solicitudes':solicitudes, 'procesos':procesos, 'terminados':terminados, 'entregados':entregados, 'cancelados':cancelados}
     return render(request,'listar_servicio.html', contexto )
 
