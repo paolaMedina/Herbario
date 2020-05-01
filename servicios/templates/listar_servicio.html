@@ -82,6 +82,10 @@ Listar Servicios
                                         <td>{{ servicio.estado }}</td>
                                         <td>
                                             <a class="btn btn-success" href="{% url 'servicios:visualizar_servicio' pk=servicio.id %}" title="Visualizar servicio"><span class="fa fa-eye" aria-hidden="true"></a>
+
+                                            <a class="btn btn-primary" href="{% url 'servicios:entregar_servicio' pk=servicio.id %}" title="Entregar servicio"><span class="fa fa-cogs" aria-hidden="true"></a>
+                                                
+                                          
                                         </td>
                                     </tr>
                                     {% endfor %}
