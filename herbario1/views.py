@@ -15,6 +15,6 @@ def Dashboard(request):
 
 def Home(request):
     noticias = Noticia.objects.all()
-    print(noticias)
+    # print(noticias)
     contexto = {'noticias': noticias}
     return render(request, 'index-home.html', contexto)

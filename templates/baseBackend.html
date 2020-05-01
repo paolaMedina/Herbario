@@ -78,12 +78,12 @@
                         {% endif %}
                         <!-- menu director-->
                         {% if request.user.groups.all.0.name == 'director' %}
-                        <li>
+                        <!-- <li>
                             <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboards</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
                                 <li><a href="{% url 'dashboard' %}">Dashboard </a></li>
                             </ul>
-                        </li>
+                        </li> -->
                         <li>
                             <a href="#"><i class="fa fa-pagelines"></i> <span class="nav-label">Especimen</span><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
@@ -119,8 +119,8 @@
                         <li>
                             <a href="#"><i class="fa fa-book"></i> <span class="nav-label">Prestamos Especimenes</span><span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
-                                <li><a href="{% url 'prestamo:listar_solicitud' %}">listar solicitudes prestamo</a></li>
-                                <li><a href="{% url 'prestamo:listar_prestamo' %}">listar solicitudes prestamo</a></li>
+                                <li><a href="{% url 'prestamo:listar_solicitud' %}">solicitudes prestamos</a></li>
+                                <li><a href="{% url 'prestamo:listar_prestamo' %}">prestamos en curso</a></li>
                             </ul>
                         </li>
 
