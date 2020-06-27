@@ -13,7 +13,7 @@ class SolicitudForm(forms.ModelForm):
             'solicitud':'Solicitud',
         }
         widgets = {
-            'solicitud': forms.Textarea(attrs={'class': 'form-control col-sm-7'})
+            'solicitud': forms.Textarea(attrs={'class': 'form-control col-sm-7', 'rows':5})
         }
 
 class PrestamoForm(forms.ModelForm):

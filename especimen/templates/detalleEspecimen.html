@@ -62,7 +62,12 @@
 
 {% block content %}
     {% if especimen %}
-        <div class="container" >
+    <div id="elementH"></div>
+    <div id="content">
+        <!-- <p>ksjkdsjsdlkdsj</p> -->
+        <!-- HTML contnet goes here -->
+    </div>
+        <div class="container" id='print' >
             <h1>{{taxonomia.genero}} {{taxonomia.epiteto_especifico}} {{taxonomia.autor1}} </h1>
             <br>
             <div class="row">
@@ -283,7 +288,7 @@
                 <div id="map" class="map" style="height:400px; display: none"></div>
             {% endif %}
 
-            <button id='printBtn'>Imprimir</button>
+            <!-- <button id='printBtn' onclick="printPDF()">Imprimir</button> -->
         </div>
     {% else %}
         <div class="container" >
@@ -299,6 +304,7 @@
 
     <script src="/static/plugins/openseadragon/openseadragon.min.js"></script>
     <script src="/static/plugins/leaflet/leaflet.js "></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js'></script>
     <script>
         var viewer = OpenSeadragon({
             id: "seadragon-viewer",
@@ -310,9 +316,7 @@
             showNavigator:  true, 
         });
         document.getElementById('seadragon-viewer').querySelector('.openseadragon-canvas').focus();
-    </script>
-
-    <script>
+    
         if('{{ubicacion.latitud}}' != 'None' && '{{ubicacion.longitud}}' != 'None'){
             document.getElementById('map').style.display='block'
             let lat = {{ubicacion.latitud}}
@@ -325,7 +329,6 @@
             if(ns =='S'){
                 lat= -lat
             }
-            {% comment %} var latlong=[3.41667,76.53333];//lt, long {% endcomment %}
             var latlong=[lat,long];//lt, long
             var map = L.map('map').setView(latlong,12);
             L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -335,14 +338,25 @@
             L.control.scale().addTo(map);
             L.marker(latlong,{draggable: true}).addTo(map);
         }   
-    </script>
+    
+        function printPDF(){
+            console.log('hh')
+            var doc = new jsPDF();
+            var elementHTML = $('#content').html();
+            var specialElementHandlers = {
+                '#elementH': function (element, renderer) {
+                    return true;
+                }
+            };
+            doc.fromHTML(elementHTML, 15, 15, {
+                'width': 170,
+                'elementHandlers': specialElementHandlers
+            });
 
-    <script>
-    const $scope= document.getElementById('printBtn')
-    $scope.printWindow = function () {
-        window.print()
+            // Save the PDF
+            doc.save('sample-document.pdf');
     }
-</script>
+    </script>
 
 {% endblock %}
 

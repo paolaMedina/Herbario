@@ -29,9 +29,9 @@ class VisitaForm(ModelForm):
             'hora': 'Hora',
             'nombre': 'Nombre completo',
             'correo': 'Correo',
-            'telefono': 'Telefono',
-            'numPersonas': 'Número de visitantes',
-            'motivo': 'Motivo de la visita',
+            'telefono': 'Teléfono',
+            'numPersonas': 'Número visitantes',
+            'motivo': 'Motivo visita',
         }
         widgets = {
             'fecha': forms.TextInput(attrs={'required': 'required', 'type': 'text', 'class': 'form-control datetimepicker-input', 'data-target': "#datetimepicker4"}),
@@ -40,6 +40,6 @@ class VisitaForm(ModelForm):
             'correo': forms.EmailInput(attrs={'required': 'required', 'class': 'form-control'}),
             'telefono': forms.TextInput(attrs={'required': 'required', 'type': 'text', 'class': 'form-control', 'onkeypress':'return isNumberKey(event)'}),
             'numPersonas': forms.TextInput(attrs={'required': 'required', 'type': 'number', 'class': 'form-control'}),
-            'motivo': forms.Textarea(attrs={'required': 'required', 'class': 'form-control'}),
+            'motivo': forms.Textarea(attrs={'required': 'required', 'class': 'form-control','rows':5}),
 
         }
