@@ -46,7 +46,7 @@ def solicitudPrestamo(request) :
        
             email_subject = 'Solicitud prestamo'
             email_body = "Buen día, \n Se ha realizado la solicitud de prestamo exitosamente"
-            send_mail(email_subject, email_body, 'angiepmc93@gmail.com', emails, fail_silently=False)
+            # send_mail(email_subject, email_body, 'angiepmc93@gmail.com', emails, fail_silently=False)
 
             prestamo.save()
             messages.success(request, "Se ha realizado la solicitud de prestamo exitosamente")
@@ -74,7 +74,7 @@ def cancelarSolicitud (request, pk):
         email_body = "Buen día, \n" 
         email_body += "Su solicitud %s ha sido cancelada" % (prestamo.solicitud)
 
-        send_mail(email_subject, email_body, 'angiepmc93@gmail.com', [email], fail_silently=False)
+        # send_mail(email_subject, email_body, 'angiepmc93@gmail.com', [email], fail_silently=False)
 
         prestamo.save()
         messages.success(request, 'La solicitud se ha cancelado exitosamente')
@@ -150,14 +150,14 @@ def realizarPrestamo(request, pk):
 def renovar_prestamo (request, pk):
     try:
         prestamo = Prestamo.objects.get(pk = pk)
-        prestamo.fecha_entrega = prestamo.fecha_entrega + timedelta(days=15)
+        prestamo.fecha_devolucion = prestamo.fecha_devolucion + timedelta(days=15)
         
         email_subject = 'Renovación de prestamo '
 
         email_body = "Buen día, \n" 
         email_body += "Su prestamo %s ha sido renovado hasta el día %s " % (prestamo.solicitud, str(prestamo.fecha_entrega))
 
-        send_mail(email_subject, email_body, 'angiepmc93@gmail.com', [prestamo.cliente.correo], fail_silently=False)
+        # send_mail(email_subject, email_body, 'angiepmc93@gmail.com', [prestamo.cliente.correo], fail_silently=False)
 
         prestamo.save()
         messages.success(request, "Se ha renovado el prestamo exitosamente")
