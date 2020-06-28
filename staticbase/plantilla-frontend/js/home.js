@@ -56,11 +56,17 @@ $('#especimen').on('keyup', function(){
         dataType: 'json',
         success: function (data) {
             console.log(data)
+            console.log('f')
             list = data.list;
             $('#especimen').autocomplete({
               maxShowItems: 5,
-              source: list,
               minLength: 1,
+              // source: list,
+              source: function(request, response) {
+                var results = $.ui.autocomplete.filter(list, request.term);
+                
+                response(results.slice(0, 10));
+            }
             });       
         }, error: function (data){
             console.log('error')
