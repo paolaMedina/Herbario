@@ -157,7 +157,7 @@ def TerminarServicio (request, pk):
 
         email_body = "Buen día, \n el proceo  con Número de ticket: %s se ha marcado como terminado" % (servicio.ticket)
 
-        send_mail(email_subject, email_body, 'angiepmc93@gmail.com', [email], fail_silently=False)
+        # send_mail(email_subject, email_body, 'angiepmc93@gmail.com', [email], fail_silently=False)
 
         servicio.save()
         messages.success(request, 'Se ha actualizado el estado a terminado')

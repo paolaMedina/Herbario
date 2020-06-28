@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from cliente.models import Cliente
 
 # Create your models here.
-type_services = (('cuarentena', 'Servicio de cuarentena'),('identificación', 'Servicio de identificación'))
+type_services = (('identificación', 'Servicio de identificación'),('cuarentena', 'Servicio de cuarentena'),('secado', 'Servicio de secado'))
 state = (('solicitud', 'Solicitud'),('proceso','Proceso'),('terminado','Terminado'),('entregado','Entregado'),('cancelado','Cancelado'))
 
 

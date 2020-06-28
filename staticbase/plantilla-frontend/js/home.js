@@ -55,8 +55,8 @@ $('#especimen').on('keyup', function(){
         async: false,
         dataType: 'json',
         success: function (data) {
-            console.log(data)
-            console.log('f')
+            // console.log(data)
+            // console.log('f')
             list = data.list;
             $('#especimen').autocomplete({
               maxShowItems: 5,
