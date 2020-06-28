@@ -26,105 +26,107 @@ Crear Especimen
 
 
 {% block content %} 
- <div class="row">
-    <div class="col-lg-12">
-        <div class="ibox">
-            <div class="ibox-title">
-                <h5>Actualizar  Especimen</h5>
-            </div>
-            
-            <div class="ibox-content">
-                
-                <div class="form-group">
-                    <label class="col-md-2 control-label">Número de registro:</label>
-                    <div class="col-sm-3" id='input_search'>
-                        <input type="search" id='registro' class="form-control">
-                    </div>
-                     <button class="btn btn-info col-sm-1" id='search' ><span class="glyphicon glyphicon-search" aria-hidden="true"></button>
-                </div>
-                <br>
-                <hr/>
-                
-                 
-                <form method="post" class="form-horizontal" id="form-especimen">
-                    {% csrf_token %}
-                    <!-- genero-taxonomia -->
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for={{formCateTaxonomica.genero.name}}>{{formCateTaxonomica.genero.label}}</label>
-                        <div class="col-sm-6">
-                            {{formCateTaxonomica.genero}}
-                        </div>
-                    </div>
-                    <!-- familia-taxonomia -->
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for={{formCateTaxonomica.familia.name}}>{{formCateTaxonomica.familia.label}}</label>
-                        <div class="col-sm-6">
-                            {{formCateTaxonomica.familia}}
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <!-- determinador -->
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Determinador</label>
-                        <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-md-9">{{formDeterminador.nombre_completo}} <span class="help-block m-b-none">Nombre completo</span></div>
-                                <div class="col-md-3">{{formDeterminador.nombre_abreviado}} <span class="help-block m-b-none">Abreviatura</span></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- fecha_det-taxonomia -->
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for={{formCateTaxonomica.fecha_det.name}}>{{formCateTaxonomica.fecha_det.label}}</label>
-                        <div class="col-sm-6" id="data_3">
-                            <div class="input-group date m-b">
-                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>{{formCateTaxonomica.fecha_det}}
-                            </div>
-                        </div>
-                    </div>
+<div class ="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+       <div class="col-lg-12">
+           <div class="ibox">
+               <div class="ibox-title">
+                   <h5>Actualizar  Especimen</h5>
+               </div>
+               
+               <div class="ibox-content">
+                   
+                   <div class="form-group">
+                       <label class="col-md-2 control-label">Número de registro:</label>
+                       <div class="col-sm-3" id='input_search'>
+                           <input type="search" id='registro' class="form-control">
+                       </div>
+                        <button class="btn btn-info col-sm-1" id='search' ><span class="glyphicon glyphicon-search" aria-hidden="true"></button>
+                   </div>
+                   <br>
+                   <hr/>
+                   
                     
-                    <div class="hr-line-dashed"></div>
-                    <!-- epiteto_especifico-taxonomia -->
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for={{formCateTaxonomica.epiteto_especifico.name}}>{{formCateTaxonomica.epiteto_especifico.label}}</label>
-                        <div class="col-sm-6">
-                            {{formCateTaxonomica.epiteto_especifico}}
-                        </div>
-                    </div>
-                    <!-- autor1 -->
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for={{formCateTaxonomica.autor1.name}}>{{formCateTaxonomica.autor1.label}}</label>
-                        <div class="col-sm-6">
-                            {{formCateTaxonomica.autor1}}
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <!-- epiteto_infraespecifico-->
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for={{formCateTaxonomica.epiteto_infraespecifico.name}}>{{formCateTaxonomica.epiteto_infraespecifico.label}}</label>
-                        <div class="col-sm-6">
-                            {{formCateTaxonomica.epiteto_infraespecifico}}
-                        </div>
-                    </div>
-                    <!-- autor2 -->
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for={{formCateTaxonomica.autor2.name}}>{{formCateTaxonomica.autor2.label}}</label>
-                        <div class="col-sm-6">
-                            {{formCateTaxonomica.autor2}}
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    
-                    <div class="form-group">
-                        <div class="col-sm-4 col-sm-offset-2">
-                            <button class="btn btn-white" type="submit">Cancelar</button>
-                            <button class="btn btn-primary" type="submit">Guardar cambios</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+                   <form method="post" class="form-horizontal" id="form-especimen">
+                       {% csrf_token %}
+                       <!-- genero-taxonomia -->
+                       <div class="form-group">
+                           <label class="col-sm-3 control-label" for={{formCateTaxonomica.genero.name}}>{{formCateTaxonomica.genero.label}}</label>
+                           <div class="col-sm-6">
+                               {{formCateTaxonomica.genero}}
+                           </div>
+                       </div>
+                       <!-- familia-taxonomia -->
+                       <div class="form-group">
+                           <label class="col-sm-3 control-label" for={{formCateTaxonomica.familia.name}}>{{formCateTaxonomica.familia.label}}</label>
+                           <div class="col-sm-6">
+                               {{formCateTaxonomica.familia}}
+                           </div>
+                       </div>
+                       <div class="hr-line-dashed"></div>
+                       <!-- determinador -->
+                       <div class="form-group">
+                           <label class="col-sm-3 control-label">Determinador</label>
+                           <div class="col-sm-6">
+                               <div class="row">
+                                   <div class="col-md-9">{{formDeterminador.nombre_completo}} <span class="help-block m-b-none">Nombre completo</span></div>
+                                   <div class="col-md-3">{{formDeterminador.nombre_abreviado}} <span class="help-block m-b-none">Abreviatura</span></div>
+                               </div>
+                           </div>
+                       </div>
+                       <!-- fecha_det-taxonomia -->
+                       <div class="form-group">
+                           <label class="col-sm-3 control-label" for={{formCateTaxonomica.fecha_det.name}}>{{formCateTaxonomica.fecha_det.label}}</label>
+                           <div class="col-sm-6" id="data_3">
+                               <div class="input-group date m-b">
+                                   <span class="input-group-addon"><i class="fa fa-calendar"></i></span>{{formCateTaxonomica.fecha_det}}
+                               </div>
+                           </div>
+                       </div>
+                       
+                       <div class="hr-line-dashed"></div>
+                       <!-- epiteto_especifico-taxonomia -->
+                       <div class="form-group">
+                           <label class="col-sm-3 control-label" for={{formCateTaxonomica.epiteto_especifico.name}}>{{formCateTaxonomica.epiteto_especifico.label}}</label>
+                           <div class="col-sm-6">
+                               {{formCateTaxonomica.epiteto_especifico}}
+                           </div>
+                       </div>
+                       <!-- autor1 -->
+                       <div class="form-group">
+                           <label class="col-sm-3 control-label" for={{formCateTaxonomica.autor1.name}}>{{formCateTaxonomica.autor1.label}}</label>
+                           <div class="col-sm-6">
+                               {{formCateTaxonomica.autor1}}
+                           </div>
+                       </div>
+                       <div class="hr-line-dashed"></div>
+                       <!-- epiteto_infraespecifico-->
+                       <div class="form-group">
+                           <label class="col-sm-3 control-label" for={{formCateTaxonomica.epiteto_infraespecifico.name}}>{{formCateTaxonomica.epiteto_infraespecifico.label}}</label>
+                           <div class="col-sm-6">
+                               {{formCateTaxonomica.epiteto_infraespecifico}}
+                           </div>
+                       </div>
+                       <!-- autor2 -->
+                       <div class="form-group">
+                           <label class="col-sm-3 control-label" for={{formCateTaxonomica.autor2.name}}>{{formCateTaxonomica.autor2.label}}</label>
+                           <div class="col-sm-6">
+                               {{formCateTaxonomica.autor2}}
+                           </div>
+                       </div>
+                       <div class="hr-line-dashed"></div>
+                       
+                       <div class="form-group">
+                           <div class="col-sm-4 col-sm-offset-2">
+                               <button class="btn btn-white" type="reset">Cancelar</button>
+                               <button class="btn btn-primary" type="submit">Guardar cambios</button>
+                           </div>
+                       </div>
+                   </form>
+               </div>
+           </div>
         </div>
-     </div>
+   </div>
 </div>
 {% endblock %}
        
@@ -198,8 +200,10 @@ Crear Especimen
 $(document).ready(function(){
     $("#search").click(function () {
         $num_registro=$("#registro").val()
-        url = "{% url 'especimen:cambiar_especimen' pk=0 %}".replace('0', $num_registro);
-        $(location).attr('href', url);
+        if($num_registro){
+            url = "{% url 'especimen:cambiar_especimen' pk=0 %}".replace('0', $num_registro);
+            $(location).attr('href', url);
+        }
         //$("#form-especimen").css({display: "block"});
         
        // $.ajax({

@@ -58,8 +58,9 @@ $('#especimen').on('keyup', function(){
             console.log(data)
             list = data.list;
             $('#especimen').autocomplete({
-            source: list,
-            minLength: 1,
+              maxShowItems: 5,
+              source: list,
+              minLength: 1,
             });       
         }, error: function (data){
             console.log('error')
