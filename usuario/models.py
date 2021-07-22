@@ -10,8 +10,9 @@ director='director'
 investigador='investigador'
 curador= 'curador'
 monitor='monitor'
+secretaria = 'secretaria'
 
-grupos = ((monitor, 'Monitor'),(investigador, 'Investigador'), (curador, 'Curador'), (director, 'Director'))
+grupos = ((monitor, 'Monitor'),(investigador, 'Investigador'), (curador, 'Curador'), (director, 'Director'), (secretaria, 'Secretaría'))
 
 
 class Usuario(User):

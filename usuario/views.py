@@ -55,9 +55,9 @@ class RegistroUsuario(CreateView):
         email_subject = 'Confirmación de cuenta'
         email_body = "Buenas acabas de ser registrado en la pagina del Herbario CUVC de la Universidad del valle. Tus datos de registro son: \n Usuario:%s \n contrasena es %s \n puedes ingresar al siguiente link para loguearte: https://herbario1-paolamedina.c9users.io/usuario/" % (
             usuario.username, usuario.password1)
-
-        send_mail(email_subject, email_body, 'angiepmc93@gmail.com',
-                  [email], fail_silently=False)
+#DESCOMENTAR UNA VEZ SE CONFIGURE LOS PERMISOS ENN EL GMAIL 
+        # send_mail(email_subject, email_body, 'angiepmc93@gmail.com',
+        #           [email], fail_silently=False)
 
         self.object = form.save(commit=False)
         self.object.set_password(contra)
@@ -76,6 +76,10 @@ class RegistroUsuario(CreateView):
             grupo_curador, grupo_curador_creado = Group.objects.get_or_create(
                 name='curador')
             grupo_curador.user_set.add(self.object)
+        elif (usuario.rol == 'secretaria'):
+                grupo_secretaria, grupo_secretaria_creado = Group.objects.get_or_create(
+                    name='secretaria')
+                grupo_secretaria.user_set.add(self.object)
         else:
             grupo_monitor, grupo_monitor_creado = Group.objects.get_or_create(
                 name='monitor')
