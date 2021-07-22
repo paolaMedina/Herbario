@@ -198,7 +198,7 @@ def ActivarUsuario(request, pk):
     usuario = Usuario.objects.get(pk=pk)
     usuario.is_active = True
     usuario.save()
-    messages.success(request, 'Se inactivo el usuario')
+    messages.success(request, 'Se activo el usuario con éxito')
     return HttpResponseRedirect(reverse_lazy("usuario:listar_usuario_inactivos"))
 
 # class Login(FormView):

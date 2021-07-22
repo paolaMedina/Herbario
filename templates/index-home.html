@@ -1,12 +1,87 @@
 {% extends "base_front.html" %} {% load static %} {% block extrahead %}
 
 <style>
+    a{
+        color : #7d0e19;
+    }
 
-.responsive-image {
-  width: 100%;
-  max-width: 80%;
-  height: auto;
-}
+    .responsive-image {
+    width: 100%;
+    max-width: 80%;
+    height: auto;
+    }
+
+    /* The container */
+    .options {
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    padding-right: 15px;
+
+    }
+
+    /* Hide the browser's default radio button */
+    .options input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    }
+
+    /* Create a custom radio button */
+    .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 50%;
+    }
+
+    /* On mouse-over, add a grey background color */
+    .options:hover input ~ .checkmark {
+    background-color: #ccc;
+    }
+
+    /* When the radio button is checked, add a blue background */
+    .options input:checked ~ .checkmark {
+    background-color: #7d0e19;
+    }
+
+    /* Create the indicator (the dot/circle - hidden when not checked) */
+    .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    }
+
+    /* Show the indicator (dot/circle) when checked */
+    .options input:checked ~ .checkmark:after {
+    display: block;
+    }
+
+    /* Style the indicator (dot/circle) */
+    .options .checkmark:after {
+        top: 9px;
+        left: 9px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: white;
+    }
+
+    #buscar{
+        margin: 10px 6px 6px 6px ;
+        color: #fff;
+        background-color: #7d0e19b5;
+        border-color: #7d0e19b5;
+    }
 </style>
 
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -44,14 +119,23 @@
                 <form action='/especimen/busqueda' method="post">
                     {% csrf_token %}
                     <div style="display: flex-wrap ; justify-content: space-around; font-size: 1.3rem">
-                        <label for="option0"><input checked="checked" id="option0" name="option" type="radio" value="especie"> Especie</label>
+                        <label class="options" for="option0">
+                            <input checked="checked" id="option0" name="option"  type="radio" value="especie"> Especie
+                            <span class="checkmark"></span>
+                        </label>
 
-                        <label for="option1"><input id="option1" name="option" type="radio" value="familia"> Familia</label>
+                        <label class="options" for="option1">
+                            <input id="option1" name="option"  type="radio" value="familia"> Familia
+                            <span class="checkmark"></span>
+                        </label>
 
-                        <label for="option2"><input id="option2" name="option" type="radio" value="genero"> Género</label>
+                        <label class="options" for="option2">
+                            <input id="option2" name="option"  type="radio" value="genero"> Género
+                            <span class="checkmark"></span>
+                        </label>
                     </div>
                     <br>
-                    <input style="width: 100%" autocomplete="off" id="especimen" name="filtro" type="text" class="ui-autocomplete-input col-12">
+                    <input style="width: 100%" autocomplete="off" id="especimen" name="filtro" type="text" class="ui-autocomplete-input col-12" >
 
 
                     <div style="margin-top:10px;">
@@ -61,7 +145,7 @@
                         </a>
                     </div>
                     <div style="display: flex; justify-content: space-around;">
-                        <button type="submit">Buscar</button>
+                        <button id = "buscar" type="submit">Buscar</button>
                     </div>
                 </form>
             </div>
@@ -115,14 +199,14 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.2s">
                     <div class="box">
-                        <div class="icon"><a href="/prestamos/solicitar"><i class="fa fa-desktop"></i></a></div>
+                        <div class="icon"><a href="/prestamos/solicitar"><i class="fa fa-book"></i></a></div>
                         <h4 class="title"><a href="/prestamos/solicitar">Prestamo de especimenes</a></h4>
                         <p class="description">detalle</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.4s">
                     <div class="box">
-                        <div class="icon"><a href="/visita/generar"><i class="fa fa-bar-chart"></i></a></div>
+                        <div class="icon"><a href="/visita/generar"><i class="fa fa-calendar"></i></a></div>
                         <h4 class="title"><a href="/visita/generar">Agendamiento de Visitas</a></h4>
                         <p class="description">detalle</p>
                     </div>
@@ -139,7 +223,7 @@
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.2s" align="center">
                     <div class="box">
                         <div class="icon"><a href="/servicios/consultar"><i class="fa fa-photo"></i></a></div>
-                        <h4 class="title"><a href="/servicios/consultar">Identificación de especimenes</a></h4>
+                        <h4 class="title"><a href="/servicios/consultar">Identificación, secado y cuarentena de especimenes</a></h4>
                         <p class="description">detalle</p>
                     </div>
                 </div>
@@ -273,14 +357,14 @@
                             <div class="form-group">
                                 <label class="control-label col-12">Tipo</label>
                                 <select class="col-12" id="id_tipo" name="tipo" style="height: 30px;">
-                    <option value="ninguno">Ninguno</option>
-                    <option value="Holotipo">Holotipo</option>
-                    <option value="Isotipo">Isotipo</option>
-                    <option value="Lectotipo">Lectotipo</option>
-                    <option value="Isolectotipo">Isolectotipo</option>
-                    <option value="Hololectotipo">Hololectotipo</option>
+                                    <option value="ninguno">Ninguno</option>
+                                    <option value="Holotipo">Holotipo</option>
+                                    <option value="Isotipo">Isotipo</option>
+                                    <option value="Lectotipo">Lectotipo</option>
+                                    <option value="Isolectotipo">Isolectotipo</option>
+                                    <option value="Hololectotipo">Hololectotipo</option>
 
-                  </select>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-12">Género</label>

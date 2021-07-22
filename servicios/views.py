@@ -13,7 +13,8 @@ from herbario1.utilities import *
 from django.views.generic import ListView
 
 # Create your views here.
-@login_required
+#@login_required
+
 def RegistrarServicio(request, pk=None):
 
     if pk:
@@ -72,11 +73,16 @@ def RegistrarServicio(request, pk=None):
 @login_required
 @verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def ListarServicio(request) : 
-    servicios = Servicios.objects.all()
-    contexto = {'servicios':servicios}
+    solicitudes = Servicios.objects.filter(estado='solicitud')
+    procesos = Servicios.objects.filter(estado='proceso')
+    terminados = Servicios.objects.filter(estado='terminado')
+    entregados = Servicios.objects.filter(estado='entregado')
+    cancelados = Servicios.objects.filter(estado='cancelado')
+    contexto = {'solicitudes':solicitudes, 'procesos':procesos, 'terminados':terminados, 'entregados':entregados, 'cancelados':cancelados}
     return render(request,'listar_servicio.html', contexto )
 
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def ProcesarServicio (request, pk):
     try:
         servicio = Servicios.objects.get(pk=pk)
@@ -89,6 +95,7 @@ def ProcesarServicio (request, pk):
     return HttpResponseRedirect(reverse_lazy('servicios:listar_servicio'))
 
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def CancelarServicio (request, pk):
     try:
         servicio = Servicios.objects.get(pk=pk)
@@ -102,6 +109,7 @@ def CancelarServicio (request, pk):
     
 
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def EntregarServicio (request, pk):
     try:
         servicio = Servicios.objects.get(pk=pk)
@@ -136,6 +144,7 @@ def VisualizarServicio (request, pk):
     return render(request, 'registrar_servicio.html', contexto)
 
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def TerminarServicio (request, pk):
     try:
         servicio = Servicios.objects.get(pk=pk)
@@ -148,7 +157,7 @@ def TerminarServicio (request, pk):
 
         email_body = "Buen día, \n el proceo  con Número de ticket: %s se ha marcado como terminado" % (servicio.ticket)
 
-        send_mail(email_subject, email_body, 'angiepmc93@gmail.com', [email], fail_silently=False)
+        # send_mail(email_subject, email_body, 'angiepmc93@gmail.com', [email], fail_silently=False)
 
         servicio.save()
         messages.success(request, 'Se ha actualizado el estado a terminado')

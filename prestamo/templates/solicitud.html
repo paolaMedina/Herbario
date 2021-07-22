@@ -8,51 +8,59 @@
 </p>
 {% endblock %} 
 {% block content %}
+<style>
+#guardar{
+        margin: 10px 6px 6px 6px ;
+        color: #fff;
+        background-color: #bd2130ad;
+        border-color: #bd2130ad;
+    }
+#form{
+    padding-top: 25px;
+}
+</style>
 <div class="container">
-    <div class="form-group row">
-        <div class="col-lg-12">
-            <form id="form"  enctype="multipart/form-data" class="form-horizontal" method="post">
-                {% csrf_token %}
-                <div class="form-group row">
-                    <label class="col-sm-2 control-label" for={{formCliente.nombre_completo.name}}>{{formCliente.nombre_completo.label}}</label>
-                    <div class="col-sm-10">{{formCliente.nombre_completo}}</div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 control-label" for={{formCliente.tipo_identificacion.name}}>{{formCliente.tipo_identificacion.label}}</label>
-                    <div class="col-sm-10">{{formCliente.tipo_identificacion}}</div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 control-label" for={{formCliente.identificacion.name}}>{{formCliente.identificacion.label}}</label>
-                    <div class="col-sm-10">{{formCliente.identificacion}}</div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 control-label" for={{formCliente.correo.name}}>{{formCliente.correo.label}}</label>
-                    <div class="col-sm-10">{{formCliente.correo}}</div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 control-label" for={{formCliente.num_contacto.name}}>{{formCliente.num_contacto.label}}</label>
-                    <div class="col-sm-10">{{formCliente.num_contacto}}</div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-2 control-label" for={{formCliente.institucion.name}}>{{formCliente.institucion.label}}</label>
-                    <div class="col-sm-10">{{formCliente.institucion}}</div>
-                </div>
-                
-                <div class="form-group row">
-                    <label class="col-sm-2 control-label" for={{solicitudForm.solicitud.name}}>{{solicitudForm.solicitud.label}}</label>
-                    <div class="col-sm-10">{{solicitudForm.solicitud}}</div>
-                </div>
-                
-                
-                <div class="form-group">
-                    <div class="col-sm-10 col-sm-offset-7">
-                        <button class="btn btn-white" type="reset">Cancel</button>
-                        <button  id="guardar" class="btn btn-primary" type="submit">enviar</button>
-                    </div>
-                </div>
-            </form>
+    <h2>Solicitud de Préstamo</h2>
+    <form id="form"  enctype="multipart/form-data" class="form-horizontal" method="post">
+        {% csrf_token %}
+        <div class="form-group row">
+            <label class="col-sm-2 control-label" for={{formCliente.nombre_completo.name}}>{{formCliente.nombre_completo.label}}</label>
+            <div class="col-sm-10">{{formCliente.nombre_completo}}</div>
         </div>
-    </div>
+        <div class="form-group row">
+            <label class="col-sm-2 control-label" for={{formCliente.tipo_identificacion.name}}>{{formCliente.tipo_identificacion.label}}</label>
+            <div class="col-sm-10">{{formCliente.tipo_identificacion}}</div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 control-label" for={{formCliente.identificacion.name}}>{{formCliente.identificacion.label}}</label>
+            <div class="col-sm-10">{{formCliente.identificacion}}</div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 control-label" for={{formCliente.correo.name}}>{{formCliente.correo.label}}</label>
+            <div class="col-sm-10">{{formCliente.correo}}</div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 control-label" for={{formCliente.num_contacto.name}}>{{formCliente.num_contacto.label}}</label>
+            <div class="col-sm-10">{{formCliente.num_contacto}}</div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 control-label" for={{formCliente.institucion.name}}>{{formCliente.institucion.label}}</label>
+            <div class="col-sm-10">{{formCliente.institucion}}</div>
+        </div>
+        
+        <div class="form-group row">
+            <label class="col-sm-2 control-label" for={{solicitudForm.solicitud.name}}>{{solicitudForm.solicitud.label}}</label>
+            <div class="col-sm-10">{{solicitudForm.solicitud}}</div>
+        </div>
+        
+        
+        <div class="form-group">
+            <div class="col-sm-7 col-sm-offset-7" align="right">
+                <button class="btn btn-white" type="reset">Cancel</button>
+                <button  id="guardar" class="btn btn-danger" type="submit">enviar</button>
+            </div>
+        </div>
+    </form>
 </div>
 {% endblock %}
 

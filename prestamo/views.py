@@ -3,7 +3,8 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.contrib.auth.decorators  import  login_required
-from datetime import datetime
+from datetime import datetime, timedelta
+from herbario1.utilities import *
 
 from .models import Prestamo
 from .forms import SolicitudForm, PrestamoForm
@@ -45,7 +46,7 @@ def solicitudPrestamo(request) :
        
             email_subject = 'Solicitud prestamo'
             email_body = "Buen día, \n Se ha realizado la solicitud de prestamo exitosamente"
-            send_mail(email_subject, email_body, 'angiepmc93@gmail.com', emails, fail_silently=False)
+            # send_mail(email_subject, email_body, 'angiepmc93@gmail.com', emails, fail_silently=False)
 
             prestamo.save()
             messages.success(request, "Se ha realizado la solicitud de prestamo exitosamente")
@@ -59,7 +60,8 @@ def solicitudPrestamo(request) :
             return render(request, 'solicitud.html', { 'solicitudForm':solicitudForm, 'formCliente':formCliente})
 
 
-#@login_required
+@login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def cancelarSolicitud (request, pk):
     try:
         prestamo = Prestamo.objects.get(pk = pk)
@@ -72,7 +74,7 @@ def cancelarSolicitud (request, pk):
         email_body = "Buen día, \n" 
         email_body += "Su solicitud %s ha sido cancelada" % (prestamo.solicitud)
 
-        send_mail(email_subject, email_body, 'angiepmc93@gmail.com', [email], fail_silently=False)
+        # send_mail(email_subject, email_body, 'angiepmc93@gmail.com', [email], fail_silently=False)
 
         prestamo.save()
         messages.success(request, 'La solicitud se ha cancelado exitosamente')
@@ -82,6 +84,7 @@ def cancelarSolicitud (request, pk):
     return HttpResponseRedirect(reverse_lazy('prestamo:listar_solicitud'))
 
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def realizarPrestamo(request, pk):
     if request.method == 'GET':
         prestamo = Prestamo()
@@ -143,38 +146,41 @@ def realizarPrestamo(request, pk):
             return render(request, 'prestamo.html', { 'prestamoForm':prestamoForm, 'formCliente':formCliente})
 
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def renovar_prestamo (request, pk):
     try:
         prestamo = Prestamo.objects.get(pk = pk)
-        prestamo.fecha_entrega = prestamo.fecha_entrega + datetime.timedelta(days=15)
+        prestamo.fecha_devolucion = prestamo.fecha_devolucion + timedelta(days=15)
         
         email_subject = 'Renovación de prestamo '
 
         email_body = "Buen día, \n" 
-        email_body += "Su prestamo %s ha sido renovado hasta el día " % (prestamo.solicitud, prestamo.fecha_entrega)
+        email_body += "Su prestamo %s ha sido renovado hasta el día %s " % (prestamo.solicitud, str(prestamo.fecha_entrega))
 
-        send_mail(email_subject, email_body, 'angiepmc93@gmail.com', [email], fail_silently=False)
+        # send_mail(email_subject, email_body, 'angiepmc93@gmail.com', [prestamo.cliente.correo], fail_silently=False)
 
         prestamo.save()
-        messages.success("Se ha renovado el prestamo exitosamente")
+        messages.success(request, "Se ha renovado el prestamo exitosamente")
     except Prestamo.DoesNotExist:
-        messages.error("El prestamo en consulta no existe")
+        messages.error(request, "El prestamo en consulta no existe")
     
     return HttpResponseRedirect(reverse_lazy('prestamo:listar_prestamo'))
 
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def entregar_prestamo (request, pk):
     try:
         prestamo = Prestamo.objects.get(pk = pk)
         prestamo.estado = 'entregado'
         prestamo.save()
-        messages.success("El prestamo se ha regresado exitosamente")
+        messages.success(request, "El prestamo se ha regresado exitosamente")
     except Prestamo.DoesNotExist:
-        messages.error("El prestamo en consulta no existe")
+        messages.error(request, "El prestamo en consulta no existe")
     
     return HttpResponseRedirect(reverse_lazy('prestamo:listar_prestamo'))
 
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def visualizar_prestamo (request, pk):
     try:
         prestamo = Prestamo.objects.get(pk=pk)
@@ -197,12 +203,14 @@ def visualizar_prestamo (request, pk):
     return render(request, 'prestamo.html', contexto)
 
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def listarSolicitudes(request):
     prestamo = Prestamo.objects.filter(estado='solicitud')
     contexto = {'prestamos':prestamo, 'nombre': 'Lista de solicitudes', 'listaprestamo': False}
     return render(request,'listar_prestamos.html', contexto )
 
 @login_required
+@verificar_rol(roles_permitidos=['director', 'curador', 'investigador'])
 def listarPrestamos(request):
     prestamo = Prestamo.objects.filter(estado='prestamo')
     contexto = {'prestamos':prestamo, 'nombre': 'Lista de solicitudes', 'listaprestamo': True}

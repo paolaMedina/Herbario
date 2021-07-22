@@ -187,7 +187,7 @@ def RegistrarEspecimen(request, pk=None):
 #funcion que permite autocompletar los nombres de cientifico 
 def autocomplete(request):
     if request.is_ajax():
-        queryset = Cientifico.objects.filter(nombre_completo__istartswith=request.GET.get('search', None))
+        queryset = Cientifico.objects.filter(nombre_completo__istartswith=request.GET.get('search', None)).distinct()
        
         list = []        
         for i in queryset:
@@ -338,13 +338,14 @@ def autocompleteFilter(request):
             gen=aux[0]
             try:
                 epiteto=aux[1]
-                querySet = CategoriaTaxonomica.objects.filter(epiteto_especifico__istartswith=epiteto).filter(genero__istartswith=gen).values_list('genero','epiteto_especifico')
+                querySet = CategoriaTaxonomica.objects.filter(epiteto_especifico__istartswith=epiteto).filter(genero__istartswith=gen).values_list('genero','epiteto_especifico').distinct()
                 query=[]
                 for q in querySet:
                     concat= q[0]+" "+q[1]    
                     query.append(concat)
             except:
-                querySet = CategoriaTaxonomica.objects.filter(genero__istartswith=gen).values_list('genero','epiteto_especifico')
+
+                querySet = CategoriaTaxonomica.objects.filter(genero__istartswith=gen).values_list('genero','epiteto_especifico').distinct()
                 query=[]
                 for q in querySet:
                     concat= q[0]+" "+q[1]    

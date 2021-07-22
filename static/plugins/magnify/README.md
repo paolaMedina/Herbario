@@ -103,7 +103,7 @@ $("[data-magnify=gallery]").magnify();
   >If ture, it allow image moving.
   
 - **keyboard** `true`
-  >	If ture, it allow keyboard control. It is similar to Windows photo viewer.
+  >    If ture, it allow keyboard control. It is similar to Windows photo viewer.
   
   - <kbd>←</kbd> prev image
   - <kbd>→</kbd> next image
@@ -170,7 +170,7 @@ $("[data-magnify=gallery]").magnify();
   > The buttons display in header toolbar.
 
 - **footToolbar** `['zoomIn','zoomOut','prev','fullscreen','next','actualSize','rotateRight']`
-  >	The buttons display in footer toolbar.
+  >    The buttons display in footer toolbar.
 
 - **fixedContent** `true`
   > If true, the content will be fixed.
